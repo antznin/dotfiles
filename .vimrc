@@ -31,9 +31,6 @@ colorscheme nord
 " Airline powerline fonts
 let g:airline_powerline_fonts = 1
 
-" NERDTree
-autocmd vimenter * NERDTree
-
 " vim-latex-live-preview settings
 let g:livepreview_previewer = 'zathura'
 
