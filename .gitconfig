@@ -1,0 +1,9 @@
+[alias]
+	st = status
+	co = commit
+	pu = push
+	re = reset
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+
+[core]
+	editor = vim
