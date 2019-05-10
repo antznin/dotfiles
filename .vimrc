@@ -1,9 +1,6 @@
 " Set delay
 set timeoutlen=1000 ttimeoutlen=0 
 
-" Number setup
-set number relativenumber
-
 " Syntax and filetype
 syntax on
 filetype on
@@ -14,6 +11,8 @@ set backspace=2
 " Line length
 set tw=90
 
+" Line numbering
+set number relativenumber
 augroup numbertoggle
   autocmd!
   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
@@ -23,7 +22,6 @@ augroup END
 " Pathogen plugin requirements
 call pathogen#infect()
 call pathogen#helptags()
-syntax on
 filetype plugin indent on
 
 colorscheme nord 
@@ -31,11 +29,8 @@ colorscheme nord
 " Airline powerline fonts
 let g:airline_powerline_fonts = 1
 
-" vim-latex-live-preview settings
-let g:livepreview_previewer = 'zathura'
-
 " Goyo config
-let g:goyo_width=84
+let g:goyo_width=94
 let g:goyo_linenr=0
 
 function! s:goyo_enter()
@@ -58,10 +53,6 @@ endfunction
 
 autocmd! User GoyoEnter call <SID>goyo_enter()
 autocmd! User GoyoLeave call <SID>goyo_leave()
-
-" Limelight config
-let g:limelight_conceal_ctermfg = 'gray'
-let g:limelight_conceal_ctermfg = 240
 
 " vimtex
 let g:polyglot_disabled = ['latex']
