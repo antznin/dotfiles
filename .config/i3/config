@@ -275,6 +275,3 @@ bindsym $mod+p exec $HOME/.config/i3/toggle_kblayout.sh
 
 # updates indicator
 exec_always --no-startup-id pamac-tray-appindicator
-
-# ssh agent startup
-exec_always --no-startup-id $HOME/.config/i3/ssh-agent.sh 
