@@ -58,11 +58,6 @@ augroup END
 
 colorscheme nord 
 
-" Pathogen plugin requirements
-" call pathogen#infect()
-" call pathogen#helptags()
-" filetype plugin indent on
-
 
 """"""""""""""""""
 " PLUGIN RELATED "
@@ -121,7 +116,6 @@ au BufNewFile,BufRead *.pkg set filetype=vhdl
 
 " YouCompleteMe setup
 let g:ycm_autoclose_preview_window_after_completion = 1
-" let g:ycm_filetype_blacklist={'unite': 1}
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_complete_in_comments = 1 
 let g:ycm_seed_identifiers_with_syntax = 1 
@@ -138,4 +132,3 @@ let g:UltiSnipsListSnippets="<c-h>"
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-
