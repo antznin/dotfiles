@@ -23,7 +23,7 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'tpope/vim-surround'
 Plugin 'lervag/vimtex'
-" Plugin 'Valloric/YouCompleteMe', {'do': './install.sh --clang-completer' }
+Plugin 'tpope/vim-commentary'
 
 " COLORSCHEMES "
 Plugin 'arcticicestudio/nord-vim'
@@ -56,6 +56,7 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 
+" Color scheme
 colorscheme nord 
 
 
