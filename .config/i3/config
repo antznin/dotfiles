@@ -275,3 +275,19 @@ bindsym $mod+p exec $HOME/.config/i3/toggle_kblayout.sh
 
 # updates indicator
 exec_always --no-startup-id pamac-tray-appindicator
+
+# Screen layout switching
+set $mode_screen System (m) Primary monitor, (e) External monitor, (d) Dual monitor, (c) Clone monitors
+mode "$mode_screen" {
+	bindsym m exec --no-startup-id xrandr --output eDP1  --primary --mode 1920x1080 --output HDMI1 --off, mode "default"
+	bindsym e exec --no-startup-id xrandr --output HDMI1 --primary --mode 1920x1080 --output eDP1  --off, mode "default"
+	bindsym d exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --pos 1920x0 --rotate normal --output VIRTUAL1 --off --output eDP1 --primary --mode 1920x1080 --pos 0x520 --rotate normal --output VGA1 --off, mode "default" 
+	bindsym c exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080  --same-as eDP1, mode "default"
+
+	bindsym Escape mode "default"
+	bindsym Return mode "default"
+}
+
+bindsym $mod+Shift+p mode "$mode_screen"
+
+# vim: set ts=4 sw=4 tw=90 noet :
