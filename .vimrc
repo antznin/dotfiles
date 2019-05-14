@@ -24,6 +24,7 @@ Plugin 'sheerun/vim-polyglot'
 Plugin 'tpope/vim-surround'
 Plugin 'lervag/vimtex'
 Plugin 'tpope/vim-commentary'
+Plugin 'Valloric/YouCompleteMe'
 
 " COLORSCHEMES "
 Plugin 'arcticicestudio/nord-vim'
