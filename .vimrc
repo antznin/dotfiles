@@ -49,6 +49,10 @@ set backspace=2
 " Line length
 set tw=90
 
+" Tabs
+set tabstop=4
+set sw=4
+
 " Line numbering
 set number relativenumber
 augroup numbertoggle
@@ -62,6 +66,15 @@ colorscheme nord
 
 " Changing default comment string for vhdl
 autocmd FileType vhdl setlocal commentstring=--%s
+
+"Vim splits navigation
+nnoremap <C-Down> <C-W><C-J>
+nnoremap <C-Up> <C-W><C-K>
+nnoremap <C-Right> <C-W><C-L>
+nnoremap <C-Left> <C-W><C-H>
+set splitbelow
+set splitright
+
 
 
 """"""""""""""""""
