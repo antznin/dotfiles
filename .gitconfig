@@ -3,8 +3,12 @@
 	co   = commit
 	pu   = push
 	re   = reset
-	hist = log --pretty = format:\"%h %ad | %s%d [%an]\" --graph --date = short
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+	lo   = log --pretty=format:\"%h %ad | %s%d [%an]\" --date=short
 	ch   = checkout
 
 [core]
 	editor = vim
+[user]
+	email = godard.antonin@free.fr
+	name = antznin
