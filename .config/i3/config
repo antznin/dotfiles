@@ -161,6 +161,10 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# scratchpad 
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
 # # Pulse Audio controls
 # bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
 # bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
@@ -186,10 +190,10 @@ bindsym Print exec --no-startup-id gnome-screenshot
 # finds out, if available)
 
 # Used to activate the volume
-exec_always amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks
+exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks
 bar {
 	position top
-        status_command i3blocks
+        status_command i3blocks -c /home/$USER/.config/i3blocks/config
 	font pango:Iosevka Term Semibold 9.5
 	colors {
 		background #1C2228
@@ -203,10 +207,10 @@ bar {
 gaps outer 0
 gaps inner 15
 for_window [class="^.*"] border pixel 2
+smart_borders on
 
-
-set $bg-color 	         #2f343f
-set $border-color	 #666666
+set $bg-color            #2f343f
+set $border-color        #666666
 set $inactive-bg-color   #2f343f
 set $text-color          #f3f4f5
 set $inactive-text-color #676E7D
@@ -288,9 +292,12 @@ bindsym XF86TouchpadToggle exec $HOME/.config/i3/toggle_touchpad.sh
 bindsym $mod+p exec $HOME/.config/i3/toggle_kblayout.sh
 
 # updates indicator
-exec_always --no-startup-id pamac-tray-appindicator
+exec --no-startup-id pamac-tray-appindicator
 
 # redshift execution
-exec_always --no-startup-id redshift
+exec --no-startup-id redshift
+
+#
+for_window [class="spotify"], move container to workspace 10
 
 # vim: set ts=4 sw=4 tw=90 noet :
