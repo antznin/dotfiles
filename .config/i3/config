@@ -196,30 +196,30 @@ bar {
         status_command i3blocks -c /home/$USER/.config/i3blocks/config
 	font pango:Iosevka Term Semibold 9.5
 	colors {
-		background #1C2228
-		focused_workspace #1C2228 #D8DEE9 #1C2228
-		active_workspace #2C3238 #1C2228 #D8DEE9
+		background         #1C2228
+		focused_workspace  #1C2228 #D8DEE9 #1C2228
+		active_workspace   #2C3238 #1C2228 #D8DEE9
 		inactive_workspace #1C2228 #1C2228 #D8DEE9
 	}
 }
 
 
 gaps outer 0
-gaps inner 15
-for_window [class="^.*"] border pixel 2
+gaps inner 5
+for_window [class="^.*"] border pixel 1
 smart_borders on
 
-set $bg-color            #2f343f
+set $bg-color            #2F343F
 set $border-color        #666666
-set $inactive-bg-color   #2f343f
-set $text-color          #f3f4f5
+set $inactive-bg-color   #2F343F
+set $text-color          #F3F4F5
 set $inactive-text-color #676E7D
 set $urgent-bg-color     #E53935
-set $active-window       #dbdde0
+set $active-window       #DBDDE0
 
 # window colors
-#                       border             background         text                 indicator	child_border
-client.focused          $border-color      $bg-color          $text-color         $active-window	$active-window
+#                       border             background         text                 indicator	  child_border
+client.focused          $border-color      $bg-color          $text-color          $active-window $active-window
 client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color $active-window
 client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color $active-window
 client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color          $active-window
@@ -268,10 +268,10 @@ bindsym Pause mode "$mode_system"
 # Screen layout switching
 set $mode_screen System (m) Primary monitor, (e) External monitor, (d) Dual monitor, (c) Clone monitors
 mode "$mode_screen" {
-	bindsym m exec --no-startup-id xrandr --output eDP1  --primary --mode 1920x1080 --output HDMI1 --off, mode "default"
-	bindsym e exec --no-startup-id xrandr --output HDMI1 --primary --mode 1920x1080 --output eDP1  --off, mode "default"
-	bindsym d exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --pos 1920x0 --rotate normal --output VIRTUAL1 --off --output eDP1 --primary --mode 1920x1080 --pos 0x520 --rotate normal --output VGA1 --off, mode "default" 
-	bindsym c exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080  --same-as eDP1, mode "default"
+	bindsym m exec --no-startup-id xrandr --output eDP1  --primary --mode 1920x1080 --output VGA1 --off, mode "default"
+	bindsym e exec --no-startup-id xrandr --output VGA1 --primary --mode 1280x1024 --output eDP1  --off, mode "default"
+	bindsym d exec --no-startup-id xrandr --output VGA1 --mode 1280x1024 --pos 1920x0 --rotate normal --output VIRTUAL1 --off --output eDP1 --primary --mode 1920x1080 --pos 0x520 --rotate normal --output VGA1 --off, mode "default" 
+	bindsym c exec --no-startup-id xrandr --output VGA1 --mode 1280x1024  --same-as eDP1, mode "default"
 
 	bindsym Escape mode "default"
 	bindsym Return mode "default"
