@@ -267,10 +267,10 @@ bindsym Pause mode "$mode_system"
 # Screen layout switching
 set $mode_screen System (m) Primary monitor, (e) External monitor, (d) Dual monitor, (c) Clone monitors
 mode "$mode_screen" {
-	bindsym m exec --no-startup-id xrandr --output eDP1  --primary --mode 1920x1080 --output VGA1 --off, mode "default"
+	bindsym m exec --no-startup-id xrandr --output eDP1 --primary --mode 1920x1080 --output VGA1 --off, mode "default"
 	bindsym e exec --no-startup-id xrandr --output VGA1 --primary --mode 1280x1024 --output eDP1  --off, mode "default"
 	bindsym d exec --no-startup-id xrandr --output VGA1 --mode 1280x1024 --pos 1920x0 --rotate normal --output VIRTUAL1 --off --output eDP1 --primary --mode 1920x1080 --pos 0x520 --rotate normal --output VGA1 --off, mode "default" 
-	bindsym c exec --no-startup-id xrandr --output VGA1 --mode 1280x1024  --same-as eDP1, mode "default"
+	bindsym c exec --no-startup-id xrandr --output VGA1 --primary --mode 1280x1024  --same-as eDP1, mode "default"
 
 	bindsym Escape mode "default"
 	bindsym Return mode "default"
@@ -297,8 +297,14 @@ exec --no-startup-id pamac-tray-appindicator
 exec --no-startup-id redshift
 
 # windows automatic command
-for_window [class="keepassxc"] floating enable move position center
-for_window [class="keepassxc"] resize set 450 728 # 450 / 728 ≈ 1.68 aka the golden number…
-for_window [class="keepassxc"] move position center
+for_window [class="keepassxc"]         floating enable move position center
+for_window [class="keepassxc"]         resize set 450 728 # 450 / 728 ≈ 1.68 aka the golden number…
+for_window [class="keepassxc"]         move position center
+for_window [window_role="pop-up"]      floating enable
+for_window [window_role="bubble"]      floating enable 
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_type="dialog"]      floating enable 
+for_window [window_type="menu"]        floating enable
 
 # vim: set ts=4 sw=4 tw=90 noet :
