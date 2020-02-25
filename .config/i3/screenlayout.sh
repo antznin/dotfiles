@@ -1,8 +1,3 @@
 #!/bin/sh
 
-num=$(xrandr --listactivemonitors)
-num=${num:10:1}
-
-if [ $num == 2 ]; then
-	xrandr --output HDMI1 --mode 1920x1080 --pos 1920x0 --rotate normal --output VIRTUAL1 --off --output eDP1 --primary --mode 1280x1024 --pos 0x520 --rotate normal --output VGA1 --off
-fi
+xrandr --output DisplayPort-1-3 --off --output DisplayPort-1-4 --mode 1920x1080 --pos 1920x0 --rotate normal --output HDMI-3 --off --output HDMI-2 --off --output HDMI-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP-3 --off --output DP-2 --off --output DP-1 --off
