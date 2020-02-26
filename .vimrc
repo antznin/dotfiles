@@ -150,3 +150,10 @@ let g:UltiSnipsJumpForwardTrigger="<c-z>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 let g:UltiSnipsListSnippets="<c-h>"
 let g:UltiSnipsEditSplit="vertical"
+
+" Bitbake syntax highlighting
+au BufRead,BufNewFile *.bb set filetype=bitbake
+au BufRead,BufNewFile *.bbclass set filetype=bitbake
+au BufRead,BufNewFile *.bbappend set filetype=bitbake
+au! Syntax bitbake source $HOME/.vim/syntax/bitbake.vim
+
