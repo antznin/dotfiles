@@ -36,10 +36,10 @@ markup=none
 #separator_block_width=10
 #markup=pango
 #full_text=<span font_size="xx-large">𝅘𝅥𝅮</span>
-[spotify]
-label=𝅘𝅥𝅮 
-command=~/.config/i3blocks/spotify/spotify.py
-interval=5
+# [spotify]
+# label=𝅘𝅥𝅮 
+# command=~/.config/i3blocks/spotify/spotify.py
+# interval=5
 
 # Volume indicator
 #
@@ -56,14 +56,14 @@ interval=5
 # Memory usage
 #
 # The type defaults to "mem" if the instance is not specified.
-[memorylabel]
-separator=false
-separator_block_width=10
-markup=pango
-full_text=<span font_size="xx-large"></span>
-[memory]
-label=
-interval=30
+# [memorylabel]
+# separator=false
+# separator_block_width=10
+# markup=pango
+# full_text=<span font_size="xx-large"></span>
+# [memory]
+# label=
+# interval=30
 
 #[memory]
 #label=SWAP
@@ -76,26 +76,26 @@ interval=30
 # The directory defaults to $HOME if the instance is not specified.
 # The script may be called with a optional argument to set the alert
 # (defaults to 10 for 10%).
-[disklabel]
-separator=false
-separator_block_width=10
-markup=pango
-full_text=<span font_size="xx-large"></span>
-[disk]
-label=
-interval=30
+# [disklabel]
+# separator=false
+# separator_block_width=10
+# markup=pango
+# full_text=<span font_size="xx-large"></span>
+# [disk]
+# label=
+# interval=30
 
 # Network interface monitoring
 #
 # If the instance is not specified, use the interface used for default route.
 # The address can be forced to IPv4 or IPv6 with -4 or -6 switches.
-[loadlabel]
-separator=false
-separator_block_width=10
-markup=pango
-full_text=<span font_size="xx-large"></span>
-[iface]
-interval=10
+# [loadlabel]
+# separator=false
+# separator_block_width=10
+# markup=pango
+# full_text=<span font_size="xx-large"></span>
+# [iface]
+# interval=10
 #separator=false
 #IFACE=wlan0
 # color=#00FF00
@@ -120,30 +120,30 @@ interval=10
 # min_width=CPU 100.00%
 #separator=false
 
-[loadlabel]
-separator=false
-separator_block_width=10
-markup=pango
-full_text=<span font_size="x-large"></span>
-[load_average]
-label=
-interval=10
+# [loadlabel]
+# separator=false
+# separator_block_width=10
+# markup=pango
+# full_text=<span font_size="x-large"></span>
+# [load_average]
+# label=
+# interval=10
 
 # Battery indicator
 #
 # The battery instance defaults to 0.
-[battery]
-#label=BAT
-label=⚡
-interval=30
+#[battery]
+##label=BAT
+#label=⚡
+#interval=30
 
 # Date Time
 #
-[memorylabel]
-separator=false
-separator_block_width=10
-markup=pango
-full_text=<span font_size="xx-large"></span>
+# [memorylabel]
+# separator=false
+# separator_block_width=10
+# markup=pango
+# full_text=<span font_size="xx-large"></span>
 [time]
 command=date '+%d.%m %H:%M  '
 interval=5
