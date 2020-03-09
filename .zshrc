@@ -134,3 +134,8 @@ function findf () {
 function findd () {
     find . -type d -iname "*$1*"
 }
+
+# git config add commit
+function gconfac () {
+	config add $1 && config commit -m "$2"
+}
