@@ -97,9 +97,40 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-#
-alias findd="find . -type d -iname"	
-alias findf="find . -type f -iname"	
+
+###########
+# ALIASES #
+###########
+
 alias tldr="tldr -t base16"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias vimN="vim -c NERDTree"
 alias grepr="grep -r"
+alias python="python3"
+
+#############
+# FUNCTIONS #
+#############
+
+function mkcd () {
+	mkdir -p $1 && cd $1
+}
+
+function grepR () {
+	grep -Ir \
+		--exclude-dir=.git \
+		--exclude-dir='build*' \
+		--include='*.bb*' \
+		--include='*.inc*' \
+		--include='*.conf*' \
+		--include='*.py*' \
+		"$@"
+ }
+
+function findf () {
+    find . -type f -iname "*$1*"
+}
+
+function findd () {
+    find . -type d -iname "*$1*"
+}
