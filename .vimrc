@@ -5,31 +5,31 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'VundleVim/Vundle.vim'
+call plug#begin('~/.vim/plugged')
 
 " PLUGINS "
-Plugin 'tpope/vim-fugitive'
-Plugin 'junegunn/goyo.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'godlygeek/tabular'
-Plugin 'wincent/terminus'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'vim-airline/vim-airline'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'tpope/vim-surround'
-Plugin 'lervag/vimtex'
-Plugin 'tpope/vim-commentary'
-Plugin 'Valloric/YouCompleteMe'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/goyo.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'godlygeek/tabular'
+Plug 'wincent/terminus'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'vim-airline/vim-airline'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-surround'
+Plug 'lervag/vimtex'
+Plug 'tpope/vim-commentary'
+" Plug 'Valloric/YouCompleteMe'
+Plug 'tmhedberg/SimpylFold'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " COLORSCHEMES "
-Plugin 'arcticicestudio/nord-vim'
+Plug 'arcticicestudio/nord-vim'
 
-call vundle#end()
+call plug#end()
+
 filetype plugin indent on
 
 
@@ -52,6 +52,7 @@ set tw=90
 " Tabs
 set tabstop=4
 set sw=4
+set expandtab
 
 " Line numbering
 set number relativenumber
@@ -72,10 +73,30 @@ nnoremap <C-Left> <C-W><C-H>
 set splitbelow
 set splitright
 
+" Vim tabs navigation
+nnoremap <A-Right> gt
+nnoremap <A-Left> gT
+
 " VHDL comments on new lines
 autocmd FileType vhdl setlocal comments=:--
 autocmd FileType vhdl setlocal formatoptions+=cro
 
+" Bitbake syntax highlighting
+au BufRead,BufNewFile *.bb set filetype=bitbake
+au BufRead,BufNewFile *.bbclass set filetype=bitbake
+au BufRead,BufNewFile *.bbappend set filetype=bitbake
+au BufRead,BufNewFile *.inc set filetype=bitbake
+au! Syntax bitbake source $HOME/.vim/syntax/bitbake.vim
+
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+set nofoldenable
+nnoremap <space> za
+
+" Enable word highlighting
+set hlsearch
+nnoremap * *``
 
 """"""""""""""""""
 " PLUGIN RELATED "
@@ -151,9 +172,27 @@ let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 let g:UltiSnipsListSnippets="<c-h>"
 let g:UltiSnipsEditSplit="vertical"
 
-" Bitbake syntax highlighting
-au BufRead,BufNewFile *.bb set filetype=bitbake
-au BufRead,BufNewFile *.bbclass set filetype=bitbake
-au BufRead,BufNewFile *.bbappend set filetype=bitbake
-au! Syntax bitbake source $HOME/.vim/syntax/bitbake.vim
+" " Coc config
+" " use <tab> for trigger completion and navigate to the next complete item
+" function! s:check_back_space() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~ '\s'
+" endfunction
 
+" inoremap <silent><expr> <Tab>
+"       \ pumvisible() ? "\<C-n>" :
+"       \ <SID>check_back_space() ? "\<Tab>" :
+"       \ coc#refresh()
+
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" let g:coc_global_extensions = [
+"   \ 'coc-snippets',
+"   \ 'coc-pairs',
+"   \ 'coc-tsserver',
+"   \ 'coc-eslint', 
+"   \ 'coc-prettier', 
+"   \ 'coc-json', 
+"   \ ]
