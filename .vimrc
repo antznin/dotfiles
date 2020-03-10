@@ -62,7 +62,7 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 
-" Color scheme
+" Color scheme (needs nord installed)
 colorscheme nord 
 
 "Vim splits navigation
@@ -97,6 +97,8 @@ nnoremap <space> za
 " Enable word highlighting
 set hlsearch
 nnoremap * *``
+" Clear hightlights
+nnoremap <Leader><Space> :let @/=""<cr>
 
 """"""""""""""""""
 " PLUGIN RELATED "
