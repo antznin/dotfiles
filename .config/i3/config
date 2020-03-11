@@ -220,7 +220,7 @@ set $active-window       #DBDDE0
 #                       border             background         text                 indicator	  child_border
 client.focused          $border-color      $bg-color          $text-color          $active-window $active-window
 client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color $active-window
-client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color $active-window
+client.focused_inactive $border-color      $inactive-bg-color $inactive-text-color $active-window
 client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color          $active-window
 
 
