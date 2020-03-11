@@ -298,15 +298,24 @@ exec --no-startup-id redshift
 
 # htop dropdown
 exec --no-startup-id kitty --name thtop htop
-bindsym $mod+F1 [instance="thtop"] scratchpad show, move position center
+bindsym $mod+Shift+F1 [instance="thtop"] scratchpad show, move position center
 
+# terminal dropdown
+exec --no-startup-id kitty --name dropdown-kitty
+bindsym $mod+Shift+F2 [instance="dropdown-kitty"] scratchpad show, move position center
+
+# calculator dropdown
+exec --no-startup-id gnome-calculator -m programming
+bindsym $mod+Shift+F3 [class="Gnome-calculator"] scratchpad show, move position center
 
 # keepassxc dropdown
 exec --no-startup-id keepassxc
-bindsym $mod+F4 [class="KeePassXC"] scratchpad show, move position center
+bindsym $mod+Shift+F4 [class="KeePassXC"] scratchpad show, move position center
 
 # windows automatic command
 for_window [instance="thtop"]  floating enable, resize set 800 600, move scratchpad
+for_window [instance="dropdown-kitty"]  floating enable, resize set 800 600, move scratchpad
+for_window [class="Gnome-calculator"]  floating enable, move scratchpad
 for_window [class="KeePassXC"] floating enable, resize set 800 600, move scratchpad
 
 # vim: set ts=4 sw=4 tw=90 noet :
