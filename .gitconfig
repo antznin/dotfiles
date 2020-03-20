@@ -1,15 +1,17 @@
 [alias]
-	st   = status
-	co   = commit
-	pu   = push
-	re   = reset
-	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
-	lo   = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-	ch   = checkout
-	lg   = !"git lg1"
-	lg1  = !"git lg1-specific --all"
-	lg2  = !"git lg2-specific --all"
-	lg3  = !"git lg3-specific --all"
+	st    = status
+	co    = commit
+	pu    = push
+	re    = reset
+	hist  = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+	lo    = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	ch    = checkout
+	br    = branch
+    diffs = diff --staged
+	lg    = !"git lg1"
+	lg1   = !"git lg1-specific --all"
+	lg2   = !"git lg2-specific --all"
+	lg3   = !"git lg3-specific --all"
 
     lg1-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
     lg2-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
@@ -17,6 +19,7 @@
 
 [core]
 	editor = vim
+	excludesfile = /home/antznin/.gitignore_global
 [user]
 	name = antznin
 	email = antonin.godard@telecom-paristech.fr
