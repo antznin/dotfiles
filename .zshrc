@@ -1,6 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+bindkey -v
+bindkey "^?" backward-delete-char
+
 # Path to your oh-my-zsh installation.
 export ZSH="/home/antznin/.oh-my-zsh"
 
@@ -98,6 +101,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 ###########
 # ALIASES #
 ###########
@@ -107,6 +112,16 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias vimN="vim -c NERDTree"
 alias grepr="grep -r"
 alias python="python3"
+alias d='dirs -v | head -10'
+alias 1='cd -'
+alias 2='cd -2'
+alias 3='cd -3'
+alias 4='cd -4'
+alias 5='cd -5'
+alias 6='cd -6'
+alias 7='cd -7'
+alias 8='cd -8'
+alias 9='cd -9'
 
 #############
 # FUNCTIONS #
