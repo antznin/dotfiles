@@ -312,10 +312,15 @@ bindsym $mod+Shift+F3 [class="Gnome-calculator"] scratchpad show, move position 
 exec --no-startup-id keepassxc
 bindsym $mod+Shift+F4 [class="KeePassXC"] scratchpad show, move position center
 
+# Notes dropdown
+exec --no-startup-id kitty --name vim-notes vim -c "NERDTree ~/Documents/notes"
+bindsym $mod+Shift+F5 [instance="vim-notes"] scratchpad show, move position center
+
 # windows automatic command
 for_window [instance="thtop"]  floating enable, resize set 800 600, move scratchpad
 for_window [instance="dropdown-kitty"]  floating enable, resize set 800 600, move scratchpad
 for_window [class="Gnome-calculator"]  floating enable, move scratchpad
 for_window [class="KeePassXC"] floating enable, resize set 800 600, move scratchpad
+for_window [instance="vim-notes"]  floating enable, resize set 910 1000, move scratchpad
 
 # vim: set ts=4 sw=4 tw=90 noet :
