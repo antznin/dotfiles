@@ -160,14 +160,6 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# scratchpad 
-bindsym $mod+Shift+minus move scratchpad
-bindsym $mod+minus scratchpad show
-
-# # Pulse Audio controls
-# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
-# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
-# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 # change volume or toggle mute
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks 
 bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
@@ -185,11 +177,8 @@ bindsym XF86AudioPrev exec playerctl previous
 
 # Screenshot
 bindsym Print exec --no-startup-id gnome-screenshot
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
 
-# Used to activate the volume
-exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks
+# i3bar
 bar {
 	position top
         status_command i3blocks -c /home/$USER/.config/i3blocks/config
@@ -234,7 +223,7 @@ exec_always --no-startup-id hsetroot -solid '#0E1420'
 exec_always xrdb ~/.Xresources
 
 # compositor (shadows, animations, etc.)
-exec_always --no-startup-id compton -f
+exec --no-startup-id compton -f -D 3
 
 # connection editor
 # needs network-manager-applet
@@ -244,8 +233,9 @@ exec --no-startup-id nm-applet
 exec_always --no-startup-id setxkbmap -option caps:escape
 
 # lock the screen
-set $Locker i3lock-fancy -f Iosevka && sleep 1
+set $Locker i3lock -c 121723 && sleep 1
 
+# autolocking
 exec xautolock -time 5  -locker $Locker
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
