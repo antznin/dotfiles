@@ -23,5 +23,5 @@ label=
 interval=10
 
 [time]
-command=date '+%d.%m %H:%M  '
+command=date '+%A %d.%m %H:%M  '
 interval=5
