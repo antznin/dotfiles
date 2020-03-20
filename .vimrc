@@ -21,9 +21,8 @@ Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'lervag/vimtex'
 Plug 'tpope/vim-commentary'
-" Plug 'Valloric/YouCompleteMe'
 Plug 'tmhedberg/SimpylFold'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'lifepillar/vim-mucomplete'
 
 " COLORSCHEMES "
 Plug 'arcticicestudio/nord-vim'
@@ -62,6 +61,9 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 
+" Copy visual selection to clipboard
+vnoremap <C-c> "+y
+
 " Color scheme (needs nord installed)
 colorscheme nord 
 
@@ -96,9 +98,12 @@ nnoremap <space> za
 
 " Enable word highlighting
 set hlsearch
-nnoremap * *``
+nnoremap * :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
 " Clear hightlights
-nnoremap <Leader><Space> :let @/=""<cr>
+nnoremap <Leader>8 :let @/=""<cr>
+
+" undo hidtory
+set undofile
 
 """"""""""""""""""
 " PLUGIN RELATED "
@@ -156,13 +161,13 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 " Pkg highlighting
 au BufNewFile,BufRead *.pkg set filetype=vhdl
 
-" YouCompleteMe setup
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_min_num_of_chars_for_completion = 1
-let g:ycm_complete_in_comments = 1 
-let g:ycm_seed_identifiers_with_syntax = 1 
-let g:ycm_global_ycm_extra_conf = '/home/antograb/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
-nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" " YouCompleteMe setup
+" let g:ycm_autoclose_preview_window_after_completion = 1
+" let g:ycm_min_num_of_chars_for_completion = 1
+" let g:ycm_complete_in_comments = 1 
+" let g:ycm_seed_identifiers_with_syntax = 1 
+" let g:ycm_global_ycm_extra_conf = '/home/antograb/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+" nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " Ultisnips config
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
@@ -171,44 +176,17 @@ let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 let g:UltiSnipsExpandTrigger="<c-z>"
 let g:UltiSnipsJumpForwardTrigger="<c-z>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-let g:UltiSnipsListSnippets="<c-h>"
+let g:UltiSnipsListSnippets="<c-l>"
 let g:UltiSnipsEditSplit="vertical"
 
-" " Coc config
-" TextEdit might fail if hidden is not set.
-set hidden
+" NERDTree
+" Toggle NERDTree with a keymap
+nnoremap <C-e> :NERDTreeToggle<cr>
 
-" Some servers have issues with backup files, see #649.
-set nobackup
-set nowritebackup
-
-" Give more space for displaying messages.
-set cmdheight=2
-
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=50
-
-" Don't pass messages to |ins-completion-menu|.
+" mu-complete
+set completeopt+=menuone
+set completeopt+=noselect
+set completeopt+=noinsert
 set shortmess+=c
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-set signcolumn=yes
-
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
+setlocal dictionary+=spell
+setlocal complete+=k
