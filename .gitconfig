@@ -1,9 +1,9 @@
 [alias]
+    # ALIASES
 	st    = status
 	co    = commit
 	pu    = push
 	re    = reset
-	hist  = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
 	lo    = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	ch    = checkout
 	br    = branch
@@ -12,10 +12,21 @@
 	lg1   = !"git lg1-specific --all"
 	lg2   = !"git lg2-specific --all"
 	lg3   = !"git lg3-specific --all"
-
     lg1-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
     lg2-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
     lg3-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'
+    # Take all uncommited and un-staged changes in the CWD and add them to the previous
+    # commit
+    caa = commit -a --amend -C HEAD
+
+    # FUNCTIONS
+    # git rename-branch <remote> <old-name> <new-name>
+    rename-branch = "!f() { \
+        git checkout $2; \
+        git branch -m $3; \
+        git push $1 -u $3; \
+        git push $1 --delete $2; \
+        }; f"
 
 [core]
 	editor = vim
