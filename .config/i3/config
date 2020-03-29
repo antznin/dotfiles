@@ -212,6 +212,9 @@ client.focused_inactive $border-color      $inactive-bg-color $inactive-text-col
 client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color          $active-window
 
 
+# notifications
+exec -no-startup-id dunst
+
 # dual screen detection
 exec ~/.config/i3/screenlayout.sh
 
