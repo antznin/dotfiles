@@ -37,15 +37,14 @@ font pango:Iosevka Term 9
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec termite
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
 # bindsym $mod+d exec dmenu_run
-bindsym $mod+Escape exec rofi -show drun -theme mytheme
-# bindsym $mod+Escape exec rofi -show drun -font "Iosevka Term 12" -show-icons -icon-theme Adwaita
+bindsym $mod+Escape exec rofi -show drun -font "Iosevka Term 12" -show-icons -icon-theme Adwaita
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -214,13 +213,13 @@ client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color       
 
 
 # dual screen detection
-exec_always ~/.config/i3/screenlayout.sh
+exec ~/.config/i3/screenlayout.sh
 
 # Set wallpaper as a solid bg
-exec_always --no-startup-id hsetroot -solid '#0E1420'
+exec --no-startup-id hsetroot -solid '#0E1420'
 
 # Xresources files
-exec_always xrdb ~/.Xresources
+exec xrdb ~/.Xresources
 
 # compositor (shadows, animations, etc.)
 exec --no-startup-id compton -f -D 3
@@ -230,7 +229,7 @@ exec --no-startup-id compton -f -D 3
 exec --no-startup-id nm-applet
 
 # map caps téo escape
-exec_always --no-startup-id setxkbmap -option caps:escape
+exec --no-startup-id setxkbmap -option caps:escape
 
 # lock the screen
 set $Locker i3lock -c 121723 && sleep 1
@@ -269,10 +268,10 @@ mode "$mode_screen" {
 bindsym $mod+Shift+p mode "$mode_screen"
 
 # disk tool
-exec_always --no-startup-id udiskie
+exec --no-startup-id udiskie
 
 # volume control
-exec_always --no-startup-id pa-applet
+exec --no-startup-id pa-applet
 
 # touchpad toggle
 bindsym XF86TouchpadToggle exec $HOME/.config/i3/toggle_touchpad.sh 
@@ -287,12 +286,12 @@ exec --no-startup-id pamac-tray-appindicator
 exec --no-startup-id redshift
 
 # htop dropdown
-exec --no-startup-id kitty --name thtop htop
-bindsym $mod+Shift+F1 [instance="thtop"] scratchpad show, move position center
+exec --no-startup-id termite -t thtop -e htop
+bindsym $mod+Shift+F1 [title="thtop"] scratchpad show, move position center
 
 # terminal dropdown
-exec --no-startup-id kitty --name dropdown-kitty
-bindsym $mod+Shift+F2 [instance="dropdown-kitty"] scratchpad show, move position center
+exec --no-startup-id termite -t dropdown-kitty
+bindsym $mod+Shift+F2 [title="dropdown-kitty"] scratchpad show, move position center
 
 # calculator dropdown
 exec --no-startup-id gnome-calculator -m programming
@@ -303,14 +302,14 @@ exec --no-startup-id keepassxc
 bindsym $mod+Shift+F4 [class="KeePassXC"] scratchpad show, move position center
 
 # Notes dropdown
-exec --no-startup-id kitty --name vim-notes vim -c "NERDTree ~/Documents/notes"
-bindsym $mod+Shift+F5 [instance="vim-notes"] scratchpad show, move position center
+exec --no-startup-id termite -t vim-notes -e vim -c "NERDTree ~/Documents/notes"
+bindsym $mod+Shift+F5 [title="vim-notes"] scratchpad show, move position center
 
 # windows automatic command
-for_window [instance="thtop"]  floating enable, resize set 800 600, move scratchpad
-for_window [instance="dropdown-kitty"]  floating enable, resize set 800 600, move scratchpad
+for_window [title="thtop"]  floating enable, resize set 800 600, move scratchpad
+for_window [title="dropdown-kitty"]  floating enable, resize set 800 600, move scratchpad
 for_window [class="Gnome-calculator"]  floating enable, move scratchpad
 for_window [class="KeePassXC"] floating enable, resize set 800 600, move scratchpad
-for_window [instance="vim-notes"]  floating enable, resize set 910 1000, move scratchpad
+for_window [title="vim-notes"]  floating enable, resize set 910 1000, move scratchpad
 
 # vim: set ts=4 sw=4 tw=90 noet :
