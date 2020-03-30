@@ -4,7 +4,7 @@
 	co    = commit
 	pu    = push
 	re    = reset
-	lo    = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	plog  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	ch    = checkout
 	br    = branch
     diffs = diff --staged
@@ -27,6 +27,11 @@
         git push $1 -u $3; \
         git push $1 --delete $2; \
         }; f"
+    # minilog
+    mlog = "!f() { \
+        git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit | head -15; \
+        }; f"
+
 
 [core]
 	editor = vim
