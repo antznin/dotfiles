@@ -4,6 +4,9 @@
 bindkey -v
 bindkey "^?" backward-delete-char
 
+# Disables ctrl+s
+stty -ixon
+
 # Path to your oh-my-zsh installation.
 export ZSH="/home/antznin/.oh-my-zsh"
 
