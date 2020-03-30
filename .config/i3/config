@@ -191,11 +191,13 @@ bar {
 }
 
 
+# i3-gaps config
 gaps outer 0
 gaps inner 5
 for_window [class="^.*"] border pixel 1
 smart_borders on
 
+# Colors
 set $bg-color            #2F343F
 set $border-color        #666666
 set $inactive-bg-color   #1F242F
@@ -231,11 +233,8 @@ exec --no-startup-id nm-applet
 # map caps téo escape
 exec --no-startup-id setxkbmap -option caps:escape
 
-# lock the screen
+# locking and shutting down
 set $Locker i3lock -c 121723 && sleep 1
-
-# autolocking
-exec xautolock -time 5  -locker $Locker
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
@@ -252,6 +251,9 @@ mode "$mode_system" {
 }
 
 bindsym Pause mode "$mode_system"
+
+# autolocking
+exec xautolock -time 5  -locker $Locker
 
 # Screen layout switching
 set $mode_screen System (m) Primary monitor, (e) External monitor, (d) Dual monitor, (c) Clone monitors
