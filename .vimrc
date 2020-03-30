@@ -21,6 +21,7 @@ Plug 'lervag/vimtex'
 Plug 'tpope/vim-commentary'
 Plug 'tmhedberg/SimpylFold'
 Plug 'lifepillar/vim-mucomplete'
+Plug 'Yggdroot/indentLine'
 
 " COLORSCHEMES "
 Plug 'arcticicestudio/nord-vim'
@@ -106,12 +107,14 @@ set undofile
 " Spell check
 set spelllang=en
 
-nnoremap <C-q> :wqa<cr>
-nnoremap <C-w> :wq<cr>
-
 " Italic font
 hi Italic cterm=italic
 hi Comment cterm=italic
+"
+" Saving, exiting
+nnoremap <C-s> :w<cr>
+nnoremap <C-q> :wqa<cr>
+nnoremap <C-w> :wq<cr>
 
 """"""""""""""""""
 " PLUGIN RELATED "
@@ -198,3 +201,7 @@ set completeopt+=noinsert
 set shortmess+=c
 setlocal dictionary+=spell
 setlocal complete+=k
+
+" indentLines
+let g:indentLine_char = '▏'
+let g:indentLine_conceallevel = 2
