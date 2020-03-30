@@ -23,6 +23,7 @@ Plug 'lervag/vimtex'
 Plug 'tpope/vim-commentary'
 Plug 'tmhedberg/SimpylFold'
 Plug 'lifepillar/vim-mucomplete'
+Plug 'Yggdroot/indentLine'
 
 " COLORSCHEMES "
 Plug 'arcticicestudio/nord-vim'
@@ -104,6 +105,9 @@ nnoremap <Leader>8 :let @/=""<cr>
 
 " undo hidtory
 set undofile
+
+" Saving
+nnoremap <C-s> :w<cr>
 
 """"""""""""""""""
 " PLUGIN RELATED "
@@ -190,3 +194,7 @@ set completeopt+=noinsert
 set shortmess+=c
 setlocal dictionary+=spell
 setlocal complete+=k
+
+" indentLines
+let g:indentLine_char = '▏'
+let g:indentLine_conceallevel = 2
