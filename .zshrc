@@ -1,6 +1,8 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+export PATH=$PATH:$HOME/.local/bin
+
 bindkey -v
 bindkey "^?" backward-delete-char
 
@@ -152,3 +154,12 @@ function findd () {
 function gconfac () {
 	config add $1 && config commit -m "$2"
 }
+
+function savefile () {
+    local useful_files_dir=$HOME/.useful_files
+    local fullpath=$(dirname $(readlink -f $1) | sed -E 's:^/(.+)$:\1:')
+
+    mkdir -p $useful_files_dir/$fullpath \
+        && cp $1 $useful_files_dir/$fullpath/
+}
+export QT_QPA_PLATFORMTHEME="qt5ct"
