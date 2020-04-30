@@ -109,6 +109,15 @@ set undofile
 " Saving
 nnoremap <C-s> :w<cr>
 
+" set conceallevel=0
+
+nnoremap <C-q> :wqa<cr>
+nnoremap <C-w> :wq<cr>
+
+" Italic font
+hi Italic cterm=italic
+hi Comment cterm=italic
+
 """"""""""""""""""
 " PLUGIN RELATED "
 """"""""""""""""""
@@ -118,7 +127,7 @@ let g:airline_powerline_fonts = 1
 
 " Goyo config
 let g:goyo_width=94
-let g:goyo_linenr=0
+let g:goyo_linenr=1
 
 function! s:goyo_enter()
   let b:quitting = 0
@@ -194,7 +203,10 @@ set completeopt+=noinsert
 set shortmess+=c
 setlocal dictionary+=spell
 setlocal complete+=k
+let g:mucomplete#chains = {}
+let g:mucomplete#chains.default = ['ulti', 'path', 'omni', 'keyn', 'dict', 'uspl']
 
 " indentLines
 let g:indentLine_char = '▏'
-let g:indentLine_conceallevel = 2
+let g:indentLine_concealcursor = 'v'
+let g:indentLine_conceallevel = 3
