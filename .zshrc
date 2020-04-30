@@ -112,7 +112,7 @@ source $ZSH/oh-my-zsh.sh
 
 alias tldr="tldr -t base16"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-alias vimN="vim -c NERDTree"
+alias vimn="vim -c NERDTree"
 alias grepr="grep -r"
 alias python="python3"
 alias d='dirs -v | head -10'
@@ -127,26 +127,29 @@ alias 8='cd -8'
 alias 9='cd -9'
 
 # Witekio shortcuts
-alias  fmu="$HOME/data/dev/fullmetalupdate.perso/"
-export fmu="$HOME/data/dev/fullmetalupdate.perso/"
-alias  dem="$HOME/data/dev/fullmetalupdate.perso/fullmetalupdate-yocto-demo"
-export dem="$HOME/data/dev/fullmetalupdate.perso/fullmetalupdate-yocto-demo"
-alias   mf="$HOME/data/dev/fullmetalupdate.perso/meta-fullmetalupdate"
-export  mf="$HOME/data/dev/fullmetalupdate.perso/meta-fullmetalupdate"
-alias  mfe="$HOME/data/dev/fullmetalupdate.perso/meta-fullmetalupdate-extra"
-export mfe="$HOME/data/dev/fullmetalupdate.perso/meta-fullmetalupdate-extra"
-alias    y="$HOME/data/dev/fullmetalupdate.perso/fullmetalupdate-yocto-demo/build/yocto"
-export   y="$HOME/data/dev/fullmetalupdate.perso/fullmetalupdate-yocto-demo/build/yocto"
-alias  ybu="$HOME/data/dev/fullmetalupdate.perso/fullmetalupdate-yocto-demo/build/yocto/build"
-export ybu="$HOME/data/dev/fullmetalupdate.perso/fullmetalupdate-yocto-demo/build/yocto/build"
-alias  yso="$HOME/data/dev/fullmetalupdate.perso/fullmetalupdate-yocto-demo/build/yocto/sources"
-export yso="$HOME/data/dev/fullmetalupdate.perso/fullmetalupdate-yocto-demo/build/yocto/sources"
-alias    c="$HOME/data/dev/fullmetalupdate/fullmetalupdate-cloud-demo"
-export   c="$HOME/data/dev/fullmetalupdate/fullmetalupdate-cloud-demo"
+alias  fmu="$HOME/data/dev/fullmetalupdate.perso"
+export fmu="$HOME/data/dev/fullmetalupdate.perso"
 
 #############
 # FUNCTIONS #
 #############
+
+function dem () {
+    cd $HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-yocto-demo
+    export dem=$HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-yocto-demo
+}
+function ybu () {
+    cd $HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-yocto-demo/build/yocto/build
+    export ybu=$HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-yocto-demo/build/yocto/build
+}
+function yso () {
+    cd $HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-yocto-demo/build/yocto/sources
+    export yso=$HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-yocto-demo/build/yocto/sources
+}
+function c () {
+    cd $HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-cloud-demo
+    export yso=$HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-cloud-demo
+}
 
 function mkcd () {
 	mkdir -p $1 && cd $1
@@ -177,6 +180,15 @@ function gconfac () {
 }
 
 function sync_fmu () {
-    scp -r $fmu/fullmetalupdate/fullmetalupdate.py root@$1:/usr/fullmetalupdate/
-    scp -r $fmu/fullmetalupdate/fullmetalupdate/{updater,fullmetalupdate_ddi_client}.py root@$1:/usr/fullmetalupdate/fullmetalupdate/
+    scp -r $fmu/fullmetalupdate/fullmetalupdate.py root@$1:$2/fullmetalupdate/
+    scp -r $fmu/fullmetalupdate/fullmetalupdate/{updater,fullmetalupdate_ddi_client}.py root@$1:$2/fullmetalupdate/fullmetalupdate/
+    scp -r $fmu/fullmetalupdate/scripts/send_feedback.sh root@$1:$2/fullmetalupdate/scripts/
+}
+
+function switch_repo () {
+    if [ "$(basename $(pwd))" = "meta-fullmetalupdate-extra" ]; then
+        cd ../meta-fullmetalupdate
+    elif [ "$(basename $(pwd))" = "meta-fullmetalupdate" ]; then
+        cd ../meta-fullmetalupdate-extra
+    fi
 }
