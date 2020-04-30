@@ -105,6 +105,9 @@ nnoremap <Leader>8 :let @/=""<cr>
 " undo hidtory
 set undofile
 
+" Spell check
+set spelllang=en
+
 """"""""""""""""""
 " PLUGIN RELATED "
 """"""""""""""""""
