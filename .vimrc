@@ -13,8 +13,6 @@ Plug 'junegunn/goyo.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'godlygeek/tabular'
 Plug 'wincent/terminus'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
 Plug 'vim-airline/vim-airline'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'sheerun/vim-polyglot'
@@ -117,7 +115,7 @@ let g:airline_powerline_fonts = 1
 
 " Goyo config
 let g:goyo_width=94
-let g:goyo_linenr=0
+let g:goyo_linenr=1
 
 function! s:goyo_enter()
   let b:quitting = 0
