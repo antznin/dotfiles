@@ -3,8 +3,8 @@
 	co    = commit
 	pu    = push
 	re    = reset
-	hist  = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
-	lo    = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	plog  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	alog  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --branches --remotes --tags
 	ch    = checkout
 	br    = branch
     diffs = diff --staged
@@ -22,4 +22,4 @@
 	excludesfile = /home/antznin/.gitignore_global
 [user]
 	name = antznin
-	email = antonin.godard@telecom-paristech.fr
+	email = agodard@witekio.com
