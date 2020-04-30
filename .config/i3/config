@@ -160,9 +160,11 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # change volume or toggle mute
-bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks 
-bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
-bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
+# bindsym XF86AudioRaiseVolume exec
+# bindsym XF86AudioLowerVolume exec
+# bindsym XF86AudioMute   
+
+# exec
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
@@ -175,7 +177,10 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 # Screenshot
-bindsym Print exec --no-startup-id gnome-screenshot
+bindsym Print exec --no-startup-id gnome-screenshot -c
+
+# Color inversion
+bindsym $mod+i exec --no-startup-id $HOME/.config/i3/invert_colors.sh
 
 # i3bar
 bar {
@@ -213,10 +218,10 @@ client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color       
 
 
 # notifications
-exec -no-startup-id dunst
+exec dunst
 
 # dual screen detection
-exec ~/.config/i3/screenlayout.sh
+# exec ~/.config/i3/screenlayout.sh
 
 # Set wallpaper as a solid bg
 exec --no-startup-id hsetroot -solid '#0E1420'
@@ -225,20 +230,20 @@ exec --no-startup-id hsetroot -solid '#0E1420'
 exec xrdb ~/.Xresources
 
 # compositor (shadows, animations, etc.)
-exec --no-startup-id compton -f -D 3
+# exec --no-startup-id compton -f -D 3
 
 # connection editor
 # needs network-manager-applet
 exec --no-startup-id nm-applet
 
 # map caps téo escape
-exec --no-startup-id setxkbmap -option caps:escape
+exec_always --no-startup-id setxkbmap -option caps:escape
 
 # lock the screen
 set $Locker i3lock -c 121723 && sleep 1
 
 # autolocking
-exec xautolock -time 5  -locker $Locker
+# exec xautolock -time 5  -locker $Locker
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
