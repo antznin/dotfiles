@@ -305,6 +305,8 @@ bindsym $mod+Shift+F4 [class="KeePassXC"] scratchpad show, move position center
 exec --no-startup-id kitty --name vim-notes vim -c "NERDTree ~/Documents/notes"
 bindsym $mod+Shift+F5 [instance="vim-notes"] scratchpad show, move position center
 
+exec_always gsettings set org.gnome.desktop.wm.preferences audible-bell false
+
 # Apps on startup
 exec --no-startup-id spotify
 exec --no-startup-id slack
