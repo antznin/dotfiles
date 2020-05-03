@@ -106,6 +106,13 @@ set undofile
 " Spell check
 set spelllang=en
 
+nnoremap <C-q> :wqa<cr>
+nnoremap <C-w> :wq<cr>
+
+" Italic font
+hi Italic cterm=italic
+hi Comment cterm=italic
+
 """"""""""""""""""
 " PLUGIN RELATED "
 """"""""""""""""""
