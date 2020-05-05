@@ -330,4 +330,25 @@ for_window [class="Slack"] move to workspace 5, layout tabbed
 for_window [class="TelegramDesktop"] move to workspace 9
 for_window [class="^Messenger*"] move to workspace 9
 
+# Screen layout switching
+set $mode_clips copypaste
+mode "$mode_clips" {
+
+	bindsym 1 exec $HOME/.config/i3/terminal_clips.sh 1, mode "default"
+	bindsym 2 exec $HOME/.config/i3/terminal_clips.sh 2, mode "default"
+	bindsym 3 exec $HOME/.config/i3/terminal_clips.sh 3, mode "default"
+	bindsym 4 exec $HOME/.config/i3/terminal_clips.sh 4, mode "default"
+	bindsym 5 exec $HOME/.config/i3/terminal_clips.sh 5, mode "default"
+	bindsym 6 exec $HOME/.config/i3/terminal_clips.sh 6, mode "default"
+	bindsym 7 exec $HOME/.config/i3/terminal_clips.sh 7, mode "default"
+	bindsym 8 exec $HOME/.config/i3/terminal_clips.sh 8, mode "default"
+	bindsym 9 exec $HOME/.config/i3/terminal_clips.sh 9, mode "default"
+	bindsym 0 exec $HOME/.config/i3/terminal_clips.sh 0, mode "default"
+
+	bindsym Escape mode "default"
+	bindsym Return mode "default"
+}
+
+bindsym $mod+o mode "$mode_clips"
+
 # vim: set ts=4 sw=4 tw=90 noet :
