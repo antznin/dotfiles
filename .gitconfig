@@ -1,7 +1,7 @@
 [alias]
     # ALIASES
 	st    = status
-	co    = commit
+	co    = commit -v
 	pu    = push
 	re    = reset
 	plog  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
@@ -19,6 +19,10 @@
     # Take all uncommited and un-staged changes in the CWD and add them to the previous
     # commit
     caa = commit -a --amend -C HEAD
+    reb = rebase
+    rebco = rebase --continue
+    rebi = rebase -i
+    pfl = push --force-with-lease
 
     # FUNCTIONS
     # git rename-branch <remote> <old-name> <new-name>
@@ -32,6 +36,11 @@
     mlog = "!f() { \
         git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit | head -15; \
         }; f"
+    # git rebonto $1 $2
+    rebonto = "!f() { \
+        git rebase --onto $1 origin/$1 $2; \
+        }; f"
+
 
 
 [core]
