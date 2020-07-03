@@ -37,7 +37,7 @@ font pango:Iosevka Term 9
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec $HOME/.local/bin/kitty 
+bindsym $mod+Return exec gnome-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -191,6 +191,9 @@ bar {
 }
 
 
+
+focus_follows_mouse no
+
 # i3-gaps config
 gaps outer 0
 gaps inner 5
@@ -286,12 +289,12 @@ bindsym $mod+p exec $HOME/.config/i3/toggle_kblayout.sh
 exec --no-startup-id redshift
 
 # htop dropdown
-exec --no-startup-id kitty --name thtop htop
-bindsym $mod+Shift+F1 [instance="thtop"] scratchpad show, move position center
+exec --no-startup-id gnome-terminal -t thtop -- htop
+bindsym $mod+Shift+F1 [title="thtop"] scratchpad show, move position center
 
 # terminal dropdown
-exec --no-startup-id kitty --name dropdown-kitty
-bindsym $mod+Shift+F2 [instance="dropdown-kitty"] scratchpad show, move position center
+exec --no-startup-id gnome-terminal -t dropdown-term -e 'sh -c "cd $HOME/dev/fullmetalupdate.perso/warrior/fullmetalupdate-cloud-demo && ./StartServer.sh"'
+bindsym $mod+Shift+F2 [title="dropdown-term"] scratchpad show, move position center
 
 # calculator dropdown
 exec --no-startup-id gnome-calculator -m programming
@@ -302,8 +305,8 @@ exec --no-startup-id keepassxc
 bindsym $mod+Shift+F4 [class="KeePassXC"] scratchpad show, move position center
 
 # Notes dropdown
-exec --no-startup-id kitty --name vim-notes vim -c "NERDTree ~/Documents/notes"
-bindsym $mod+Shift+F5 [instance="vim-notes"] scratchpad show, move position center
+exec --no-startup-id gnome-terminal -t vim-notes -- vim -c "NERDTree $HOME/Sync/Notes/witekio"
+bindsym $mod+Shift+F5 [title="vim-notes"] scratchpad show, move position center
 
 exec_always gsettings set org.gnome.desktop.wm.preferences audible-bell false
 
@@ -320,17 +323,17 @@ workspace 9  output DisplayPort-1-3
 workspace 10 output HDMI-1
 
 # windows automatic command
-for_window [instance="thtop"]  floating enable, resize set 800 600, move scratchpad
-for_window [instance="dropdown-kitty"]  floating enable, resize set 800 600, move scratchpad
+for_window [title="thtop"]  floating enable, resize set 800 600, move scratchpad
+for_window [title="dropdown-term"]  floating enable, resize set 800 600, move scratchpad
 for_window [class="Gnome-calculator"]  floating enable, move scratchpad
 for_window [class="KeePassXC"] floating enable, resize set 800 600, move scratchpad
-for_window [instance="vim-notes"]  floating enable, resize set 910 1000, move scratchpad
+for_window [title="vim-notes"]  floating enable, resize set 910 1000, move scratchpad
 for_window [class="Spotify"] move to workspace 10
 for_window [class="Slack"] move to workspace 5, layout tabbed
-for_window [class="TelegramDesktop"] move to workspace 9
+for_window [class="TelegramDesktop"] move to workspace 9, layout tabbed
 for_window [class="^Messenger*"] move to workspace 9
 
-# Screen layout switching
+# 
 set $mode_clips copypaste
 mode "$mode_clips" {
 
