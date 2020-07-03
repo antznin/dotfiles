@@ -8,22 +8,89 @@ filetype off
 call plug#begin('~/.vim/plugged')
 
 " PLUGINS "
+
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/goyo.vim'
-Plug 'scrooloose/nerdtree'
 Plug 'godlygeek/tabular'
 Plug 'wincent/terminus'
-Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'vim-airline/vim-airline'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
-Plug 'lervag/vimtex'
 Plug 'tpope/vim-commentary'
 Plug 'tmhedberg/SimpylFold'
+Plug 'kergoth/vim-bitbake'
+Plug 'plasticboy/vim-markdown'
+
+Plug 'dense-analysis/ale'
+    let g:ale_completion_enabled = 1
+    let g:ale_sign_column_always = 1
+    let g:ale_fixers = {
+    \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \   'python': ['isort', 'black', 'autopep8'],
+    \}
+    let g:ale_linters = {'python': ['mypy', 'flake8', 'pylint']}
+    let g:ale_python_flake8_options = '--max-line-length=90'
+    let g:ale_python_pylint_executable = 'pylint3'
+
+Plug 'junegunn/goyo.vim'
+    let g:goyo_width=94
+    let g:goyo_linenr=1
+
+    function! s:goyo_enter()
+      let b:quitting = 0
+      let b:quitting_bang = 0
+      autocmd QuitPre <buffer> let b:quitting = 1
+      cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
+    endfunction
+
+    function! s:goyo_leave()
+      " Quit Vim if this is the only remaining buffer
+      if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+        if b:quitting_bang
+          qa!
+        else
+          qa
+        endif
+      endif
+    endfunction
+
+    autocmd! User GoyoEnter call <SID>goyo_enter()
+    autocmd! User GoyoLeave call <SID>goyo_leave()
+
+Plug 'scrooloose/nerdtree'
+    nnoremap <C-e> :NERDTreeToggle<cr>
+
+Plug 'SirVer/ultisnips'
+    let g:UltiSnipsSnippetsDir=$HOME.'/.vim/bundle/vim-snippets/UltiSnips'
+    let g:UltiSnipsSnippetDirectories=["UltiSnips"]
+    let g:UltiSnipsExpandTrigger="<c-z>"
+    let g:UltiSnipsJumpForwardTrigger="<c-z>"
+    let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+    let g:UltiSnipsListSnippets="<c-l>"
+    let g:UltiSnipsEditSplit="vertical"
+
+Plug 'vim-airline/vim-airline'
+    let g:airline_powerline_fonts = 1
+
+Plug 'lervag/vimtex'
+    let g:polyglot_disabled = ['latex']
+    let g:tex_flavor='latex'
+    let g:vimtex_view_method='zathura'
+    let g:vimtex_quickfix_mode=0
+
 Plug 'lifepillar/vim-mucomplete'
+    set completeopt+=menuone
+    set completeopt+=noselect
+    set completeopt+=noinsert
+    set shortmess+=c
+    setlocal dictionary+=spell
+    setlocal complete+=k
+    let g:mucomplete#chains = {}
+    let g:mucomplete#chains.default = ['ulti', 'path', 'omni', 'keyn', 'dict', 'uspl']
+
 Plug 'Yggdroot/indentLine'
+    let g:indentLine_char = '▏'
+    let g:indentLine_conceallevel = 0
 
 " COLORSCHEMES "
 Plug 'arcticicestudio/nord-vim'
@@ -32,13 +99,13 @@ call plug#end()
 
 filetype plugin indent on
 
-
 """""""""""""""
 " VIM RELATED "
 """""""""""""""
 
 " Set delay
 set timeoutlen=1000 ttimeoutlen=0 
+set updatetime=100
 
 " Syntax and filetype
 syntax on
@@ -83,13 +150,15 @@ nnoremap <A-Left> gT
 " VHDL comments on new lines
 autocmd FileType vhdl setlocal comments=:--
 autocmd FileType vhdl setlocal formatoptions+=cro
+" Bitbake comments
+autocmd FileType bitbake setlocal commentstring=#\ %s
 
-" Bitbake syntax highlighting
-au BufRead,BufNewFile *.bb set filetype=bitbake
-au BufRead,BufNewFile *.bbclass set filetype=bitbake
-au BufRead,BufNewFile *.bbappend set filetype=bitbake
-au BufRead,BufNewFile *.inc set filetype=bitbake
-au! Syntax bitbake source $HOME/.vim/syntax/bitbake.vim
+" " Bitbake syntax highlighting
+" au BufRead,BufNewFile *.bb set filetype=bitbake
+" au BufRead,BufNewFile *.bbclass set filetype=bitbake
+" au BufRead,BufNewFile *.bbappend set filetype=bitbake
+" au BufRead,BufNewFile *.inc set filetype=bitbake
+" au! Syntax bitbake source $HOME/.vim/syntax/bitbake.vim
 
 " Enable folding
 set foldmethod=indent
@@ -108,58 +177,15 @@ set undofile
 
 " Saving
 nnoremap <C-s> :w<cr>
-
-" set conceallevel=0
-
+inoremap <C-s> :w<cr>
 nnoremap <C-q> :wqa<cr>
-nnoremap <C-w> :wq<cr>
+" nnoremap <C-w> :wq<cr>
 
 " Italic font
 hi Italic cterm=italic
 hi Comment cterm=italic
 
-""""""""""""""""""
-" PLUGIN RELATED "
-""""""""""""""""""
-
-" Airline powerline fonts
-let g:airline_powerline_fonts = 1
-
-" Goyo config
-let g:goyo_width=94
-let g:goyo_linenr=1
-
-function! s:goyo_enter()
-  let b:quitting = 0
-  let b:quitting_bang = 0
-  autocmd QuitPre <buffer> let b:quitting = 1
-  cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
-endfunction
-
-function! s:goyo_leave()
-  " Quit Vim if this is the only remaining buffer
-  if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
-    if b:quitting_bang
-      qa!
-    else
-      qa
-    endif
-  endif
-endfunction
-
-autocmd! User GoyoEnter call <SID>goyo_enter()
-autocmd! User GoyoLeave call <SID>goyo_leave()
-
-" vimtex
-let g:polyglot_disabled = ['latex']
-let g:tex_flavor='latex'
-let g:vimtex_view_method='zathura'
-let g:vimtex_quickfix_mode=0
-
 " Modeline magic
-" Append modeline after last line in buffer.
-" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
-" files.
 set modeline
 set modelines=5
 function! AppendModeline()
@@ -173,40 +199,3 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
 " Pkg highlighting
 au BufNewFile,BufRead *.pkg set filetype=vhdl
-
-" " YouCompleteMe setup
-" let g:ycm_autoclose_preview_window_after_completion = 1
-" let g:ycm_min_num_of_chars_for_completion = 1
-" let g:ycm_complete_in_comments = 1 
-" let g:ycm_seed_identifiers_with_syntax = 1 
-" let g:ycm_global_ycm_extra_conf = '/home/antograb/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
-" nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-
-" Ultisnips config
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsSnippetsDir=$HOME.'/.vim/bundle/vim-snippets/UltiSnips'
-let g:UltiSnipsSnippetDirectories=["UltiSnips"]
-let g:UltiSnipsExpandTrigger="<c-z>"
-let g:UltiSnipsJumpForwardTrigger="<c-z>"
-let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-let g:UltiSnipsListSnippets="<c-l>"
-let g:UltiSnipsEditSplit="vertical"
-
-" NERDTree
-" Toggle NERDTree with a keymap
-nnoremap <C-e> :NERDTreeToggle<cr>
-
-" mu-complete
-set completeopt+=menuone
-set completeopt+=noselect
-set completeopt+=noinsert
-set shortmess+=c
-setlocal dictionary+=spell
-setlocal complete+=k
-let g:mucomplete#chains = {}
-let g:mucomplete#chains.default = ['ulti', 'path', 'omni', 'keyn', 'dict', 'uspl']
-
-" indentLines
-let g:indentLine_char = '▏'
-let g:indentLine_concealcursor = 'v'
-let g:indentLine_conceallevel = 3
