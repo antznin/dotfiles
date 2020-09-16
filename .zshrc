@@ -126,30 +126,37 @@ alias 7='cd -7'
 alias 8='cd -8'
 alias 9='cd -9'
 
+
 # Witekio shortcuts
-alias  fmu="$HOME/data/dev/fullmetalupdate.perso"
-export fmu="$HOME/data/dev/fullmetalupdate.perso"
+
+alias dev_dir="$HOME/dev"
+
+alias  fmu="$dev_dir/FullMetalUpdate/fullmetalupdate.perso"
+export fmu="$dev_dir/FullMetalUpdate/fullmetalupdate.perso"
+
+alias  trix="$dev_dir/Trixell/fullmetalupdate.perso"
+export trix="$dev_dir/Trixell/fullmetalupdate.perso"
+
+function dem () {
+    cd $fmu/$1/fullmetalupdate-yocto-demo
+    export dem=$fmu/$1/fullmetalupdate-yocto-demo
+}
+function ybu () {
+    cd $fmu/$1/fullmetalupdate-yocto-demo/build/yocto/build
+    export ybu=$fmu/$1/fullmetalupdate-yocto-demo/build/yocto/build
+}
+function yso () {
+    cd $fmu/$1/fullmetalupdate-yocto-demo/build/yocto/sources
+    export yso=$fmu/$1/fullmetalupdate-yocto-demo/build/yocto/sources
+}
+function c () {
+    cd $fmu/$1/fullmetalupdate-cloud-demo
+    export yso=$fmu/$1/fullmetalupdate-cloud-demo
+}
 
 #############
 # FUNCTIONS #
 #############
-
-function dem () {
-    cd $HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-yocto-demo
-    export dem=$HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-yocto-demo
-}
-function ybu () {
-    cd $HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-yocto-demo/build/yocto/build
-    export ybu=$HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-yocto-demo/build/yocto/build
-}
-function yso () {
-    cd $HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-yocto-demo/build/yocto/sources
-    export yso=$HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-yocto-demo/build/yocto/sources
-}
-function c () {
-    cd $HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-cloud-demo
-    export yso=$HOME/data/dev/fullmetalupdate.perso/$1/fullmetalupdate-cloud-demo
-}
 
 function mkcd () {
 	mkdir -p $1 && cd $1
@@ -167,11 +174,11 @@ function grepR () {
  }
 
 function findf () {
-    find . -type f -iname "*$1*"
+    find . -type f -iname "*${1}*"
 }
 
 function findd () {
-    find . -type d -iname "*$1*"
+    find . -type d -iname "*${1}*"
 }
 
 # git config add commit
@@ -191,4 +198,8 @@ function switch_repo () {
     elif [ "$(basename $(pwd))" = "meta-fullmetalupdate" ]; then
         cd ../meta-fullmetalupdate-extra
     fi
+}
+
+fonction treel () {
+    tree -L $1
 }
