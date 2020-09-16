@@ -16,10 +16,12 @@ Plug 'honza/vim-snippets'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
+ Plug 'tpope/vim-commentary'
 Plug 'tmhedberg/SimpylFold'
 Plug 'kergoth/vim-bitbake'
 Plug 'plasticboy/vim-markdown'
+Plug 'airblade/vim-gitgutter'
+"Plug 'mzlogin/vim-markdown-toc'
 
 Plug 'dense-analysis/ale'
     let g:ale_completion_enabled = 1
@@ -59,6 +61,8 @@ Plug 'junegunn/goyo.vim'
 
 Plug 'scrooloose/nerdtree'
     nnoremap <C-e> :NERDTreeToggle<cr>
+    let NERDTreeMinimalUI=1
+    let NERDTreeAutoDeleteBuffer=1
 
 Plug 'SirVer/ultisnips'
     let g:UltiSnipsSnippetsDir=$HOME.'/.vim/bundle/vim-snippets/UltiSnips'
@@ -199,3 +203,11 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
 " Pkg highlighting
 au BufNewFile,BufRead *.pkg set filetype=vhdl
+
+set formatprg=par\ -w90
+
+autocmd FileType tex set spell
+autocmd FileType tex set spelllang=fr
+
+" Spell correction
+imap <C-l> <Esc>[s1z=`]a
