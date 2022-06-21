@@ -31,7 +31,7 @@
     # Possible values are "left", "center" and "right"
     alignment = left
 
-    # The frequency with wich text that is longer than the notification
+    # The frequency with which text that is longer than the notification
     # window allows bounces back and forth.
     # This option conflicts with 'word_wrap'.
     # Set to 0 to disable
@@ -59,15 +59,17 @@
     # right side of the screen.  Y is measured from the top and down respectevly.
     # The width can be negative. In this case the actual width is the
     # screen width minus the width defined in within the geometry option.
-    geometry = "300x5+810+30"
+    geometry = "300x5-10-30"
+
+    progress_bar = true
 
     # The transparency of the window. range: [0; 100]
     # This option will only work if a compositing windowmanager is present (e.g. xcompmgr, compiz, etc..)
-    transparency = 2
+    transparency = 0
 
     # Don't remove messages, if the user is idle (no mouse or keyboard input)
     # for longer than idle_threshold seconds.
-    # Set to 0 to disable.
+    # Set to 0
     idle_threshold = 120
 
     # Which monitor should the notifications be displayed on.

@@ -216,8 +216,8 @@ set_from_resource $i3-wm.binding.next_free i3-wm.binding.next_free grave
 bindsym $mod+$i3-wm.binding.next_free exec --no-startup-id /usr/bin/i3-next-workspace
 
 ## Navigate // Scratchpad // <><Ctrl> a ##
-#set_from_resource $i3-wm.binding.scratchpad i3-wm.binding.scratchpad Ctrl+a
-#bindsym $mod+$i3-wm.binding.scratchpad scratchpad show
+set_from_resource $i3-wm.binding.scratchpad i3-wm.binding.scratchpad Ctrl+a
+bindsym $mod+$i3-wm.binding.scratchpad [class="*konsole*"] scratchpad show, move position center
 
 ###############################################################################
 # Window and Workspace Configuration
@@ -276,8 +276,8 @@ set_from_resource $i3-wm.binding.float_toggle i3-wm.binding.float_toggle Shift+f
 bindsym $mod+Shift+$i3-wm.binding.float_toggle floating toggle
 
 ## Modify // Move to Scratchpad // <><Ctrl> m ##
-#set_from_resource $i3-wm.binding.move_scratchpad i3-wm.binding.move_scratchpad Ctrl+m
-#bindsym $mod+$i3-wm.binding.move_scratchpad move to scratchpad
+set_from_resource $i3-wm.binding.move_scratchpad i3-wm.binding.move_scratchpad Ctrl+m
+bindsym $mod+$i3-wm.binding.move_scratchpad move to scratchpad
 
 ## Modify // Tile/Float Focus Toggle // <><Shift> t ##
 set_from_resource $i3-wm.binding.focus_toggle i3-wm.binding.focus_toggle Shift+t
@@ -680,15 +680,24 @@ exec --no-startup-id $i3-wm.program.3
 # Custom configs
 ###############################################################################
 
-# Keepassxc dropdown
-exec --no-startup-id keepassxc
-bindsym $mod+Shift+F4 [class="KeePassXC"] scratchpad show, move position center
-for_window [class="KeePassXC"] floating enable, resize set 800 600, move scratchpad
+## Scratchpads ##
+
+# Notes dropdown
+exec --no-startup-id termite -t vim-notes -e vim -c "NERDTree ~/Sync/Notes/witekio"
+bindsym $mod+Shift+F2 [class="vim-notes"] scratchpad show, move position center
+for_window [class="vim-notes"] floating enable, move scratchpad
 
 # Calculator dropdown
 exec --no-startup-id gnome-calculator -m programming
 bindsym $mod+Shift+F3 [class="Gnome-calculator"] scratchpad show, move position center
 for_window [class="Gnome-calculator"] floating enable, move scratchpad
+
+# Keepassxc dropdown
+exec --no-startup-id keepassxc
+bindsym $mod+Shift+F4 [class="KeePassXC"] scratchpad show, move position center
+for_window [class="KeePassXC"] floating enable, resize set 800 600, move scratchpad
+
+## Startup programs ##
 
 #exec --no-startup-id spotify
 for_window [class="Spotify"] move to workspace 10
@@ -704,6 +713,8 @@ exec --no-startup-id dunst
 exec --no-startup-id firefox
 for_window [class="firefox"] move to workspace 4
 
+## Windows assignments ##
+
 # Workspace output assignment
 set_from_resource $i3-wm.screen.left  i3-wm.screen.left  "HDMI-2"
 set_from_resource $i3-wm.screen.right i3-wm.screen.right "eDP-1"
@@ -712,8 +723,8 @@ workspace 2  output $i3-wm.screen.left
 workspace 3  output $i3-wm.screen.left
 workspace 4  output $i3-wm.screen.right
 workspace 5  output $i3-wm.screen.right
-workspace 6  output $i3-wm.screen.right 
-workspace 7  output $i3-wm.screen.right
+workspace 6  output $i3-wm.screen.left
+workspace 7  output $i3-wm.screen.left
 workspace 8  output $i3-wm.screen.right
 workspace 9  output $i3-wm.screen.right
 workspace 10 output $i3-wm.screen.right

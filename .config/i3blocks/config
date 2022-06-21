@@ -9,34 +9,6 @@ instance=spotify
 interval=5
 signal=10
 
-[arch-update]
-interval=3600
-markup=pango
-
-[bandwidth3]
-command=$SCRIPT_DIR/bandwidth3
-interval=persist
-markup=pango
-#LABEL=<span font='FontAwesome'>  </span>
-#IFACE=[automatically determined]
-#DT=3
-#UNIT=Mb
-# Exposed variables: rx, wx, tx, unit, iface
-#PRINTF_COMMAND=printf "${LABEL}%-5.1f/%5.1f %s/s\n", rx, wx, unit;
-
-[battery]
-label=
-interval=30
-
-[bandwidth]
-INLABEL=↓ 
-OUTLABEL=↑ 
-interval=5
-
-[disk]
-DIR=/
-interval=30
-
 [temperature]
 label=
 interval=10
