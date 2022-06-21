@@ -1,107 +1,40 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-export PATH=$PATH:$HOME/.local/bin
+setxkbmap -option caps:escape
 
 bindkey -v
 bindkey "^?" backward-delete-char
 
-# Path to your oh-my-zsh installation.
-export ZSH="/home/antograb/.zsh"
+setopt sharehistory
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="alanpeabody"
+stty -ixon
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+export ZSH="$HOME/.oh-my-zsh"
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+# ZSH_THEME="murilasso"
+ZSH_THEME="lukerandall"
+RPROMPT=''
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+FZF_BASE="$(which fzf)"
+plugins=(git zsh-autosuggestions zsh-completions colored-man-pages fzf)
 
 source $ZSH/oh-my-zsh.sh
+export EDITOR='vim'
 
-# User configuration
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# export MANPATH="/usr/local/man:$MANPATH"
+export PATH="${PATH}:$HOME/.config/coc/extensions/coc-clangd-data/install/11.0.0/clangd_11.0.0/bin/"
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+# Ctrl+Q to delete whole word
+my-backward-delete-word () {
+    local WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>|'
+    zle backward-kill-word
+}
+zle -N my-backward-delete-word
+bindkey '^q' my-backward-delete-word
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+. $HOME/.config/z/z.sh
 
 ###########
 # ALIASES #
@@ -109,7 +42,7 @@ source $ZSH/oh-my-zsh.sh
 
 alias tldr="tldr -t base16"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-alias vimN="vim -c NERDTree"
+alias vimn="vim -c NERDTree"
 alias grepr="grep -r"
 alias python="python3"
 alias d='dirs -v | head -10'
@@ -122,10 +55,155 @@ alias 6='cd -6'
 alias 7='cd -7'
 alias 8='cd -8'
 alias 9='cd -9'
+alias df='df -x squashfs -x tmpfs -x devtmpfs'
+alias walog='watch -n1 -t --color git alog'
+alias llth="ll -t | head"
+alias rf="readlink -f"
+# alias rm="trash"
+alias pduon="pduclient --hostname 192.168.1.100 --daemon localhost --port 1 -H --command on"
+alias pduoff="pduclient --hostname 192.168.1.100 --daemon localhost --port 1 -H --command off"
+
+alias bblaysr="bitbake-layers show-recipes"
+alias bblaysl="bitbake-layers show-recipes"
+alias bblaysa="bitbake-layers show-appends"
+
+alias cdtemp="cd $(mktemp -d)"
+
+alias gs="gst"
+# alias kas='SHELL=/usr/bin/bash kas'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send -a alert --urgency=critical -i "$([ $? = 0 ] && echo terminal || echo error)"'
+
+alias cwd="pwd | xclip -selection clipboard"
+
+alias snooze="kill -SIGUSR1 $(pidof dunst)"
+alias unsnooze="kill -SIGUSR2 $(pidof dunst)"
+
+alias xc="xclip -selection clipboard"
+alias setx="setxkbmap -option && setxkbmap -option caps:escape"
+
+#####################
+# Witekio shortcuts #
+#####################
+
+alias vactivate="source ./.venv/bin/activate"
+
+# FMU
+alias  fmu="$HOME/dev/FullMetalUpdate/fullmetalupdate.perso"
+export fmu="$HOME/dev/FullMetalUpdate/fullmetalupdate.perso"
+
+# Trixell
+alias  trix="/data/txl/md20xx"
+export trix="/data/txl/md20xx"
+alias  tws="$trix/workspace"
+export tws="$trix/workspace"
+alias  trepos="$tws/repos"
+export trepos="$tws/repos"
+alias  ttests="$tws/tests"
+export ttests="$tws/tests"
+alias  tbsp="$tws/wyld/bsp"
+export tbsp="$tws/wyld/bsp"
+alias  tbuild="$tws/wyld/build"
+export tbuild="$tws/wyld/build"
+alias  tdeploy="$tbuild/build/tmp/deploy"
+export tdeploy="$tbuild/build/tmp/deploy"
+alias  tlayers="$tbsp/sources"
+export tlayers="$tbsp/sources"
+alias  tmeta="$tlayers/custom/meta-txl"
+export tmeta="$tlayers/custom/meta-txl"
+alias  tkernelpatches="$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx"
+export tkernelpatches="$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx"
+alias  tkernelfragments="$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx/txl_kernel_fragments"
+export tkernelfragments="$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx/txl_kernel_fragments"
+
+# declare -A t_paths
+# t_paths[trix]="/data/txl/md20xx"
+# t_paths[ws]="${t_paths[trix]}/workspace"
+# t_paths[repos]="${t_paths[tws]}/repos"
+# t_paths[tests]="${t_paths[tws]}/tests"
+# t_paths[bsp]="${t_paths[tws]}/wyld/bsp"
+# t_paths[build]="${t_paths[tws]}/wyld/build"
+# t_paths[deploy]="${t_paths[tbuild]}/build/tmp/deploy"
+# t_paths[meta]="${t_paths[tbsp]}/sources/custom/meta-txl"
+
+# Morphosense
+alias mmorph="/data/morphosense"
+export mmorph="/data/morphosense"
+alias mws="$mmorph/workspace"
+export mws="$mmorph/workspace"
+alias mbsp="$mws/bsp"
+export mbsp="$mws/bsp"
+alias mbuild="$mbsp/build"
+export mbuild="$mbsp/build"
+alias mwork="$mbuild/tmp/work"
+export mwork="$mbuild/tmp/work"
+alias mmach="$mws/bsp/build/tmp/deploy/images/morpho-gateway-v3"
+export mmach="$mws/bsp/build/tmp/deploy/images/morpho-gateway-v3"
+alias mlayers="$mbsp/layers"
+export mlayers="$mbsp/layers"
+alias mmeta="$mlayers/meta-morphosense"
+export mmeta="$mlayers/meta-morphosense"
+
+function mkasbuild () {
+    env -C $mbsp kas build kas/user-specific.yml "$@"
+}
+
+function mkasshell () {
+    env -C $mbsp kas shell kas/user-specific.yml
+}
+
+
+# declare -A m_paths
+# m_paths[morph]="/data/morphosense"
+# m_paths[ws]="${m_paths[morph]}/workspace"
+# m_paths[bsp]="${m_paths[ws]}/bsp"
+# m_paths[mach]="${m_paths[ws]}/bsp/build/tmp/deploy/images/morpho-gateway-v3"
+# m_paths[layers]="${m_paths[bsp]}/layers"
+# m_paths[meta]="${m_paths[layers]}/meta-morphosense"
+# for k in ${(k)m_paths}; do
+#     alias m$k="${m_paths[$1]}"
+# done
+# function m () {
+#     cd ${m_paths[$1]}
+# }
+
+
+
+# Pluma
+alias  plws="/work/data/pluma/tests"
+export plws="/work/data/pluma/tests"
+
+
+tshell () {
+    cd "$tbuild" && BSP_DIR="$tbsp" make shell
+}
+
+tmach () {
+    cd "$tdeploy/images/$1"
+}
 
 #############
 # FUNCTIONS #
 #############
+
+# function dem () {
+#     cd $fmu/$1/fullmetalupdate-yocto-demo
+#     export dem=$fmu/$1/fullmetalupdate-yocto-demo
+# }
+# function ybu () {
+#     cd $fmu/$1/fullmetalupdate-yocto-demo/build/yocto/build
+#     export ybu=$fmu/$1/fullmetalupdate-yocto-demo/build/yocto/build
+# }
+# function yso () {
+#     cd $fmu/$1/fullmetalupdate-yocto-demo/build/yocto/sources
+#     export yso=$fmu/$1/fullmetalupdate-yocto-demo/build/yocto/sources
+# }
+# function c () {
+#     cd $fmu/$1/fullmetalupdate-cloud-demo
+#     export yso=$fmu/$1/fullmetalupdate-cloud-demo
+# }
 
 function mkcd () {
 	mkdir -p $1 && cd $1
@@ -155,11 +233,116 @@ function gconfac () {
 	config add $1 && config commit -m "$2"
 }
 
-function savefile () {
-    local useful_files_dir=$HOME/.useful_files
-    local fullpath=$(dirname $(readlink -f $1) | sed -E 's:^/(.+)$:\1:')
+# function sync_fmu () {
+#     scp -r $fmu/fullmetalupdate/fullmetalupdate.py root@$1:$2/fullmetalupdate/
+#     scp -r $fmu/fullmetalupdate/fullmetalupdate/{updater,fullmetalupdate_ddi_client}.py root@$1:$2/fullmetalupdate/fullmetalupdate/
+#     scp -r $fmu/fullmetalupdate/scripts/send_feedback.sh root@$1:$2/fullmetalupdate/scripts/
+# }
 
-    mkdir -p $useful_files_dir/$fullpath \
-        && cp $1 $useful_files_dir/$fullpath/
+# function switch_repo () {
+#     if [ "$(basename $(pwd))" = "meta-fullmetalupdate-extra" ]; then
+#         cd ../meta-fullmetalupdate
+#     elif [ "$(basename $(pwd))" = "meta-fullmetalupdate" ]; then
+#         cd ../meta-fullmetalupdate-extra
+#     fi
+# }
+
+function treel () {
+    tree -L $1
 }
-export QT_QPA_PLATFORMTHEME="qt5ct"
+
+function im () {
+
+    local conf="./conf/local.conf"
+    cd $BUILDDIR;
+    if [[ -e "$conf" ]]; then
+        machine=$(grep -E "^MACHINE" $conf | tr -d '? ' | awk -F '=' '{print $2}' | tr -d '"')
+    fi
+    cd $BUILDDIR/tmp/deploy/images/$machine
+
+}
+
+function sb () {
+
+    # eval exp="\$$1"
+
+    # if [[ -d "$1" ]]; then
+    #     source $1/../bsp/sources/standard/poky/oe-init-build-env $1/build
+    # elif [[ -d "$exp" ]]; then
+    #     source $exp/../bsp/sources/standard/poky/oe-init-build-env $exp/build
+    # fi
+
+
+    # cd $trix/witekio/workspace
+    # make shell
+
+    if [[ "$1" = "linwit" ]]; then
+
+        export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE BSP_DIR"
+        export BSP_DIR="$trix/witekio/bsp"
+
+        . "$trix/witekio/bsp/buildtools/environment-setup-x86_64-pokysdk-linux"
+
+        TEMPLATECONF=$trix/witekio/bsp/sources/custom/meta-txl/txl-bsp/conf \
+            source $trix/witekio/bsp/sources/standard/poky/oe-init-build-env \
+            $trix/witekio/workspace/build
+    fi
+
+}
+
+function pvnc () {
+
+    pv "$1" | nc -l -p 12345
+
+}
+
+# Yocto
+function b () {
+    cd "${BUILDDIR}/${1}"
+}
+function s () {
+    cd "${BSP_DIR}/sources/${1}"
+}
+function w () {
+    cd "${BUILDDIR}/../${1}"
+}
+function ws () {
+    cd "${BUILDDIR}/workspace/sources/${1}"
+}
+function tmp () {
+    cd "${BUILDDIR}/tmp/${1}"
+}
+function dep () {
+    cd "${BUILDDIR}/tmp/deploy/${1}"
+}
+
+function rm_work_task () {
+    bitbake -g "$1"
+    bitbake -k -c rm_work $(cat pn-buildlist)
+}
+
+# vim the nth file listed in git status --short
+function vimg () {
+    local index="$1"
+
+    if [[ "$index" == "" ]]; then
+        index="1"
+    elif [[ ! "$index" =~ [0-9]+ ]]; then
+        printf "Index isn't a number\n"
+        return
+    fi
+    
+    file="$(git status --short \
+        | awk '{$1=""; print $0}' \
+        | head -$index | tail +$index \
+        | xargs)" 
+
+    vim "$file"
+}
+
+###########################
+#  Shell startup control  #
+###########################
+
+# If currently in $linwit, execute sb linwit. Don't print anything
+# [[ "`pwd`" =~ "`basename $linwit`" ]] && sb linwit > /dev/null && cd - > /dev/null
