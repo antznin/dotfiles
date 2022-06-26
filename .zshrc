@@ -1,28 +1,28 @@
-setxkbmap -option caps:escape
-
 bindkey -v
 bindkey "^?" backward-delete-char
+bindkey '^q' my-backward-delete-word
 
 setopt sharehistory
-
 stty -ixon
 
-export ZSH="$HOME/.oh-my-zsh"
-
-# ZSH_THEME="murilasso"
-ZSH_THEME="lukerandall"
+ZSH_THEME="${ARG_THEME:-robbyrussell}"
 RPROMPT=''
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-FZF_BASE="$(which fzf)"
-plugins=(git zsh-autosuggestions zsh-completions colored-man-pages fzf)
-
-source $ZSH/oh-my-zsh.sh
+export ZSH="$HOME/.oh-my-zsh"
+export FZF_BASE="$HOME/.fzf"
 export EDITOR='vim'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export PATH="${PATH}:$HOME/.config/coc/extensions/coc-clangd-data/install/11.0.0/clangd_11.0.0/bin/"
+plugins=(\
+    git \
+    zsh-autosuggestions \
+    zsh-completions \
+    colored-man-pages \
+    fzf \
+    zsh-z \
+)
 
 test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
 
@@ -32,9 +32,8 @@ my-backward-delete-word () {
     zle backward-kill-word
 }
 zle -N my-backward-delete-word
-bindkey '^q' my-backward-delete-word
 
-. $HOME/.config/z/z.sh
+source $ZSH/oh-my-zsh.sh
 
 ###########
 # ALIASES #
@@ -59,36 +58,27 @@ alias df='df -x squashfs -x tmpfs -x devtmpfs'
 alias walog='watch -n1 -t --color git alog'
 alias llth="ll -t | head"
 alias rf="readlink -f"
-# alias rm="trash"
 alias pduon="pduclient --hostname 192.168.1.100 --daemon localhost --port 1 -H --command on"
 alias pduoff="pduclient --hostname 192.168.1.100 --daemon localhost --port 1 -H --command off"
-
 alias bblaysr="bitbake-layers show-recipes"
 alias bblaysl="bitbake-layers show-recipes"
 alias bblaysa="bitbake-layers show-appends"
-
 alias cdtemp="cd $(mktemp -d)"
-
 alias gs="gst"
-# alias kas='SHELL=/usr/bin/bash kas'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
 alias alert='notify-send -a alert --urgency=critical -i "$([ $? = 0 ] && echo terminal || echo error)"'
-
 alias cwd="pwd | xclip -selection clipboard"
-
 alias snooze="kill -SIGUSR1 $(pidof dunst)"
 alias unsnooze="kill -SIGUSR2 $(pidof dunst)"
-
 alias xc="xclip -selection clipboard"
 alias setx="setxkbmap -option && setxkbmap -option caps:escape"
+alias vactivate="source ./.venv/bin/activate"
+alias g="git"
+alias vim="nvim"
+alias vi="nvim"
 
 #####################
 # Witekio shortcuts #
 #####################
-
-alias vactivate="source ./.venv/bin/activate"
 
 # FMU
 alias  fmu="$HOME/dev/FullMetalUpdate/fullmetalupdate.perso"
@@ -117,16 +107,12 @@ alias  tkernelpatches="$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx"
 export tkernelpatches="$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx"
 alias  tkernelfragments="$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx/txl_kernel_fragments"
 export tkernelfragments="$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx/txl_kernel_fragments"
-
-# declare -A t_paths
-# t_paths[trix]="/data/txl/md20xx"
-# t_paths[ws]="${t_paths[trix]}/workspace"
-# t_paths[repos]="${t_paths[tws]}/repos"
-# t_paths[tests]="${t_paths[tws]}/tests"
-# t_paths[bsp]="${t_paths[tws]}/wyld/bsp"
-# t_paths[build]="${t_paths[tws]}/wyld/build"
-# t_paths[deploy]="${t_paths[tbuild]}/build/tmp/deploy"
-# t_paths[meta]="${t_paths[tbsp]}/sources/custom/meta-txl"
+tshell () {
+    cd "$tbuild" && BSP_DIR="$tbsp" make shell
+}
+tmach () {
+    cd "$tdeploy/images/$1"
+}
 
 # Morphosense
 alias mmorph="/data/morphosense"
@@ -145,80 +131,24 @@ alias mlayers="$mbsp/layers"
 export mlayers="$mbsp/layers"
 alias mmeta="$mlayers/meta-morphosense"
 export mmeta="$mlayers/meta-morphosense"
-
 function mkasbuild () {
     env -C $mbsp kas build kas/user-specific.yml "$@"
 }
-
 function mkasshell () {
     env -C $mbsp kas shell kas/user-specific.yml
 }
-
-
-# declare -A m_paths
-# m_paths[morph]="/data/morphosense"
-# m_paths[ws]="${m_paths[morph]}/workspace"
-# m_paths[bsp]="${m_paths[ws]}/bsp"
-# m_paths[mach]="${m_paths[ws]}/bsp/build/tmp/deploy/images/morpho-gateway-v3"
-# m_paths[layers]="${m_paths[bsp]}/layers"
-# m_paths[meta]="${m_paths[layers]}/meta-morphosense"
-# for k in ${(k)m_paths}; do
-#     alias m$k="${m_paths[$1]}"
-# done
-# function m () {
-#     cd ${m_paths[$1]}
-# }
-
-
 
 # Pluma
 alias  plws="/work/data/pluma/tests"
 export plws="/work/data/pluma/tests"
 
-
-tshell () {
-    cd "$tbuild" && BSP_DIR="$tbsp" make shell
-}
-
-tmach () {
-    cd "$tdeploy/images/$1"
-}
-
 #############
 # FUNCTIONS #
 #############
 
-# function dem () {
-#     cd $fmu/$1/fullmetalupdate-yocto-demo
-#     export dem=$fmu/$1/fullmetalupdate-yocto-demo
-# }
-# function ybu () {
-#     cd $fmu/$1/fullmetalupdate-yocto-demo/build/yocto/build
-#     export ybu=$fmu/$1/fullmetalupdate-yocto-demo/build/yocto/build
-# }
-# function yso () {
-#     cd $fmu/$1/fullmetalupdate-yocto-demo/build/yocto/sources
-#     export yso=$fmu/$1/fullmetalupdate-yocto-demo/build/yocto/sources
-# }
-# function c () {
-#     cd $fmu/$1/fullmetalupdate-cloud-demo
-#     export yso=$fmu/$1/fullmetalupdate-cloud-demo
-# }
-
 function mkcd () {
 	mkdir -p $1 && cd $1
 }
-
-function grepR () {
-	grep -Ir \
-		--exclude-dir=.git \
-		--exclude-dir='build*' \
-		--include='*.bb*' \
-		--include='*.inc*' \
-		--include='*.conf*' \
-		--include='*.py*' \
-		"$@"
- }
 
 function findf () {
     find . -type f -iname "*$1*"
@@ -228,24 +158,9 @@ function findd () {
     find . -type d -iname "*$1*"
 }
 
-# git config add commit
-function gconfac () {
-	config add $1 && config commit -m "$2"
+function finda () {
+    find . -iname "*$1*"
 }
-
-# function sync_fmu () {
-#     scp -r $fmu/fullmetalupdate/fullmetalupdate.py root@$1:$2/fullmetalupdate/
-#     scp -r $fmu/fullmetalupdate/fullmetalupdate/{updater,fullmetalupdate_ddi_client}.py root@$1:$2/fullmetalupdate/fullmetalupdate/
-#     scp -r $fmu/fullmetalupdate/scripts/send_feedback.sh root@$1:$2/fullmetalupdate/scripts/
-# }
-
-# function switch_repo () {
-#     if [ "$(basename $(pwd))" = "meta-fullmetalupdate-extra" ]; then
-#         cd ../meta-fullmetalupdate
-#     elif [ "$(basename $(pwd))" = "meta-fullmetalupdate" ]; then
-#         cd ../meta-fullmetalupdate-extra
-#     fi
-# }
 
 function treel () {
     tree -L $1
@@ -291,9 +206,7 @@ function sb () {
 }
 
 function pvnc () {
-
     pv "$1" | nc -l -p 12345
-
 }
 
 # Yocto
