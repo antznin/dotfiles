@@ -14,13 +14,13 @@
 # without having to make a copy of this config file.
 # The benefit to not copying this file is easier upgrades in the future.
 # To update a value in this config without making a copy, update the Xresource
-# value in the file ~/.config/regolith/Xresources.
+# value in the file ~/.config/regolith2/Xresources.
 #
 # For example, to change the bar position to the top of the screen this is the
 # i3 config entry in this file:
 # set_from_resource $i3-wm.bar.position i3-wm.bar.position bottom
 #
-# So add this line to ~/.config/regolith/Xresources to change it's value:
+# So add this line to ~/.config/regolith2/Xresources to change it's value:
 # i3-wm.bar.position: top
 #
 # Reload i3 after making Xresource changes.  Learn more at
@@ -91,13 +91,13 @@ set_from_resource $ws10_key i3-wm.workspace.10.key 0
 
 ## Launch // Terminal // <> Enter ##
 set_from_resource $i3-wm.binding.terminal i3-wm.binding.terminal Return
-bindsym $mod+$i3-wm.binding.terminal exec /usr/bin/x-terminal-emulator
+bindsym $mod+$i3-wm.binding.terminal exec /usr/bin/konsole
 
 ## Launch // Browser // <><Shift> Enter ##
 set_from_resource $i3-wm.binding.browser i3-wm.binding.browser Shift+Return
 bindsym $mod+$i3-wm.binding.browser exec gtk-launch $(xdg-settings get default-web-browser)
 
-set_from_resource $rofiTheme rofi.theme /etc/regolith/styles/lascaille/rofi.rasi
+set_from_resource $rofiTheme rofi.theme /etc/regolith2/styles/lascaille/rofi.rasi
 
 ## Launch // Application // <> Space ##
 set_from_resource $i3-wm.binding.launcher.app i3-wm.binding.launcher.app space
@@ -142,20 +142,20 @@ set_from_resource $i3-wm.binding.focus_child i3-wm.binding.focus_child z
 bindsym $mod+$i3-wm.binding.focus_child focus child
 
 ## Navigate // Relative Window // <> ↑ ↓ ← → ##
-#bindsym $mod+Left focus left
-#bindsym $mod+Down focus down
-#bindsym $mod+Up focus up
-#bindsym $mod+Right focus right
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
 
 ## Navigate // Relative Window // <> k j h l ##
-set_from_resource $i3-wm.binding.left i3-wm.binding.left h
-set_from_resource $i3-wm.binding.right i3-wm.binding.right l
-set_from_resource $i3-wm.binding.up i3-wm.binding.up k
-set_from_resource $i3-wm.binding.down i3-wm.binding.down j
-bindsym $mod+$i3-wm.binding.left focus left
-bindsym $mod+$i3-wm.binding.down focus down
-bindsym $mod+$i3-wm.binding.up focus up
-bindsym $mod+$i3-wm.binding.right focus right
+#set_from_resource $i3-wm.binding.left i3-wm.binding.left h
+#set_from_resource $i3-wm.binding.right i3-wm.binding.right l
+#set_from_resource $i3-wm.binding.up i3-wm.binding.up k
+#set_from_resource $i3-wm.binding.down i3-wm.binding.down j
+#bindsym $mod+$i3-wm.binding.left focus left
+#bindsym $mod+$i3-wm.binding.down focus down
+#bindsym $mod+$i3-wm.binding.up focus up
+#bindsym $mod+$i3-wm.binding.right focus right
 
 ## Navigate // Workspaces 1-10 // <> 0..9 ##
 bindsym $mod+$ws1_key workspace number $ws1
@@ -602,7 +602,7 @@ set_from_resource $i3-wm.bar.workspace.urgent.background.color i3-wm.bar.workspa
 set_from_resource $i3-wm.bar.workspace.urgent.text.color i3-wm.bar.workspace.urgent.text.color "#fdf6e3"
 
 # Sets i3 font for dialogs
-set_from_resource $i3-wm.font i3-wm.font pango:Source Code Pro Medium 13
+set_from_resource $i3-wm.font i3-wm.font pango:Iosevka Term 11
 font $i3-wm.font
 
 ###############################################################################
@@ -610,14 +610,14 @@ font $i3-wm.font
 ###############################################################################
 
 set_from_resource $i3-wm.bar.position i3-wm.bar.position bottom
-set_from_resource $i3-wm.bar.font i3-wm.bar.font pango:Source Code Pro Medium 13, Material Design Icons 13
+set_from_resource $i3-wm.bar.font i3-wm.bar.font pango:Iosevka Term 11, Material Design Icons 13
 set_from_resource $i3-wm.bar.separator i3-wm.bar.separator " "
 set_from_resource $i3-wm.bar.trayoutput i3-wm.bar.trayoutput primary
 set_from_resource $i3-wm.bar.stripworkspacenumbers i3-wm.bar.stripworkspacenumbers yes
 set_from_resource $i3-wm.bar.mode i3-wm.bar.mode dock
 
 # i3xrocks config file. Override this for a custom status bar generator.
-set_from_resource $i3-wm.bar.status_command i3-wm.bar.status_command i3xrocks -u ~/.config/regolith/i3xrocks/conf.d -d /etc/regolith/i3xrocks/conf.d
+set_from_resource $i3-wm.bar.status_command i3-wm.bar.status_command i3xrocks -u ~/.config/regolith2/i3xrocks/conf.d -d /etc/regolith2/i3xrocks/conf.d
 
 # The bar configuration
 bar {
@@ -700,21 +700,24 @@ for_window [class="KeePassXC"] floating enable, resize set 800 600, move scratch
 ## Startup programs ##
 
 #exec --no-startup-id spotify
-for_window [class="Spotify"] move to workspace 10
+for_window [class="Spotify"] move to workspace $ws10
 
 # Microsoft Teams
 exec --no-startup-id teams
-for_window [class="Microsoft Teams - Preview"] move to workspace 5
+for_window [class="Microsoft Teams - Preview"] move to workspace $ws5
 
 # Dunst notifications
 exec --no-startup-id dunst
 
 # Firefox browser
 exec --no-startup-id firefox
-for_window [class="firefox"] move to workspace 4
+for_window [class="firefox"] move to workspace $ws4
+
+# Firefox browser
+exec --no-startup-id telegram-desktop
+for_window [class="TelegramDesktop"] move to workspace $ws9
 
 ## Windows assignments ##
-
 # Workspace output assignment
 set_from_resource $i3-wm.screen.left  i3-wm.screen.left  "HDMI-2"
 set_from_resource $i3-wm.screen.right i3-wm.screen.right "eDP-1"

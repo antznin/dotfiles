@@ -1,0 +1,43 @@
+#define font_name Iosevka Term 11
+
+# Look
+regolith.look.path: /usr/share/regolith-look/nord
+regolith.wallpaper.file:
+regolith.wallpaper.color.primary: #434C5E
+
+# i3
+i3-wm.font: pango:font_name
+i3-wm.bar.font: pango:font_name
+i3-wm.binding.lock: l
+i3-wm.binding.left: Left
+i3-wm.binding.right: Right
+i3-wm.binding.up: Up
+i3-wm.binding.down: Down
+i3-wm.binding.launcher.app: Escape
+i3-wm.binding.split_h: h
+i3-wm.bar.separator: "|"
+i3-wm.gaps.inner.size: 10
+i3-wm.window.border.size: 3
+i3-wm.workspace.01.name: 1:<span> </span><span font_desc='font_name'>1 </span>
+i3-wm.workspace.02.name: 2:<span> </span><span font_desc='font_name'>2 </span>
+i3-wm.workspace.03.name: 3:<span> </span><span font_desc='font_name'>3 </span>
+i3-wm.workspace.04.name: 4:<span> </span><span font_desc='font_name'>4 </span>
+i3-wm.workspace.05.name: 5:<span> </span><span font_desc='font_name'>5 </span>
+i3-wm.workspace.06.name: 6:<span> </span><span font_desc='font_name'>6 </span>
+i3-wm.workspace.07.name: 7:<span> </span><span font_desc='font_name'>7 </span>
+i3-wm.workspace.08.name: 8:<span> </span><span font_desc='font_name'>8 </span>
+i3-wm.workspace.09.name: 9:<span> </span><span font_desc='font_name'>9 </span>
+i3-wm.workspace.10.name: 10:<span> </span><span font_desc='font_name'>10 </span>
+i3-wm.workspace.11.name: 11:<span> </span><span font_desc='font_name'>11 </span>
+i3-wm.workspace.12.name: 12:<span> </span><span font_desc='font_name'>12 </span>
+i3-wm.workspace.13.name: 13:<span> </span><span font_desc='font_name'>13 </span>
+i3-wm.workspace.14.name: 14:<span> </span><span font_desc='font_name'>14 </span>
+i3-wm.workspace.15.name: 15:<span> </span><span font_desc='font_name'>15 </span>
+i3-wm.workspace.16.name: 16:<span> </span><span font_desc='font_name'>16 </span>
+i3-wm.workspace.17.name: 17:<span> </span><span font_desc='font_name'>17 </span>
+i3-wm.workspace.18.name: 18:<span> </span><span font_desc='font_name'>18 </span>
+i3-wm.workspace.19.name: 19:<span> </span><span font_desc='font_name'>19 </span>
+
+# i3xrocks
+i3xrocks.value.font: font_name
+i3xrocks.label.cpu: load
