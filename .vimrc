@@ -6,7 +6,7 @@ set nocompatible
 filetype off
 
 " Map leader to space
-let mapleader ="\<Space>"
+let mapleader ="g"
 
 set shell=/bin/bash
 
@@ -14,17 +14,27 @@ call plug#begin('~/.vim/plugged')
 
 " PLUGINS "
 
-Plug 'airblade/vim-gitgutter'
 Plug 'arcticicestudio/nord-vim'
 Plug 'honza/vim-snippets'
-Plug 'kergoth/vim-bitbake'
 Plug 'sheerun/vim-polyglot'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'wincent/terminus'
 
+Plug 'airblade/vim-gitgutter'
+    nmap <C-h> <Plug>(GitGutterNextHunk)
+    nmap <C-g> <Plug>(GitGutterPrevHunk)
+Plug 'kergoth/vim-bitbake'
+    " Bitbake syntax highlighting
+    au BufRead,BufNewFile *.bb set filetype=bitbake
+    au BufRead,BufNewFile *.bbclass set filetype=bitbake
+    au BufRead,BufNewFile *.bbappend set filetype=bitbake
+    au BufRead,BufNewFile *.inc set filetype=bitbake
+    au BufRead,BufNewFile local.conf.sample set filetype=bitbake
+    au BufRead,BufNewFile bblayers.conf.sample set filetype=bitbake
 Plug 'ctrlpvim/ctrlp.vim'
     let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:0'
     let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
@@ -74,7 +84,6 @@ cd %:p:h
 
 " Set delay
 set timeoutlen=1000 ttimeoutlen=0
-set updatetime=300
 
 " Syntax and filetype
 syntax on
@@ -122,12 +131,6 @@ nnoremap <Esc>t :tabnew<cr> :NERDTreeToggle<cr>
 " autocmd FileType vhdl setlocal formatoptions+=cro
 " au BufNewFile,BufRead *.pkg set filetype=vhdl
 
-" Bitbake syntax highlighting
-au BufRead,BufNewFile *.bb set filetype=bitbake
-au BufRead,BufNewFile *.bbclass set filetype=bitbake
-au BufRead,BufNewFile *.bbappend set filetype=bitbake
-au BufRead,BufNewFile *.inc set filetype=bitbake
-
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
@@ -172,3 +175,49 @@ autocmd FileType tex set spelllang=fr
 " imap <C-l> <Esc>[s1z=`]a
 
 nmap <leader>q gqap
+
+function! CleverTab()
+   if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
+      return "\<Tab>"
+   else
+      return "\<C-N>"
+   endif
+endfunction
+inoremap <Tab> <C-R>=CleverTab()<CR>
+
+" Cscope
+function! CscopeLoad()
+    if has("cscope")
+            " Look for a 'cscope.out' file starting from the current directory,
+            " going up to the root directory.
+            let s:dirs = split(getcwd(), "/")
+            while s:dirs != []
+                    let s:path = "/" . join(s:dirs, "/")
+                    if (filereadable(s:path . "/cscope.out"))
+                            execute "cs add " . s:path . "/cscope.out " . s:path . " -v"
+                            break
+                    endif
+                    let s:dirs = s:dirs[:-2]
+            endwhile
+
+            set csto=0  " Use cscope first, then ctags
+            set cst     " Only search cscope
+            set csverb  " Make cs verbose
+
+            nmap <C-c>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+            nmap <C-c>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+            nmap <C-c>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+            nmap <C-c>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+            nmap <C-c>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+            nmap <C-c>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+            nmap <C-c>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+            nmap <C-c>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+            nmap <C-c>q :cs find a <C-R>=expand("<cword>")<CR><CR>
+            nmap <F6> :cnext <CR>
+            nmap <F5> :cprev <CR>
+
+            " Open a quickfix window for the following queries.
+            set cscopequickfix=s-,c-,d-,i-,t-,e-,g-
+    endif
+endfunction
+call CscopeLoad()
