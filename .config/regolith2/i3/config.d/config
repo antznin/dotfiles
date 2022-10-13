@@ -1,0 +1,71 @@
+# Custom i3 configs
+
+#
+# General
+#
+
+# Layout toggle
+bindsym $mod+$i3-wm.binding.layout_mode layout toggle tabbed splith splitv stacking
+
+# Custom terminal
+exec --no-startup-id update-alternatives --set x-terminal-emulator /usr/bin/konsole
+
+# Custom lockscreen
+exec --no-startup-id gsettings set org.gnome.gnome-flashback screensaver false
+
+# Lock & suspend
+bindsym $mod+Shift+z exec --no-startup-id sh -c "$i3-wm.program.lock & sleep 5 && systemctl suspend"
+
+#
+# Dropdowns
+#
+
+exec --no-startup-id termite -t vim-notes -e vim -c "NERDTree ~/Sync/Notes/witekio"
+bindsym $mod+Shift+F2 [class="vim-notes"] scratchpad show, move position center
+for_window [class="vim-notes"] floating enable, move scratchpad
+
+exec --no-startup-id gnome-calculator -m programming
+bindsym $mod+Shift+F3 [class="Gnome-calculator"] scratchpad show, move position center
+for_window [class="Gnome-calculator"] floating enable, move scratchpad
+
+exec --no-startup-id keepassxc
+bindsym $mod+Shift+F4 [class="KeePassXC"] scratchpad show, move position center
+for_window [class="KeePassXC"] floating enable, resize set 800 600, move scratchpad
+
+#
+# Startup programs
+#
+
+exec --no-startup-id spotify
+for_window [class="Spotify"] move to workspace $ws10
+
+exec --no-startup-id teams
+for_window [class="Microsoft Teams - Preview"] move to workspace $ws5
+
+exec --no-startup-id dunst
+
+exec --no-startup-id firefox
+for_window [class="firefox"] move to workspace $ws4
+
+exec --no-startup-id telegram-desktop
+for_window [class="TelegramDesktop"] move to workspace $ws9
+
+#
+# Windows assignments
+#
+
+set_from_resource $i3-wm.screen.left  i3-wm.screen.left  "HDMI-2"
+set_from_resource $i3-wm.screen.right i3-wm.screen.right "eDP-1"
+workspace 1  output $i3-wm.screen.left
+workspace 2  output $i3-wm.screen.left
+workspace 3  output $i3-wm.screen.left
+workspace 4  output $i3-wm.screen.right
+workspace 5  output $i3-wm.screen.right
+workspace 6  output $i3-wm.screen.left
+workspace 7  output $i3-wm.screen.left
+workspace 8  output $i3-wm.screen.right
+workspace 9  output $i3-wm.screen.right
+workspace 10 output $i3-wm.screen.right
+
+# Default workspace
+exec i3-msg workspace 1
