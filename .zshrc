@@ -1,6 +1,6 @@
-bindkey -v
-bindkey "^?" backward-delete-char
-bindkey '^q' my-backward-delete-word
+#
+# General config
+#
 
 setopt sharehistory
 stty -ixon
@@ -16,11 +16,13 @@ export EDITOR='vim'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 plugins=(\
+    colored-man-pages \
+    fd \
+    fzf \
     git \
     zsh-autosuggestions \
     zsh-completions \
-    colored-man-pages \
-    fzf \
+    zsh-syntax-highlighting \
     zsh-z \
 )
 
@@ -31,20 +33,19 @@ my-backward-delete-word () {
     local WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>|'
     zle backward-kill-word
 }
-zle -N my-backward-delete-word
 
 source $ZSH/oh-my-zsh.sh
 
-###########
-# ALIASES #
-###########
+# Movements with ALt-hjkl
+bindkey '^[k' up-line-or-beginning-search
+bindkey '^[j' down-line-or-beginning-search
+bindkey '^[l' forward-word
+bindkey '^[h' backward-word
 
-alias tldr="tldr -t base16"
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-alias vimn="vim -c NERDTree"
-alias grepr="grep -r"
-alias python="python3"
-alias d='dirs -v | head -10'
+#
+# Aliases
+#
+
 alias 1='cd -'
 alias 2='cd -2'
 alias 3='cd -3'
@@ -54,184 +55,178 @@ alias 6='cd -6'
 alias 7='cd -7'
 alias 8='cd -8'
 alias 9='cd -9'
-alias df='df -x squashfs -x tmpfs -x devtmpfs'
-alias walog='watch -n1 -t --color git alog'
-alias llth="ll -t | head"
-alias rf="readlink -f"
-alias pduon="pduclient --hostname 192.168.1.100 --daemon localhost --port 1 -H --command on"
-alias pduoff="pduclient --hostname 192.168.1.100 --daemon localhost --port 1 -H --command off"
-alias bblaysr="bitbake-layers show-recipes"
-alias bblaysl="bitbake-layers show-recipes"
-alias bblaysa="bitbake-layers show-appends"
-alias cdtemp="cd $(mktemp -d)"
-alias gs="gst"
 alias alert='notify-send -a alert --urgency=critical -i "$([ $? = 0 ] && echo terminal || echo error)"'
+alias bat="batcat"
+alias batwalog='batwatch -n1 --command git alog'
+alias bb="bitbake"
+alias bblaysa="bitbake-layers show-appends"
+alias bblaysl="bitbake-layers show-recipes"
+alias bblaysr="bitbake-layers show-recipes"
+alias cat="batcat"
+alias cdtemp="cd $(mktemp -d)"
+alias config='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 alias cwd="pwd | xclip -selection clipboard"
-alias snooze="kill -SIGUSR1 $(pidof dunst)"
-alias unsnooze="kill -SIGUSR2 $(pidof dunst)"
-alias xc="xclip -selection clipboard"
-alias setx="setxkbmap -option && setxkbmap -option caps:escape"
-alias vactivate="source ./.venv/bin/activate"
+alias d='dirs -v | head -10'
+alias df='df -x squashfs -x tmpfs -x devtmpfs'
 alias g="git"
-alias vim="nvim"
+alias gch="git checkout"
+alias grepr="grep -r"
+alias gres="git reset"
+alias gs="gst"
+alias gsts="git status --short"
+alias llth="ll -t | head"
+alias locksuspend="i3lock-fancy -g & sleep 5 && systemctl suspend"
+alias pduoff="pduclient --hostname 192.168.1.100 --daemon localhost --port 1 -H --command off"
+alias pduon="pduclient --hostname 192.168.1.100 --daemon localhost --port 1 -H --command on"
+alias python="python3"
+alias rf="readlink -f"
+alias setx="setxkbmap -option && setxkbmap -option caps:escape"
+alias snooze="kill -SIGUSR1 $(pidof dunst)"
+alias tldr="tldr -t base16"
+alias unsnooze="kill -SIGUSR2 $(pidof dunst)"
+alias vactivate="source ./.venv/bin/activate"
 alias vi="nvim"
+alias vim="nvim"
+alias vimf="vim +\"lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))\""
+alias vimn="vim +NvimTreeOpen"
+alias walog='watch -n1 -t --color git alog'
+alias xc="xclip -selection clipboard"
 
-#####################
-# Witekio shortcuts #
-#####################
+#
+# Witekio
+#
 
-# FMU
-alias  fmu="$HOME/dev/FullMetalUpdate/fullmetalupdate.perso"
-export fmu="$HOME/dev/FullMetalUpdate/fullmetalupdate.perso"
+# Can be used as `foobar` or `cd $foobar`
+alias_export ()
+{
+    local name="$1"
+    local path="$2"
+    alias $name="$path"
+    export $name="$path"
+}
 
-# Trixell
-alias  trix="/data/txl/md20xx"
-export trix="/data/txl/md20xx"
-alias  tws="$trix/workspace"
-export tws="$trix/workspace"
-alias  trepos="$tws/repos"
-export trepos="$tws/repos"
-alias  ttests="$tws/tests"
-export ttests="$tws/tests"
-alias  tbsp="$tws/wyld/bsp"
-export tbsp="$tws/wyld/bsp"
-alias  tbuild="$tws/wyld/build"
-export tbuild="$tws/wyld/build"
-alias  tdeploy="$tbuild/build/tmp/deploy"
-export tdeploy="$tbuild/build/tmp/deploy"
-alias  tlayers="$tbsp/sources"
-export tlayers="$tbsp/sources"
-alias  tmeta="$tlayers/custom/meta-txl"
-export tmeta="$tlayers/custom/meta-txl"
-alias  tkernelpatches="$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx"
-export tkernelpatches="$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx"
-alias  tkernelfragments="$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx/txl_kernel_fragments"
-export tkernelfragments="$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx/txl_kernel_fragments"
-tshell () {
+# Trixell EZ3
+alias_export trixez3 "/data/txl/md20xx"
+alias_export tclient "$trixez3/client"
+alias_export tws "$trixez3/workspace"
+alias_export trepos "$tws/repos"
+alias_export ttests "$tws/tests"
+alias_export tmisc "$tws/misc"
+alias_export tbsp "$tws/wyld/bsp"
+alias_export tbuild "$tws/wyld/build"
+alias_export tsources "$tbuild/build/workspace/sources"
+alias_export tdeploy "$tbuild/build/tmp/deploy"
+alias_export tlayers "$tbsp/sources"
+alias_export tpoky "$tbsp/sources/standard/poky/meta"
+alias_export tmeta "$tlayers/custom/meta-txl"
+alias_export tkernelpatches "$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx"
+alias_export tkernelfragments "$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx/txl_kernel_fragments"
+
+tshell ()
+{
     cd "$tbuild" && BSP_DIR="$tbsp" make shell
 }
-tmach () {
+
+tmach ()
+{
     cd "$tdeploy/images/$1"
 }
 
+twd ()
+{
+    local pkg="$1"
+    local num_pkg="$2"
+    local num_version="$3"
+
+    _yocto_wd "$tbuild/build/tmp/work" "$pkg" "$num_pkg" "$num_version"
+}
+
+# Trixell EZ1.4
+alias_export etrixez14 "/data/txl/ez1"
+alias_export eclient "$etrixez14/client"
+alias_export ews "$etrixez14/workspace"
+alias_export ebsp "$ews/wyld/bsp"
+alias_export ebuild "$ebsp/build"
+alias_export emisc "$ews/misc"
+alias_export edeploy "$ebsp/build/tmp/deploy"
+alias_export esources "$ews/wyld/bsp/sources"
+alias_export emeta "$esources/custom/meta-txl"
+alias_export epoky "$esources/standard/poky/meta"
+
+eshell ()
+{
+    cd "$ebsp" \
+        && TEMPLATECONF=/data/txl/ez1/workspace/wyld/bsp/sources/custom/meta-txl/txl-bsp/conf \
+        source sources/standard/poky/oe-init-build-env ./build >/dev/null
+}
+
+emach ()
+{
+    cd "$edeploy/images/$1"
+}
+
+ewd ()
+{
+    local pkg="$1"
+    local num_pkg="$2"
+    local num_version="$3"
+
+    _yocto_wd "$ebuild/tmp/work" "$pkg" "$num_pkg" "$num_version"
+}
+
 # Morphosense
-alias mmorph="/data/morphosense"
-export mmorph="/data/morphosense"
-alias mws="$mmorph/workspace"
-export mws="$mmorph/workspace"
-alias mbsp="$mws/bsp"
-export mbsp="$mws/bsp"
-alias mbuild="$mbsp/build"
-export mbuild="$mbsp/build"
-alias mwork="$mbuild/tmp/work"
-export mwork="$mbuild/tmp/work"
-alias mmach="$mws/bsp/build/tmp/deploy/images/morpho-gateway-v3"
-export mmach="$mws/bsp/build/tmp/deploy/images/morpho-gateway-v3"
-alias mlayers="$mbsp/layers"
-export mlayers="$mbsp/layers"
-alias mmeta="$mlayers/meta-morphosense"
-export mmeta="$mlayers/meta-morphosense"
+alias_export mmorph "/data/morphosense"
+alias_export mws "$mmorph/workspace"
+alias_export mbsp "$mws/bsp"
+alias_export mbuild "$mbsp/build"
+alias_export mwork "$mbuild/tmp/work"
+alias_export mmach "$mws/bsp/build/tmp/deploy/images/morpho-gateway-v3"
+alias_export mlayers "$mbsp/layers"
+alias_export mmeta "$mlayers/meta-morphosense"
+
 function mkasbuild () {
     env -C $mbsp kas build kas/user-specific.yml "$@"
 }
+
 function mkasshell () {
     env -C $mbsp kas shell kas/user-specific.yml
 }
 
 # Pluma
-alias  plws="/work/data/pluma/tests"
-export plws="/work/data/pluma/tests"
+alias_export plws "/data/pluma/tests"
 
-#############
-# FUNCTIONS #
-#############
+#
+# Functions
+#
 
 function mkcd () {
-	mkdir -p $1 && cd $1
+	mkdir -p "$1" && cd "$1"
 }
 
-function findf () {
-    find . -type f -iname "*$1*"
-}
-
-function findd () {
-    find . -type d -iname "*$1*"
-}
-
-function finda () {
-    find . -iname "*$1*"
-}
+# Not used anymore, using `fd`.
+# function findf () { find . -type f -iname "*$1*" }
+# function findd () { find . -type d -iname "*$1*" }
+# function finda () { find . -iname "*$1*" }
 
 function treel () {
     tree -L $1
-}
-
-function im () {
-
-    local conf="./conf/local.conf"
-    cd $BUILDDIR;
-    if [[ -e "$conf" ]]; then
-        machine=$(grep -E "^MACHINE" $conf | tr -d '? ' | awk -F '=' '{print $2}' | tr -d '"')
-    fi
-    cd $BUILDDIR/tmp/deploy/images/$machine
-
-}
-
-function sb () {
-
-    # eval exp="\$$1"
-
-    # if [[ -d "$1" ]]; then
-    #     source $1/../bsp/sources/standard/poky/oe-init-build-env $1/build
-    # elif [[ -d "$exp" ]]; then
-    #     source $exp/../bsp/sources/standard/poky/oe-init-build-env $exp/build
-    # fi
-
-
-    # cd $trix/witekio/workspace
-    # make shell
-
-    if [[ "$1" = "linwit" ]]; then
-
-        export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE BSP_DIR"
-        export BSP_DIR="$trix/witekio/bsp"
-
-        . "$trix/witekio/bsp/buildtools/environment-setup-x86_64-pokysdk-linux"
-
-        TEMPLATECONF=$trix/witekio/bsp/sources/custom/meta-txl/txl-bsp/conf \
-            source $trix/witekio/bsp/sources/standard/poky/oe-init-build-env \
-            $trix/witekio/workspace/build
-    fi
-
 }
 
 function pvnc () {
     pv "$1" | nc -l -p 12345
 }
 
-# Yocto
-function b () {
-    cd "${BUILDDIR}/${1}"
-}
-function s () {
-    cd "${BSP_DIR}/sources/${1}"
-}
-function w () {
-    cd "${BUILDDIR}/../${1}"
-}
-function ws () {
-    cd "${BUILDDIR}/workspace/sources/${1}"
-}
-function tmp () {
-    cd "${BUILDDIR}/tmp/${1}"
-}
-function dep () {
-    cd "${BUILDDIR}/tmp/deploy/${1}"
-}
+function bbenv ()
+{
+    local recipe="$1"
+    local variable="$2"
 
-function rm_work_task () {
-    bitbake -g "$1"
-    bitbake -k -c rm_work $(cat pn-buildlist)
+    if [ "$variable" = "" ]; then
+        variable="$recipe"
+        recipe=""
+    fi
+
+    bitbake -e $recipe | grep "^$variable="
 }
 
 # vim the nth file listed in git status --short
@@ -244,18 +239,55 @@ function vimg () {
         printf "Index isn't a number\n"
         return
     fi
-    
+
     file="$(git status --short \
         | awk '{$1=""; print $0}' \
         | head -$index | tail +$index \
-        | xargs)" 
+        | xargs)"
 
     vim "$file"
 }
 
-###########################
-#  Shell startup control  #
-###########################
+# Search in a directory for given dir_name. Prompt if multiple matches.
+# See _yocto_wd
+function _search_and_prompt ()
+{
+    local search_dir="$1"
+    local depth="$2"
+    local dir_name="$3"
+    local pre_select="$4"
 
-# If currently in $linwit, execute sb linwit. Don't print anything
-# [[ "`pwd`" =~ "`basename $linwit`" ]] && sb linwit > /dev/null && cd - > /dev/null
+    [[ -n "$dir_name" ]] \
+        && found_dirs="$(find "$search_dir" -mindepth $depth -maxdepth $depth -name $dir_name -print)" \
+        || found_dirs="$(find "$search_dir" -mindepth $depth -maxdepth $depth -print)"
+
+    num_found="$(echo "$found_dirs" | wc -l)"
+
+    if [[ "$num_found" = "1" ]]; then
+        echo "$found_dirs"
+        cd "$found_dirs"
+    elif [[ "$num_found" -gt 1 ]]; then
+        if [[ "$pre_select" = "" ]]; then
+            for i in $(seq $num_found); do
+                echo "$i: $(echo "${found_dirs//$search_dir\//}" | head -$i | tail +$i)"
+            done
+            read pre_select
+        fi
+        final_path="$(echo "$found_dirs" | head -$pre_select | tail +$pre_select)"
+        echo "$(echo ${found_dirs//$search_dir\//} | head -$pre_select | tail +$pre_select)"
+        cd "$final_path"
+    fi
+}
+
+# Used to quickly cd to tmp/work/… working dir.
+# See twd/ewd.
+function _yocto_wd ()
+{
+    local workdir="$1"
+    local pkg="$2"
+    local num_pkg="$3"
+    local num_version="$4"
+
+    _search_and_prompt "$workdir" 2 "$pkg" "$num_pkg"
+    _search_and_prompt "$(pwd)" 1 "" "$num_version"
+}
