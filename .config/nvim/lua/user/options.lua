@@ -41,6 +41,9 @@ for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
+-- Search with `*`, but don't jump dirst and don't add to jump list.
+vim.cmd "nnoremap * :keepjumps normal! mi*`i<CR>"
+
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
 vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
