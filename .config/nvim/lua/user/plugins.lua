@@ -53,22 +53,13 @@ return packer.startup(function(use)
   use "kyazdani42/nvim-web-devicons"
   use "kyazdani42/nvim-tree.lua" -- Tree file navigation
   use "nvim-lualine/lualine.nvim" -- Sleek line
-  use "kergoth/vim-bitbake" -- Bibtake files support
   use "akinsho/toggleterm.nvim" -- Show a terminal
   use "windwp/nvim-autopairs" -- Autopairs of bracket, etc.
   use "cappyzawa/trim.nvim" -- Trim whitespace, etc.
-  use ({"dhananjaylatkar/cscope_maps.nvim",
-    config = function()
-      require("cscope_maps")
-    end,
-  })
   use "tpope/vim-repeat" -- Repeat plugin maps
-    -- Cscope plugin
 
   -- Colorschemes
-  -- use "lunarvim/colorschemes" -- A bunch of colorschemes you can try out
   use "lunarvim/darkplus.nvim"
-  use "arcticicestudio/nord-vim"
 
   -- cmp plugins
   use "hrsh7th/nvim-cmp" -- The completion plugin
@@ -84,7 +75,11 @@ return packer.startup(function(use)
 
   -- LSP
   use "neovim/nvim-lspconfig" -- enable LSP
-  use "williamboman/nvim-lsp-installer" -- simple to use language server installer
+  use "williamboman/mason.nvim"
+  use "williamboman/mason-lspconfig.nvim"
+
+  -- Lint
+  use 'mfussenegger/nvim-lint'
 
   -- Telescope
   use "nvim-telescope/telescope.nvim"
@@ -109,6 +104,7 @@ return packer.startup(function(use)
   use "p00f/nvim-ts-rainbow" -- colored brackets/parenthesis/…
   use "nvim-treesitter/nvim-treesitter-context" -- line of context at the top of the buffer
   use "nvim-treesitter/nvim-treesitter-textobjects" -- manipulate text-objects
+  use "nvim-treesitter/playground" -- manipulate text-objects
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
