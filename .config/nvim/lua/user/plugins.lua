@@ -57,9 +57,12 @@ return packer.startup(function(use)
   use "windwp/nvim-autopairs" -- Autopairs of bracket, etc.
   use "cappyzawa/trim.nvim" -- Trim whitespace, etc.
   use "tpope/vim-repeat" -- Repeat plugin maps
+  use "rcarriga/nvim-notify" -- Better notifications
+  use "gabrielpoca/replacer.nvim" -- Replace through a quickfix list
 
   -- Colorschemes
   use "lunarvim/darkplus.nvim"
+  use "EdenEast/nightfox.nvim"
 
   -- cmp plugins
   use "hrsh7th/nvim-cmp" -- The completion plugin

@@ -1,7 +1,5 @@
 local opts = { noremap = true, silent = true }
 
-local term_opts = { silent = true }
-
 -- Shorten function name
 local keymap = vim.api.nvim_set_keymap
 
@@ -78,9 +76,10 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 -- keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 -- keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 
--- keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>", opts)
+-- Telescope
 keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
 keymap("n", "<c-t>", "<cmd>Telescope live_grep<cr>", opts)
+keymap("n", "<leader>n", "<cmd>Telescope notify<cr>", opts) -- Requires nvim-notify
 
 -- vim-gitgutter --
 keymap("n", "<C-g>", ":Gitsigns next_hunk<CR>", opts)
@@ -100,6 +99,9 @@ keymap("n", "<leader>yw", ":lua _WALOG_TOGGLE()<CR>", opts)
 -- Bufferline
 keymap("n", "<C-w>", ":Bdelete<CR>", opts)
 
--- Luasnip --
+-- Luasnip
 vim.api.nvim_set_keymap("i", "<C-n>", "<Plug>luasnip-next-choice", {})
 vim.api.nvim_set_keymap("i", "<C-p>", "<Plug>luasnip-prev-choice", {})
+
+-- Replacer
+keymap( "n", "<leader>rr", "<cmd>lua require('replacer').run({ rename_files = false, })<cr>", opts)
