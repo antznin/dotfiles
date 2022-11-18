@@ -16,6 +16,10 @@ vim.g.maplocalleader = " "
 --   term_mode = "t",
 --   command_mode = "c",
 
+--
+-- Vim keymaps
+--
+
 -- Normal --
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h", opts)
@@ -76,19 +80,43 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 -- keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 -- keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 
+--
 -- Telescope
-keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
-keymap("n", "<c-t>", "<cmd>Telescope live_grep<cr>", opts)
-keymap("n", "<leader>n", "<cmd>Telescope notify<cr>", opts) -- Requires nvim-notify
+--
 
--- vim-gitgutter --
+keymap("n", "<leader>f",
+	"<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>",
+	opts)
+keymap("n", "<C-t>", "<cmd>Telescope live_grep<cr>", opts)
+keymap("n", "<leader>tn", "<cmd>Telescope notify<cr>", opts) -- Requires nvim-notify
+
+local toggleterm_keymaps = function(bufnr)
+	local bufopts = { noremap = true }
+	-- vim.api.nvim_buf_set_keymap(bufnr, 't', '<esc>', [[<C-\><C-n>]], bufopts)
+	vim.api.nvim_buf_set_keymap(bufnr, 't', 'jk', [[<C-\><C-n>]], bufopts)
+	vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-h>', [[<C-\><C-n><C-W>h]], bufopts)
+	vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-j>', [[<C-\><C-n><C-W>j]], bufopts)
+	vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-k>', [[<C-\><C-n><C-W>k]], bufopts)
+	vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-l>', [[<C-\><C-n><C-W>l]], bufopts)
+end
+
+--
+-- Gitsigns
+--
+
 keymap("n", "<C-g>", ":Gitsigns next_hunk<CR>", opts)
 keymap("n", "<C-f>", ":Gitsigns prev_hunk<CR>", opts)
 
--- nvim-tree --
+--
+-- nvim-tree
+--
+
 keymap("n", "<C-e>", ":NvimTreeToggle<CR>", opts)
 
--- toggleterm --
+--
+-- Toggleterm
+--
+
 keymap("n", "<leader>yp", ":lua _PYTHON_TOGGLE()<CR>", opts)
 keymap("n", "<leader>yn", ":lua _NCDU_TOGGLE()<CR>", opts)
 keymap("n", "<leader>yh", ":lua _HTOP_TOGGLE()<CR>", opts)
@@ -96,12 +124,60 @@ keymap("n", "<leader>yt", ":lua _TSHELL_TOGGLE()<CR>", opts)
 keymap("n", "<leader>yl", ":lua _LAZYGIT_TOGGLE()<CR>", opts)
 keymap("n", "<leader>yw", ":lua _WALOG_TOGGLE()<CR>", opts)
 
+--
 -- Bufferline
+--
+
 keymap("n", "<C-w>", ":Bdelete<CR>", opts)
 
+--
 -- Luasnip
-vim.api.nvim_set_keymap("i", "<C-n>", "<Plug>luasnip-next-choice", {})
-vim.api.nvim_set_keymap("i", "<C-p>", "<Plug>luasnip-prev-choice", {})
+--
 
+keymap("i", "<C-n>", "<Plug>luasnip-next-choice", {})
+keymap("i", "<C-p>", "<Plug>luasnip-prev-choice", {})
+
+--
 -- Replacer
-keymap( "n", "<leader>rr", "<cmd>lua require('replacer').run({ rename_files = false, })<cr>", opts)
+--
+
+keymap("n", "<leader>rr", "<cmd>lua require('replacer').run({ rename_files = false, })<cr>", opts)
+
+--
+-- LSP
+--
+
+-- Global LSP mappings.
+keymap('n', 'gl', '<cmd>lua vim.diagnostic.open_float<cr>', opts)
+keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev<cr>', opts)
+keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next<cr>', opts)
+keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist<cr>', opts)
+
+-- Called by mason.lua.
+local lsp_keymaps = function(bufnr)
+	local bufopts = { noremap = true, silent = true, buffer = bufnr }
+
+	-- Mappings.
+	-- See `:help vim.lsp.*` for documentation on any of the below functions
+	vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+	vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+	vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+	vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+	vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+	vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+	vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
+	vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+	vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
+	vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+	vim.keymap.set('n', '<leader>wf', function() vim.lsp.buf.format { async = true } end, bufopts)
+	vim.keymap.set('n', '<leader>wl', function()
+		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+	end, bufopts)
+end
+
+-- Return keymaps used by other files.
+return {
+	lsp_keymaps = lsp_keymaps,
+	toggleterm_keymaps = toggleterm_keymaps,
+}
