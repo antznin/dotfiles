@@ -1,80 +1,56 @@
 [alias]
-    # ALIASES
-	st    = status
-	# co    = commit -v
-	pu    = push
-	re    = reset
-	plog  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-	alog  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --branches --remotes --tags
-    olog  = log --pretty=format:'%C(red)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ar)%Creset'
-	ch    = checkout
-	br    = branch
-	dif = diff -p --stat
-    difs = dif --staged
-	lg    = !"git lg1"
-	lg1   = !"git lg1-specific --all"
-	lg2   = !"git lg2-specific --all"
-	lg3   = !"git lg3-specific --all"
-    lg1-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
-    lg2-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
-    lg3-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'
-    # Take all uncommited and un-staged changes in the CWD and add them to the previous
-    # commit
-    caa = commit -a --amend -C HEAD
-    corig = commit -C ORIG_HEAD
-    reb = rebase
-    rebco = rebase --continue
-    rebi = rebase -i
-    pfl = push --force-with-lease
-	am3 = am -3
-	amco = am --continue
-	amab = am --abort
-	fpatch1 = format-patch -1
-	softres = reset --soft HEAD~
-	hardres = reset --hard HEAD~
-    res = "!f() { git reset --soft HEAD~; git reset; }; f"
+    alog    = log --color --graph --pretty = format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --branches --remotes --tags
+    am3     = am -3
+    amab    = am --abort
+    amco    = am --continue
+    br      = branch
+    caa     = commit -a --amend -C HEAD
+    ch      = checkout
+    co      = commit --verbose --stat
+    corig   = commit -C ORIG_HEAD
+    dif     = diff -p --stat
+    difs    = dif --staged
+    fpatch1 = format-patch -1
+    hardres = reset --hard HEAD~
+    olog    = log --pretty                 = format:'%C(red)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ar)%Creset'
+    pfl     = push --force-with-lease
+    plog    = log --color --graph --pretty = format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    pu      = push
+    re      = reset
+    reb     = rebase
+    rebco   = rebase --continue
+    rebi    = rebase -i
+    res     = "!f() { git reset --soft HEAD~; git reset; }; f"
+    softres = reset --soft HEAD~
+    st      = status
 
-    # FUNCTIONS
-    # git rename-branch <remote> <old-name> <new-name>
-    rename-branch = "!f() { \
-        git checkout $2; \
-        git branch -m $3; \
-        git push $1 -u $3; \
-        git push $1 --delete $2; \
-        }; f"
-    # minilog
+    # stash, checkout, stash pop
+    chst  = "!f() { git stash; git checkout $1; git stash pop; }; f"
+    # git commit with [squash] prefix and optional "msg"
+    cosq = "!f() { \
+	git commit -m \"[squash] $1\"; \
+	}; f"
+    # mini and pretty log
     mlog = "!f() { \
-        git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit | head -15; \
-        }; f"
+	git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit | head -15; \
+	}; f"
     # git rebonto $1 $2
     rebonto = "!f() { \
-        git rebase --onto $1 origin/$1 $2; \
-        }; f"
-	co = commit --verbose --stat
-    # git cosq "msg"
-    cosq = "!f() { \
-        git commit -m \"[squash] $1\"; \
-        }; f"
-    chst  = "!f() { git stash; git checkout $1; git stash pop; }; f"
-    prull = "!f() { git pull -p && git branch -d $1; }; f"
-
-
-
+	git rebase --onto $1 origin/$1 $2; \
+	}; f"
+    # rename a branch on local and remote
+    rename-branch = "!f() { \
+	git checkout $2; \
+	git branch -m $3; \
+	git push $1 -u $3; \
+	git push $1 --delete $2; \
+	}; f"
 [core]
-	editor = nvim
-	excludesfile = /home/agodard/.gitignore_global
-    ; sshCommand="/usr/bin/ssh -i /home/agodard/.ssh/id_rsa_seb"
+    editor = nvim
+
 [user]
-	name = Antonin Godard
-	email = agodard@witekio.com
-[oh-my-zsh]
-	hide-status = 1
+    name  = antznin
+    email = antoningodard@protonmail.com
+
 [color]
-	ui = auto
-[sendemail]
-    from = Antonin Godard <agodard@witekio.com>
-    smtpserver = smtp.office365.com
-    smtpuser = agodard@witekio.com
-    smtppass =
-    smtpencryption = tls
-    smtpserverport = 587
+    ui = auto
