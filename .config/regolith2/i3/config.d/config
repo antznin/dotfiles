@@ -16,6 +16,9 @@ exec --no-startup-id gsettings set org.gnome.gnome-flashback screensaver false
 # Lock & suspend
 bindsym $mod+Shift+z exec --no-startup-id sh -c "$i3-wm.program.lock & sleep 5 && systemctl suspend"
 
+# Qwerty Lafayette
+exec --no-startup-id setxkbmap fr -variant lafayette
+
 #
 # Dropdowns
 #
@@ -58,7 +61,7 @@ set_from_resource $i3-wm.screen.left  i3-wm.screen.left  "HDMI-2"
 set_from_resource $i3-wm.screen.right i3-wm.screen.right "eDP-1"
 workspace 1  output $i3-wm.screen.left
 workspace 2  output $i3-wm.screen.left
-workspace 3  output $i3-wm.screen.left
+workspace 4  output $i3-wm.screen.left
 workspace 4  output $i3-wm.screen.right
 workspace 5  output $i3-wm.screen.right
 workspace 6  output $i3-wm.screen.left
