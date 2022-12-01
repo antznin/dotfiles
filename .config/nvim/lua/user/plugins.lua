@@ -59,6 +59,7 @@ return packer.startup(function(use)
   use "tpope/vim-repeat" -- Repeat plugin maps
   use "rcarriga/nvim-notify" -- Better notifications
   use "gabrielpoca/replacer.nvim" -- Replace through a quickfix list
+  use "echasnovski/mini.align" -- Better alignments
 
   -- Colorschemes
   use "lunarvim/darkplus.nvim"
