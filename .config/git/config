@@ -1,5 +1,5 @@
 [alias]
-    alog    = log --color --graph --pretty = format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --branches --remotes --tags
+    alog    = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --branches --remotes --tags
     am3     = am -3
     amab    = am --abort
     amco    = am --continue
@@ -12,9 +12,9 @@
     difs    = dif --staged
     fpatch1 = format-patch -1
     hardres = reset --hard HEAD~
-    olog    = log --pretty                 = format:'%C(red)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ar)%Creset'
+    olog    = log --pretty=format:'%C(red)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ar)%Creset'
     pfl     = push --force-with-lease
-    plog    = log --color --graph --pretty = format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    plog    = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     pu      = push
     re      = reset
     reb     = rebase
