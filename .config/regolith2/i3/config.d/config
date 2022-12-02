@@ -7,14 +7,25 @@
 # Layout toggle
 bindsym $mod+$i3-wm.binding.layout_mode layout toggle tabbed splith splitv stacking
 
+# Stacked container
+set_from_resource $i3-wm.binding.layout_stacking i3-wm.binding.layout_stacking s
+bindsym $mod+$i3-wm.binding.layout_stacking split horizontal, layout stacking
+
+# Tabbed container
+set_from_resource $i3-wm.binding.layout_windowed i3-wm.binding.layout_windowed q
+bindsym $mod+$i3-wm.binding.layout_windowed split horizontal, layout tabbed
+
 # Custom terminal
 exec --no-startup-id update-alternatives --set x-terminal-emulator /usr/bin/konsole
 
 # Custom lockscreen
 exec --no-startup-id gsettings set org.gnome.gnome-flashback screensaver false
 
-# Lock & suspend
-bindsym $mod+Shift+z exec --no-startup-id sh -c "$i3-wm.program.lock & sleep 5 && systemctl suspend"
+# Don't pop nautilus windows
+exec --no-startup-id gsettings set org.gnome.desktop.media-handling automount-open false
+
+# Qwerty Lafayette
+exec --no-startup-id setxkbmap fr -variant lafayette
 
 # Qwerty Lafayette
 exec --no-startup-id setxkbmap fr -variant lafayette
@@ -23,9 +34,9 @@ exec --no-startup-id setxkbmap fr -variant lafayette
 # Dropdowns
 #
 
-exec --no-startup-id termite -t vim-notes -e vim -c "NERDTree ~/Sync/Notes/witekio"
+exec --no-startup-id gnome-terminal --class="vim-notes" -- sh -c "cd $HOME/sync/notes && nvim +NvimTreeToggle"
 bindsym $mod+Shift+F2 [class="vim-notes"] scratchpad show, move position center
-for_window [class="vim-notes"] floating enable, move scratchpad
+for_window [class="vim-notes"] floating enable, resize set 1200 900, move scratchpad
 
 exec --no-startup-id gnome-calculator -m programming
 bindsym $mod+Shift+F3 [class="Gnome-calculator"] scratchpad show, move position center
@@ -33,7 +44,12 @@ for_window [class="Gnome-calculator"] floating enable, move scratchpad
 
 exec --no-startup-id keepassxc
 bindsym $mod+Shift+F4 [class="KeePassXC"] scratchpad show, move position center
-for_window [class="KeePassXC"] floating enable, resize set 800 600, move scratchpad
+for_window [class="KeePassXC"] floating enable, resize set 1200 900, move scratchpad
+
+exec --no-startup-id feh --title lafayette-helper $HOME/.config/i3.bak/misc/lafayette.png
+bindsym $mod+Shift+F5 [title="^lafayette-helper$"] scratchpad show, move position center
+for_window [title="^lafayette-helper$"] floating enable, move scratchpad
+
 
 #
 # Startup programs
@@ -41,17 +57,21 @@ for_window [class="KeePassXC"] floating enable, resize set 800 600, move scratch
 
 exec --no-startup-id spotify
 for_window [class="Spotify"] move to workspace $ws10
+for_window [class="Spotify"] bordel pixel 1
 
 exec --no-startup-id teams
 for_window [class="Microsoft Teams - Preview"] move to workspace $ws5
+for_window [class="Microsoft Teams - Preview"] border pixel 1
 
 exec --no-startup-id dunst
 
 exec --no-startup-id firefox
 for_window [class="firefox"] move to workspace $ws4
+for_window [class="firefox"] border pixel 1
 
 exec --no-startup-id telegram-desktop
 for_window [class="TelegramDesktop"] move to workspace $ws9
+for_window [class="TelegramDesktop"] border pixel 1
 
 #
 # Windows assignments
@@ -61,7 +81,7 @@ set_from_resource $i3-wm.screen.left  i3-wm.screen.left  "HDMI-2"
 set_from_resource $i3-wm.screen.right i3-wm.screen.right "eDP-1"
 workspace 1  output $i3-wm.screen.left
 workspace 2  output $i3-wm.screen.left
-workspace 4  output $i3-wm.screen.left
+workspace 3  output $i3-wm.screen.left
 workspace 4  output $i3-wm.screen.right
 workspace 5  output $i3-wm.screen.right
 workspace 6  output $i3-wm.screen.left
