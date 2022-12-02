@@ -72,3 +72,20 @@ ewd ()
 
     _yocto_wd "$ebuild/tmp/work" "$pkg" "$num_pkg" "$num_version"
 }
+
+flash_ez14 ()
+{
+    local suffix="$1"
+
+    set -x
+
+    lsblk /dev/sdez
+    read
+    sudo umount /dev/sdezp1 /dev/sdezp2 /dev/sdezp3
+    sleep 1
+    sudo dd if="$edeploy/images/txl-ez1-4/txl-image${suffix}-txl-ez1-4.txl-sdimg" of=/dev/sdez bs=1M
+    sleep 1
+    sudo mount /dev/sdezp1 /mnt
+    sudo cp $emeta/txl-bsp/u-boot/{MLO,u-boot.bin} /mnt
+    sudo umount /mnt
+}

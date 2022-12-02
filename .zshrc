@@ -1,22 +1,25 @@
 #!/usr/bin/env sh
 
-# Zap plugin manager
-[ -f "$HOME/.local/share/zap/zap.zsh" ] && source "$HOME/.local/share/zap/zap.zsh"
+ZSH_THEME="${ARG_THEME:-robbyrussell}"
 
-# Remote
-plug "zap-zsh/supercharge" # Better coloring, etc
-plug "zsh-users/zsh-autosuggestions"
-plug "zsh-users/zsh-completions"
-plug "zsh-users/zsh-syntax-highlighting"
-plug "zap-zsh/zap-prompt" # Good looking prompt.
-plug "zap-zsh/fzf"
-plug "zap-zsh/exa"
-sub_plug "ohmyzsh/ohmyzsh" "master" "git" "plugins/git"
+plugins=(\
+    colored-man-pages \
+    fd \
+    fzf \
+    git \
+    zsh-autosuggestions \
+    zsh-completions \
+    zsh-syntax-highlighting \
+    zsh-z \
+)
 
-# Local
-plug "$HOME/.config/zsh/aliases.zsh"
-plug "$HOME/.config/zsh/options.zsh"
-plug "$HOME/.config/zsh/keymaps.zsh"
-plug "$HOME/.config/zsh/utils.zsh"
-plug "$HOME/.config/zsh/exports.zsh"
-plug "$HOME/.config/zsh/witekio.zsh"
+# Oh My zsh
+export ZSH="$HOME/.oh-my-zsh"
+source $ZSH/oh-my-zsh.sh
+
+source "$HOME/.config/zsh/options.zsh"
+source "$HOME/.config/zsh/exports.zsh"
+source "$HOME/.config/zsh/aliases.zsh"
+source "$HOME/.config/zsh/keymaps.zsh"
+source "$HOME/.config/zsh/utils.zsh"
+source "$HOME/.config/zsh/witekio.zsh"

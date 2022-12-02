@@ -2,7 +2,7 @@
 # Shell options
 #
 
-HISTFILE="$HOME/.zhistory"
+HISTFILE="$HOME/.zsh_history"
 setopt sharehistory
 stty -ixon
 
