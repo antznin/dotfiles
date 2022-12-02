@@ -106,6 +106,8 @@ end
 
 keymap("n", "<C-g>", ":Gitsigns next_hunk<CR>", opts)
 keymap("n", "<C-f>", ":Gitsigns prev_hunk<CR>", opts)
+keymap("n", "<leader>lb", ":Gitsigns toggle_current_line_blame<CR>", opts)
+
 
 --
 -- nvim-tree
@@ -148,10 +150,10 @@ keymap("n", "<leader>rr", "<cmd>lua require('replacer').run({ rename_files = fal
 --
 
 -- Global LSP mappings.
-keymap('n', 'gl', '<cmd>lua vim.diagnostic.open_float<cr>', opts)
-keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev<cr>', opts)
-keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next<cr>', opts)
-keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist<cr>', opts)
+keymap('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>', opts)
+keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>', opts)
+keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>', opts)
+keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<cr>', opts)
 
 -- Called by mason.lua.
 local lsp_keymaps = function(bufnr)
@@ -163,7 +165,7 @@ local lsp_keymaps = function(bufnr)
 	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
 	vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
 	vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-	vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+	vim.keymap.set('n', '<leader>k', vim.lsp.buf.signature_help, bufopts)
 	vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
 	vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
 	vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)

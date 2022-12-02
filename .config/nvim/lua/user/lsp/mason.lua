@@ -101,13 +101,3 @@ mason_lspconfig.setup_handlers {
 		}
 	end,
 }
-
-local lspconfig
-status_ok, lspconfig = pcall(require, "lspconfig")
-if not status_ok then
-	return
-end
-
-lspconfig['bitbake'].setup {
-	on_attach = on_attach,
-}

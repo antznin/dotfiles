@@ -62,7 +62,6 @@ return packer.startup(function(use)
   use "echasnovski/mini.align" -- Better alignments
 
   -- Colorschemes
-  use "lunarvim/darkplus.nvim"
   use "EdenEast/nightfox.nvim"
 
   -- cmp plugins

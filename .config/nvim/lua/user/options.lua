@@ -44,12 +44,21 @@ for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
+vim.api.nvim_create_augroup('NeovimConfig', {})
+vim.api.nvim_create_autocmd('BufWritePost', {
+  group = 'NeovimConfig',
+  pattern = 'init.lua',
+  command = "source %",
+  desc = 'Auto-reload the configuration.',
+})
+
 -- Search with `*`, but don't jump dirst and don't add to jump list.
 vim.cmd "nnoremap * :keepjumps normal! mi*`i<CR>"
 
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
 vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
+
 -- Hardmode
 vim.cmd "let g:HardMode_level = 'wannabe'"
 vim.cmd "let g:HardMode_hardmodeMsg = 'Don''t use this!'"
