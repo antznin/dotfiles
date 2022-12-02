@@ -1,11 +1,12 @@
 [Appearance]
-ColorScheme=Nordic
-Font=JetBrainsMono Nerd Font Mono,12,-1,5,57,0,0,0,0,0,Medium
+ColorScheme=Gruvbox
+Font=JetBrainsMono Nerd Font Mono,11,-1,5,50,0,0,0,0,0
 
 [Cursor Options]
 CursorShape=1
 
 [General]
+Command=/usr/bin/zsh
 Icon=org.gnome.Terminal
 Name=agodard
 Parent=FALLBACK/
@@ -17,7 +18,7 @@ TerminalRows=50
 
 [Scrolling]
 HistoryMode=1
-HistorySize=10000
+HistorySize=50000
 ScrollBarPosition=2
 
 [Terminal Features]
