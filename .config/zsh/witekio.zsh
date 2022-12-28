@@ -36,7 +36,7 @@ twd ()
     local num_pkg="$2"
     local num_version="$3"
 
-    _yocto_wd "$tbuild/build/tmp/work" "$pkg" "$num_pkg" "$num_version"
+    yocto_wd "$tbuild/build/tmp/work" "$pkg" "$num_pkg" "$num_version"
 }
 
 # Trixell EZ1.4
@@ -54,9 +54,7 @@ alias_export epoky "$esources/standard/poky/meta"
 
 eshell ()
 {
-    cd "$ebsp" \
-        && TEMPLATECONF=/data/txl/ez1/workspace/wyld/bsp/sources/custom/meta-txl/txl-bsp/conf \
-        source sources/standard/poky/oe-init-build-env ./build >/dev/null
+    cd "$ebsp" && BSP_DIR="$ebsp" make shell
 }
 
 emach ()
@@ -70,7 +68,7 @@ ewd ()
     local num_pkg="$2"
     local num_version="$3"
 
-    _yocto_wd "$ebuild/tmp/work" "$pkg" "$num_pkg" "$num_version"
+    yocto_wd "$ebuild/tmp/work" "$pkg" "$num_pkg" "$num_version"
 }
 
 flash_ez14 ()
@@ -81,11 +79,7 @@ flash_ez14 ()
 
     lsblk /dev/sdez
     read
-    sudo umount /dev/sdezp1 /dev/sdezp2 /dev/sdezp3
+    sudo umount /dev/sdezp[0-9]
     sleep 1
     sudo dd if="$edeploy/images/txl-ez1-4/txl-image${suffix}-txl-ez1-4.txl-sdimg" of=/dev/sdez bs=1M
-    sleep 1
-    sudo mount /dev/sdezp1 /mnt
-    sudo cp $emeta/txl-bsp/u-boot/{MLO,u-boot.bin} /mnt
-    sudo umount /mnt
 }

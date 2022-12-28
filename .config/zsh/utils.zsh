@@ -29,7 +29,7 @@ benv ()
 }
 
 # vim the nth file listed in git status --short
-function vimg () {
+vimg () {
     local index="$1"
 
     if [[ "$index" == "" ]]; then
@@ -48,8 +48,8 @@ function vimg () {
 }
 
 # Search in a directory for given dir_name. Prompt if multiple matches.
-# See _yocto_wd
-function _search_and_prompt ()
+# See yocto_wd
+_search_and_prompt ()
 {
     local search_dir="$1"
     local depth="$2"
@@ -61,6 +61,11 @@ function _search_and_prompt ()
         || found_dirs="$(find "$search_dir" -mindepth $depth -maxdepth $depth -print)"
 
     num_found="$(echo "$found_dirs" | wc -l)"
+
+    if [[ -z "$found_dirs" ]]; then
+        echo "No directory found."
+        return 1
+    fi
 
     if [[ "$num_found" = "1" ]]; then
         echo "$found_dirs"
@@ -80,13 +85,44 @@ function _search_and_prompt ()
 
 # Used to quickly cd to tmp/work/… working dir.
 # See twd/ewd.
-function _yocto_wd ()
+yocto_wd ()
 {
     local workdir="$1"
     local pkg="$2"
     local num_pkg="$3"
     local num_version="$4"
 
-    _search_and_prompt "$workdir" 2 "$pkg" "$num_pkg"
-    _search_and_prompt "$(pwd)" 1 "" "$num_version"
+    if [ -z "$workdir" ]; then
+        echo "Working directory cannot be empty."
+        return 1
+    fi
+
+    if [ -z "$pkg" ]; then
+        echo "Package cannot be empty."
+        return 1
+    fi
+
+    _search_and_prompt "$workdir" 2 "$pkg" "$num_pkg" \
+        && _search_and_prompt "$(pwd)" 1 "" "$num_version"
 }
+
+bbenv ()
+{
+    local pn="$1"
+    local var="$2"
+
+    if [ "$#" = "1" ]; then
+        pn=""
+        var="$1"
+    fi
+
+    bitbake -e $pn | grep "^$var="
+}
+
+vim_last_output ()
+{
+    $(fc -ln -1) > /tmp/tmp.zsh_lst_cmd
+    vim "$(cat /tmp/tmp.zsh_lst_cmd | fzf --layout reverse)"
+}
+zle -N vim_last_output
+bindkey '^v' vim_last_output
