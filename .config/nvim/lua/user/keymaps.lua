@@ -43,8 +43,6 @@ keymap("n", "<A-k>", "<Esc>:m .-2<CR>==gi", opts)
 
 -- Quit all
 keymap("n", "<C-q>", ":wqa<CR>", opts)
--- Save
-keymap("n", "<C-s>", ":wa<CR>", opts)
 
 -- Move between tabs
 keymap("n", "<A-l>", ":tabnext<CR>", opts)
@@ -84,11 +82,20 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 -- Telescope
 --
 
-keymap("n", "<leader>f",
-	"<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>",
-	opts)
+-- Try git_files. If not in a repository, will fallback on find_files.
+local telescope_try_git_giles = function ()
+	local builtin = require("telescope.builtin")
+	local status_ok, _ = pcall(builtin.git_files)
+	if not status_ok then
+		builtin.find_files()
+	end
+end
+
+vim.keymap.set("n", "<leader>f", telescope_try_git_giles, opts)
+keymap("n", "<leader>g", "<cmd>Telescope find_files<cr>", opts)
 keymap("n", "<C-t>", "<cmd>Telescope live_grep<cr>", opts)
-keymap("n", "<leader>tn", "<cmd>Telescope notify<cr>", opts) -- Requires nvim-notify
+keymap("n", "<C-s>", "<cmd>Telescope grep_string<cr>", opts)
+keymap("n", "<leader>n", "<cmd>Telescope notify<cr>", opts) -- Requires nvim-notify
 
 local toggleterm_keymaps = function(bufnr)
 	local bufopts = { noremap = true }

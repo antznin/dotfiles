@@ -20,7 +20,6 @@ vim_notify.setup({
   stages = 'fade',
   timeout = 1000,
   top_down = true,
-  max_width = 35,
 })
 
 -- Use nvim-notify for all notifications
