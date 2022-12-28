@@ -15,6 +15,9 @@ bindsym $mod+$i3-wm.binding.layout_stacking split horizontal, layout stacking
 set_from_resource $i3-wm.binding.layout_windowed i3-wm.binding.layout_windowed q
 bindsym $mod+$i3-wm.binding.layout_windowed split horizontal, layout tabbed
 
+# Move to monitor
+bindsym $mod+m move workspace to output next
+
 # Custom terminal
 exec --no-startup-id update-alternatives --set x-terminal-emulator /usr/bin/konsole
 
