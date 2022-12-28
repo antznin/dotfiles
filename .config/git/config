@@ -6,7 +6,7 @@
     br      = branch
     caa     = commit -a --amend -C HEAD
     ch      = checkout
-    co      = commit --verbose --stat
+    co      = commit --stat
     corig   = commit -C ORIG_HEAD
     dif     = diff -p --stat
     difs    = dif --staged
@@ -45,8 +45,16 @@
 	git push $1 -u $3; \
 	git push $1 --delete $2; \
 	}; f"
+
+[commit]
+    verbose = true
+
 [core]
     editor = nvim
+
+[rebase]
+    autoStash = true
+    abbreviateCommands = true
 
 [user]
     name  = antznin
