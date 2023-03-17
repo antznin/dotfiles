@@ -52,6 +52,9 @@
 [core]
     editor = nvim
 
+[fetch]
+    prune = true
+
 [rebase]
     autoStash = true
     abbreviateCommands = true
