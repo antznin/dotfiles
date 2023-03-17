@@ -21,7 +21,7 @@ local diff = {
 	"diff",
 	colored = false,
 	symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
-  cond = hide_in_width
+	cond = hide_in_width
 }
 
 local mode = {
@@ -45,7 +45,7 @@ local branch = {
 
 local location = {
 	"location",
-	padding = 0,
+	padding = 0.5,
 }
 
 -- cool function for progress
@@ -66,19 +66,18 @@ lualine.setup({
 	options = {
 		icons_enabled = true,
 		theme = "auto",
-		component_separators = { left = "", right = "" },
-		section_separators = { left = "", right = "" },
+		section_separators = { left = '', right = '' },
+		component_separators = { left = '', right = '' },
 		disabled_filetypes = { "dashboard", "NvimTree", "Outline" },
 		always_divide_middle = true,
 	},
 	sections = {
-		lualine_a = { branch, diagnostics },
+		lualine_a = { branch },
 		lualine_b = { mode },
-		lualine_c = {},
-		-- lualine_x = { "encoding", "fileformat", "filetype" },
-		lualine_x = { diff, spaces, "encoding", filetype },
+		lualine_c = { diagnostics },
+		lualine_x = { diff, filetype },
 		lualine_y = { location },
-		lualine_z = { progress },
+		lualine_z = { "progress" },
 	},
 	inactive_sections = {
 		lualine_a = {},

@@ -5,7 +5,7 @@ if not status_ok then
 end
 
 trim.setup {
-  disable = {},
+  ft_blocklist = {},
   patterns = {
     [[%s/\s\+$//e]],          -- remove unwanted spaces
     [[%s/\($\n\s*\)\+\%$//]], -- trim last line

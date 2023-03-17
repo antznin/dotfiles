@@ -60,6 +60,7 @@ return packer.startup(function(use)
   use "rcarriga/nvim-notify" -- Better notifications
   use "gabrielpoca/replacer.nvim" -- Replace through a quickfix list
   use "echasnovski/mini.align" -- Better alignments
+  use "caenrique/nvim-maximize-window-toggle" -- Toggle fullscreen
 
   -- Colorschemes
   use "EdenEast/nightfox.nvim"
@@ -106,6 +107,13 @@ return packer.startup(function(use)
   use "nvim-treesitter/nvim-treesitter-context" -- line of context at the top of the buffer
   use "nvim-treesitter/nvim-treesitter-textobjects" -- manipulate text-objects
   use "nvim-treesitter/playground" -- manipulate text-objects
+
+  -- DAP
+  use "mfussenegger/nvim-dap" -- Debug Adapter Protocol
+  use "rcarriga/nvim-dap-ui" -- UI for DAP, requires mfussenegger/nvim-dap.
+  use "mfussenegger/nvim-dap-python" -- DAP for Python
+  -- use "nvim-telescope/telescope-dap.nvim" -- Uses telescope to replace DAP commands TODO
+  -- use "theHamsta/nvim-dap-virtual-text" TODO
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

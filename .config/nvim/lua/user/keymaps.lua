@@ -51,8 +51,8 @@ keymap("n", "<A-h>", ":tabprevious<CR>", opts)
 keymap("n", "<A-t>", ":tabnew<CR>", opts)
 
 -- Insert --
--- Press jk fast to enter
-keymap("i", "jk", "<ESC>", opts)
+-- Press kj fast to enter
+keymap("i", "kj", "<ESC>", opts)
 
 -- Visual --
 -- Stay in indent mode
@@ -153,6 +153,12 @@ keymap("i", "<C-p>", "<Plug>luasnip-prev-choice", {})
 keymap("n", "<leader>rr", "<cmd>lua require('replacer').run({ rename_files = false, })<cr>", opts)
 
 --
+-- Toggle Fullscreen (caenrique/nvim-maximize-window-toggle)
+--
+
+keymap("n", "<leader>o", "<cmd>ToggleOnly<cr>", opts)
+
+--
 -- LSP
 --
 
@@ -184,6 +190,27 @@ local lsp_keymaps = function(bufnr)
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, bufopts)
 end
+
+--
+-- DAP
+--
+
+keymap("n", "<F5>", "<cmd>lua require('dap').continue()<cr>", opts)
+keymap("n", "<F10>", "<cmd>lua require('dap').step_over()<cr>", opts)
+keymap("n", "<F11>", "<cmd>lua require('dap').step_into()<cr>", opts)
+keymap("n", "<F12>", "<cmd>lua require('dap').step_out()<cr>", opts)
+keymap("n", "<leader>b", "<cmd>lua require('dap').toggle_breakpoint()<cr>", opts)
+keymap(
+	"n",
+	"<leader>B",
+	"<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
+	opts)
+keymap(
+	"n",
+	"<leader>lp",
+	"<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
+	opts)
+keymap("n", "<leader>du", "<cmd>lua require('dapui').toggle()<cr>", opts)
 
 -- Return keymaps used by other files.
 return {
