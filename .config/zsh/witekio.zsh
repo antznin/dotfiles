@@ -84,3 +84,45 @@ flash_ez14 ()
     sleep 1
     sudo dd if="$edeploy/images/txl-ez1-4/txl-image${suffix}-txl-ez1-4.txl-sdimg" of=/dev/sdez bs=1M
 }
+
+# J&J
+
+alias_export jhome "/data/jandj"
+alias_export jclient "$jhome/client"
+alias_export jws "$jhome/workspace"
+alias_export jbsp "$jws/bsp"
+alias_export jbuild "$jbsp/build"
+alias_export jmeta "$jbsp/meta-otx"
+alias_export jpoky "$jbsp/poky"
+alias_export jdeploy "$jbuild/tmp/deploy"
+alias_export jmach "$jdeploy/images/rcu"
+
+# Misc
+
+replace_files ()
+{
+    for f in $@
+    do
+        dest="$(echo "$f" | sed 's/v1.6.0-txl//')"
+        dest="v1.7.0-txl$dest"
+        cp -v "$f" "$dest"
+    done
+}
+
+replace_dir ()
+{
+    dest="$(echo "$1" | sed 's/v1.6.0-txl//')"
+    dest="v1.7.0-txl$dest"
+    dest="$(dirname "$dest")"
+    cp -rv "$1" "$dest"
+}
+
+revert ()
+{
+    for f in $@
+    do
+        dest="$(echo "$f" | sed 's/v1.7.0-txl.bak//')"
+        dest="v1.7.0-txl$dest"
+        cp -v "$f" "$dest"
+    done
+}

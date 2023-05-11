@@ -5,6 +5,7 @@
     amco    = am --continue
     br      = branch
     caa     = commit -a --amend -C HEAD
+    caas    = commit --amend -C HEAD
     ch      = checkout
     co      = commit --stat
     corig   = commit -C ORIG_HEAD
@@ -45,12 +46,34 @@
 	git push $1 -u $3; \
 	git push $1 --delete $2; \
 	}; f"
+    prunebr = "!f() { \
+	branches=\"$(git branch --merged \
+	  | grep -Ev '(^\\*|master|main|dev|develop)')\"; \
+	echo -n \"Delete following branches? [Y/n]\n$branches\nAnswer: \"; \
+	read resp; \
+	resp=\"${resp:-y}\"; \
+	[ \"$resp\" = "y" ] && git branch -d $branches; \
+	}; f"
 
 [commit]
     verbose = true
 
 [core]
     editor = nvim
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true    # use n and N to move between diff sections
+    light = false      # set to true if you're in a terminal w/ a light background color
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
 
 [fetch]
     prune = true

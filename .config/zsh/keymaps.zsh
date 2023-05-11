@@ -11,11 +11,19 @@ bindkey "^[l" forward-char
 
 bindkey "^[a" clear-screen
 
-delete-whole-word ()
-{
-    select-word-style shell
-    zle backward-delete-word
-    select-word-style bash
-}
-zle -N delete-whole-word
-bindkey '^q' delete-whole-word
+# delete-whole-word ()
+# {
+#     select-word-style shell
+#     zle backward-delete-word
+#     select-word-style bash
+# }
+# zle -N delete-whole-word
+# bindkey '^q' delete-whole-word
+
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+# use the vi navigation keys in menu completion
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
