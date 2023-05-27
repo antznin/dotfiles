@@ -97,6 +97,15 @@ alias_export jpoky "$jbsp/poky"
 alias_export jdeploy "$jbuild/tmp/deploy"
 alias_export jmach "$jdeploy/images/rcu"
 
+jwd ()
+{
+    local pkg="$1"
+    local num_pkg="$2"
+    local num_version="$3"
+
+    yocto_wd "$jbuild/tmp/work" "$pkg" "$num_pkg" "$num_version"
+}
+
 # Misc
 
 replace_files ()

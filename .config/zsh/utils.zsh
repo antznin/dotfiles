@@ -126,3 +126,29 @@ vim_last_output ()
 }
 zle -N vim_last_output
 bindkey '^v' vim_last_output
+
+ipklist ()
+{
+    local files="$*"
+
+    tmpdir="$(mktemp -d)"
+    for f in $files
+    do
+        # Extract data.tar.xz from ipk
+        ar x --output "$tmpdir" "$f" data.tar.xz
+        tar tvf "$tmpdir/data.tar.xz"
+    done
+    rm -r "$tmpdir"
+}
+
+ipkfind ()
+{
+    local deploydir="$1"
+    local str="$2"
+
+    find "$deploydir" -name "*.ipk" | while read ipk; do
+        if ipklist "$ipk" | grep -q "$str"; then
+            echo "$(basename "$ipk")"
+        fi
+    done
+}
