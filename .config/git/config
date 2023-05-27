@@ -46,7 +46,7 @@
 	git push $1 -u $3; \
 	git push $1 --delete $2; \
 	}; f"
-    prunebr = "!f() { \
+    brp = "!f() { \
 	branches=\"$(git branch --merged \
 	  | grep -Ev '(^\\*|master|main|dev|develop)')\"; \
 	echo -n \"Delete following branches? [Y/n]\n$branches\nAnswer: \"; \
