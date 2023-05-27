@@ -54,7 +54,7 @@ return packer.startup(function(use)
   use "kyazdani42/nvim-tree.lua" -- Tree file navigation
   use "nvim-lualine/lualine.nvim" -- Sleek line
   use "akinsho/toggleterm.nvim" -- Show a terminal
-  use "windwp/nvim-autopairs" -- Autopairs of bracket, etc.
+  -- use "windwp/nvim-autopairs" -- Autopairs of bracket, etc.
   use "cappyzawa/trim.nvim" -- Trim whitespace, etc.
   use "tpope/vim-repeat" -- Repeat plugin maps
   use "rcarriga/nvim-notify" -- Better notifications
@@ -73,6 +73,7 @@ return packer.startup(function(use)
   use "saadparwaiz1/cmp_luasnip" -- snippet completions
   use "hrsh7th/cmp-nvim-lsp"
   use "antznin/cmp-bitbake-path" -- Path completion for bitbake
+  use "f3fora/cmp-spell" -- Spell checking cmp intergration
 
   -- snippets
   use "L3MON4D3/LuaSnip" --snippet engine

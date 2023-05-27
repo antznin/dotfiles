@@ -107,6 +107,7 @@ cmp.setup {
         buffer = "[Buffer]",
         path = "[Path]",
         bitbake = "[Bitbake]",
+        spell = "[Spell]",
       })[entry.source.name]
       return vim_item
     end,
@@ -117,6 +118,15 @@ cmp.setup {
     { name = "buffer" },
     { name = "path" },
     { name = "bitbake_path" },
+    {
+      name = 'spell',
+      option = {
+        keep_all_entries = false,
+        enable_in_context = function()
+          return true
+        end,
+      },
+    },
   },
   confirm_opts = {
     behavior = cmp.ConfirmBehavior.Replace,

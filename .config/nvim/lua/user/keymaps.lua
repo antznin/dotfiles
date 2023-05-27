@@ -212,6 +212,23 @@ keymap(
 	opts)
 keymap("n", "<leader>du", "<cmd>lua require('dapui').toggle()<cr>", opts)
 
+--
+-- Spell checking
+--
+
+local function toggle_spell_check()
+    vim.opt.spell = not(vim.opt.spell:get())
+end
+
+vim.keymap.set("n", "<leader>ts", toggle_spell_check, opts)
+
+--
+-- Trim
+--
+
+-- Toggle trim
+keymap("n", "<leader>tt", "<cmd>TrimToggle<cr>", opts)
+
 -- Return keymaps used by other files.
 return {
 	lsp_keymaps = lsp_keymaps,

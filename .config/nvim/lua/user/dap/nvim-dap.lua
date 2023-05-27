@@ -69,7 +69,7 @@ if status_ok then
         {
           cppdbg = {"c", "cpp"}, -- Map cppbdg types for c and cpp files.
         })
-      vim.notify("Loaded " .. launchjs .. ".")
+      -- vim.notify("Loaded " .. launchjs .. ".")
     end
   end
 end

@@ -8,11 +8,7 @@ ls.add_snippets("text", {
   -- TXL changelog entry.
   s(
     "txl_chlg",
-    fmt("- [{}]  {}\n\n  {}", {
-      i(1, "commits"),
-      i(2, "title"),
-      i(3, "body"),
-    })
+    fmt("- [] \n\n  ", {})
   ),
 })
 
@@ -20,15 +16,11 @@ ls.add_snippets("yaml", {
   -- Soup patch entry.
   s(
     "patch",
-    fmt([[    - names:
-{}
-      modified_files:
-{}
-      description: {}]], {
-      i(1, "names"),
-      i(2, "modified_files"),
-      i(3, "description"),
-    })
+    fmt([[- names:
+  -
+  modified_files:
+  -
+  description: ]], {})
   ),
 })
 
@@ -41,3 +33,17 @@ ls.add_snippets("yaml", {
     })
   ),
 })
+
+-- ls.add_snippets("yaml", {
+--   -- SOUP patch
+--   s(
+--     "patch",
+--     fmt([[- names:
+--     - {}
+--     modified_files:
+--     - description: {}
+--     ]], {
+--       i(1, "reason"),
+--     })
+--   ),
+-- })

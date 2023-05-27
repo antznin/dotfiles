@@ -37,7 +37,8 @@ local options = {
   foldexpr = "nvim_treesitter#foldexpr()", -- use tree-sitter folding
   foldenable = false,                      -- disable folding at startup
   textwidth = 80,
-  colorcolumn = "81",
+  colorcolumn = "81",                      -- Colored column.
+  spelllang = "en_us",                     -- English by default.
 }
 
 vim.opt.shortmess:append "c"
