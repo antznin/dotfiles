@@ -58,6 +58,22 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 -- Search with `*`, but don't jump dirst and don't add to jump list.
 vim.cmd "nnoremap * :keepjumps normal! mi*`i<CR>"
 
+-- makes * and # work on visual mode too.
+vim.api.nvim_exec(
+  [[
+  function! g:VSetSearch(cmdtype)
+    let temp = @s
+    norm! gv"sy
+    let @/ = '\V' . substitute(escape(@s, a:cmdtype.'\'), '\n', '\\n', 'g')
+    let @s = temp
+  endfunction
+
+  xnoremap * :<C-u>call g:VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
+  xnoremap # :<C-u>call g:VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
+]],
+  false
+)
+
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
 vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work

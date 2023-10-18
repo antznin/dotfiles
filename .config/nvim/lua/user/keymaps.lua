@@ -229,6 +229,18 @@ vim.keymap.set("n", "<leader>ts", toggle_spell_check, opts)
 -- Toggle trim
 keymap("n", "<leader>tt", "<cmd>TrimToggle<cr>", opts)
 
+--
+-- Toggle-checkbox
+--
+
+keymap("n", "<leader>c", ":lua require('toggle-checkbox').toggle()<CR>", opts)
+
+--
+-- Git fugitive
+--
+
+keymap("n", "<leader>gc", ":Git commit<CR>", opts)
+
 -- Return keymaps used by other files.
 return {
 	lsp_keymaps = lsp_keymaps,

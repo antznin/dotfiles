@@ -123,15 +123,13 @@ nvim_tree.setup {
     width = 30,
     hide_root_folder = false,
     side = "left",
-    mappings = {
-      custom_only = false,
-    },
     number = false,
     relativenumber = false,
   },
   -- git_hl = 1,
   renderer = {
     root_folder_modifier = ":t",
+    full_name = true,  -- Display name in full when too big.
     icons = {
       show = {
         git = true,

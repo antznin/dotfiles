@@ -34,6 +34,13 @@ ls.add_snippets("yaml", {
   ),
 })
 
+ls.add_snippets("python", {
+  s(
+    "cvecheck",
+    fmt("\"\": _Check(config=\"\"),", {})
+  ),
+})
+
 -- ls.add_snippets("yaml", {
 --   -- SOUP patch
 --   s(

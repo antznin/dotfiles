@@ -61,6 +61,19 @@ return packer.startup(function(use)
   use "gabrielpoca/replacer.nvim" -- Replace through a quickfix list
   use "echasnovski/mini.align" -- Better alignments
   use "caenrique/nvim-maximize-window-toggle" -- Toggle fullscreen
+  use "opdavies/toggle-checkbox.nvim" -- Check / uncheck markdown boxes.
+  use "tpope/vim-fugitive" -- Git interactions.
+
+  -- install without yarn or npm
+  use({
+      "iamcco/markdown-preview.nvim",
+      run = function() vim.fn["mkdp#util#install"]() end,
+  })
+
+  use {
+    'TimUntersberger/neogit',
+    requires = 'nvim-lua/plenary.nvim'
+  }
 
   -- Colorschemes
   use "EdenEast/nightfox.nvim"

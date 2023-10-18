@@ -6,7 +6,7 @@ end
 nvim_lint.linters_by_ft = {
   python = {'flake8',},
   bitbake = {'oelint-adv',},
-  c = {'checkpatch'},
+  -- c = {'checkpatch'},
 }
 
 nvim_lint.linters.checkpatch.cmd = '/data/misc/bootlin/driver-dev/linux/scripts/checkpatch.pl'

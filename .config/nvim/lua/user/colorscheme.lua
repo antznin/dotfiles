@@ -1,4 +1,4 @@
-local colorscheme = "nightfox"
+local colorscheme = "dayfox"
 local status_ok, nightfox
 
 status_ok, nightfox = pcall(require, "nightfox")
