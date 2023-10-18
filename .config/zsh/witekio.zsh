@@ -2,11 +2,14 @@
 # Witekio
 #
 
+DATA_ROOT="/data"
+
 # Trixell - EZ3
 
-alias_export trixez3 "/data/txl/md20xx"
+alias_export trixez3 "${DATA_ROOT}/txl/md20xx"
 alias_export tclient "$trixez3/client"
 alias_export tws "$trixez3/workspace"
+alias_export tdocker "$trixez3/docker"
 alias_export trepos "$tws/repos"
 alias_export ttests "$tws/tests"
 alias_export tmisc "$tws/misc"
@@ -20,9 +23,15 @@ alias_export tmeta "$tlayers/custom/meta-txl"
 alias_export tkernelpatches "$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx"
 alias_export tkernelfragments "$tmeta/txl-bsp/recipes-kernel/linux/linux-xlnx/txl_kernel_fragments"
 
-tshell ()
+yocto_build_mode="container-yocto"
+
+tshell()
 {
-    cd "$tbuild" && BSP_DIR="$tbsp" make shell
+    local yocto_version="${1:-kirkstone}"
+
+    pushd $trixez3/docker >/dev/null
+    make run CONTAINER_CMD="$tws/entrypoint.sh $yocto_version"
+    popd >/dev/null
 }
 
 tmach ()
@@ -41,7 +50,7 @@ twd ()
 
 # Trixell EZ1.4
 
-alias_export etrixez14 "/data/txl/ez1"
+alias_export etrixez14 "${DATA_ROOT}/txl/ez1"
 alias_export eclient "$etrixez14/client"
 alias_export ews "$etrixez14/workspace"
 alias_export ebsp "$ews/wyld/bsp"
@@ -87,12 +96,13 @@ flash_ez14 ()
 
 # J&J
 
-alias_export jhome "/data/jandj"
+alias_export jhome "${DATA_ROOT}/jandj"
 alias_export jclient "$jhome/client"
 alias_export jws "$jhome/workspace"
 alias_export jbsp "$jws/bsp"
 alias_export jbuild "$jbsp/build"
 alias_export jmeta "$jbsp/meta-otx"
+alias_export jkpatches "$jmeta/recipes-kernel/linux/files"
 alias_export jpoky "$jbsp/poky"
 alias_export jdeploy "$jbuild/tmp/deploy"
 alias_export jmach "$jdeploy/images/rcu"
@@ -104,6 +114,41 @@ jwd ()
     local num_version="$3"
 
     yocto_wd "$jbuild/tmp/work" "$pkg" "$num_pkg" "$num_version"
+}
+
+# Sonendo
+
+alias_export shome "${DATA_ROOT}/sonendo"
+alias_export sdocker "${shome}/docker"
+alias_export sclient "$shome/client"
+alias_export sws "$shome/workspace"
+alias_export sbsp "$sws/bsp"
+alias_export sbuild "$sbsp/build"
+alias_export ssources "$sbsp/sources"
+alias_export spoky "$ssources/poky"
+alias_export smeta "$ssources/meta-sonendo"
+alias_export spoky "$ssources/poky"
+alias_export sdeploy "$sbuild/tmp/deploy"
+alias_export smach "$sdeploy/images/nitrogen8m"
+
+function sshell()
+{
+    local yocto_version="${1:-kirkstone}"
+
+    pushd $shome/docker >/dev/null
+    git checkout ${yocto_version}-sonendo
+    direnv allow .
+    make run CONTAINER_CMD="$sws/entrypoint.sh $yocto_version"
+    popd >/dev/null
+}
+
+function swd ()
+{
+    local pkg="$1"
+    local num_pkg="$2"
+    local num_version="$3"
+
+    yocto_wd "$sbuild/tmp/work" "$pkg" "$num_pkg" "$num_version"
 }
 
 # Misc

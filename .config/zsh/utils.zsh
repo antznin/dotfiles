@@ -119,14 +119,6 @@ bbenv ()
     bitbake -e $pn | grep "^$var="
 }
 
-vim_last_output ()
-{
-    $(fc -ln -1) > /tmp/tmp.zsh_lst_cmd
-    vim "$(cat /tmp/tmp.zsh_lst_cmd | fzf --layout reverse)"
-}
-zle -N vim_last_output
-bindkey '^v' vim_last_output
-
 ipklist ()
 {
     local files="$*"
@@ -149,6 +141,28 @@ ipkfind ()
     find "$deploydir" -name "*.ipk" | while read ipk; do
         if ipklist "$ipk" | grep -q "$str"; then
             echo "$(basename "$ipk")"
+        fi
+    done
+}
+
+rpmlist ()
+{
+    local files="$*"
+
+    for f in $files
+    do
+        rpm -ql "$f"
+    done
+}
+
+rpmfind ()
+{
+    local deploydir="$1"
+    local str="$2"
+
+    find "$deploydir" -name "*.rpm" | while read rpm; do
+        if rpmlist "$rpm" | grep -q "$str"; then
+            echo "$(basename "$rpm")"
         fi
     done
 }

@@ -43,6 +43,8 @@ _fzf_comprun() {
     cd)           fzf --preview 'tree -C {} | head -200'   "$@" ;;
     export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
     ssh)          fzf --preview 'dig {}'                   "$@" ;;
-    *)            fzf --preview 'batcat -n --color=always {}' "$@" ;;
+    *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
   esac
 }
+
+export BATDIFF_USE_DELTA=true
