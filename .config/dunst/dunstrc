@@ -1,5 +1,7 @@
 [global]
-    font = Iosevka Term 8.5
+    font = JetBrainsMono Nerd Font 8
+
+    origin = bottom-right
 
     # allow a small subset of html markup:
     # <b>bold</b>
@@ -47,7 +49,6 @@
     # ignore newlines '\n' in notifications
     ignore_newline = no
 
-
     # the geometry of the window
     # geometry [{width}]x{height}][+/-{x}+/-{y}]
     # The geometry of the message window.
@@ -65,7 +66,7 @@
 
     # The transparency of the window. range: [0; 100]
     # This option will only work if a compositing windowmanager is present (e.g. xcompmgr, compiz, etc..)
-    transparency = 0
+    transparency = 10
 
     # Don't remove messages, if the user is idle (no mouse or keyboard input)
     # for longer than idle_threshold seconds.
@@ -73,7 +74,7 @@
     idle_threshold = 120
 
     # Which monitor should the notifications be displayed on.
-    monitor = 0
+    monitor = 1
 
     # Display notification on focused monitor. Possible modes are:
     # mouse: follow mouse pointer
@@ -150,17 +151,17 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the '#' and following  would be interpreted as a comment.
-    background = "#222222"
-    foreground = "#888888"
+    background = "#838184"
+    foreground = "#ffffff"
     timeout = 10
 
 [urgency_normal]
-    background = "#5E81AC"
+    background = "#afc4db"
     foreground = "#ffffff"
     timeout = 10
 
 [urgency_critical]
-    background = "#BF616A"
+    background = "#cf6a4c"
     foreground = "#ffffff"
     timeout = 0
 
@@ -200,12 +201,12 @@
 #     appname = Pidgin
 #     summary = "*signed on*"
 #     urgency = low
-# 
+#
 # [signed_off]
 #     appname = Pidgin
 #     summary = *signed off*
 #     urgency = low
-# 
+#
 # [says]
 #     appname = Pidgin
 #     summary = *says*
