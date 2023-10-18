@@ -1,6 +1,0 @@
-# Volume indicator
-[volume-pulseaudio]
-command=$HOME/.config/regolith2/i3xrocks/scripts/i3blocks-contrib/volume-pulseaudio/volume-pulseaudio
-interval=persist
-SUBSCRIBE=1
-USE_ALSA_NAME=1

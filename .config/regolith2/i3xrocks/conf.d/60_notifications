@@ -1,8 +1,0 @@
-# Notification snooze / unsnooze
-[dunst]
-command=$HOME/.config/regolith2/i3xrocks/scripts/i3blocks-contrib/dunst/dunst
-interval=once
-format=json
-markup=pango
-#min_width=50
-#align=center
