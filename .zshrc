@@ -10,8 +10,10 @@ plugins=(\
     zsh-autosuggestions \
     zsh-completions \
     zsh-syntax-highlighting \
-    zsh-z \
+    z \
 )
+
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
 # Oh My zsh
 export ZSH="$HOME/.oh-my-zsh"
@@ -23,3 +25,6 @@ source "$HOME/.config/zsh/aliases.zsh"
 source "$HOME/.config/zsh/keymaps.zsh"
 source "$HOME/.config/zsh/utils.zsh"
 source "$HOME/.config/zsh/witekio.zsh"
+
+# SSH Agent (keychain)
+eval $(keychain --eval --quiet id_ed25519)
