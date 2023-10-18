@@ -1,5 +1,5 @@
 [alias]
-    alog    = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --branches --remotes --tags
+    alog    = log --color --graph --abbrev-commit --branches --remotes --tags --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset %C(magenta)(%G?)%Creset'
     am3     = am -3
     amab    = am --abort
     amco    = am --continue
@@ -48,7 +48,8 @@
 	}; f"
     brp = "!f() { \
 	branches=\"$(git branch --merged \
-	  | grep -Ev '(^\\*|master|main|dev|develop)')\"; \
+	  | grep -Ev '(^\\*|master|main|dev|develop|kirkstone|dunfell)')\"; \
+	[ -z \"$branches\" ] && exit 0; \
 	echo -n \"Delete following branches? [Y/n]\n$branches\nAnswer: \"; \
 	read resp; \
 	resp=\"${resp:-y}\"; \
@@ -67,7 +68,7 @@
 
 [delta]
     navigate = true    # use n and N to move between diff sections
-    light = false      # set to true if you're in a terminal w/ a light background color
+    light = true      # set to true if you're in a terminal w/ a light background color
 
 [merge]
     conflictstyle = diff3
@@ -81,10 +82,12 @@
 [rebase]
     autoStash = true
     abbreviateCommands = true
+    updateRefs = true
 
 [user]
-    name  = antznin
-    email = antoningodard@protonmail.com
+    name  = Antonin Godard
+    email = agodard@witekio.com
+    signingkey = D180414029A3A836
 
 [color]
     ui = auto
