@@ -40,7 +40,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # Start a terminal.
-bindsym $mod+Return exec $HOME/.config/i3/alacritty-cwd.sh
+bindsym $mod+Return exec $HOME/.config/i3/wezterm-cwd.sh
 
 # Kill focused window.
 bindsym $mod+Shift+q kill
@@ -93,7 +93,7 @@ bindsym $mod+Shift+f floating toggle
 bindsym $mod+Shift+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+bindsym $mod+$alt+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -174,7 +174,7 @@ bindsym $mod+r mode "resize"
 
 # Dropdowns.
 exec --no-startup-id pavucontrol
-bindsym $mod+$alt+1 [class="Pavucontrol"] scratchpad show, move position center
+bindsym $mod+a [class="Pavucontrol"] scratchpad show, move position center
 for_window [class="Pavucontrol"] floating enable, resize set 1000 800, move scratchpad
 
 exec --no-startup-id alacritty --class vim-notes,vim-notes --working-directory "$HOME/Notes" -e nvim +NvimTreeToggle
@@ -186,7 +186,7 @@ bindsym $mod+$alt+3 [class="gnome-calculator"] scratchpad show, move position ce
 for_window [class="gnome-calculator"] floating enable, move scratchpad
 
 exec --no-startup-id keepassxc
-bindsym $mod+$alt+4 [class="KeePassXC" window_type="normal"] scratchpad show, move position center
+bindsym $mod+d [class="KeePassXC" window_type="normal"] scratchpad show, move position center
 for_window [class="KeePassXC" window_type="normal"] floating enable, resize set 1000 800, move scratchpad
 
 exec --no-startup-id feh --title lafayette-helper $HOME/.config/i3/misc/lafayette.png
@@ -194,14 +194,20 @@ bindsym $mod+$alt+5 [title="^lafayette-helper$"] scratchpad show, move position 
 for_window [title="^lafayette-helper$"] floating enable, move scratchpad
 
 exec --no-startup-id blueberry
-bindsym $mod+$alt+6 [class="Blueberry.py" window_type="normal"] scratchpad show, move position center
+bindsym $mod+b [class="Blueberry.py" window_type="normal"] scratchpad show, move position center
 for_window [class="Blueberry.py" window_type="normal"] floating enable, resize set 1000 800, move scratchpad
+
+exec --no-startup-id obsidian
+bindsym $mod+n [class="obsidian" window_type="normal"] scratchpad show, move position center
+for_window [class="obsidian" window_type="normal"] floating enable, resize set 1300 1000, move scratchpad
 
 exec --no-startup-id telegram-desktop
 for_window [class="^TelegramDesktop$"] move to workspace 9
+bindsym $mod+o [class="^TelegramDesktop$"] focus
 
 exec --no-startup-id spotify
 for_window [class="^Spotify$"] move to workspace 10
+bindsym $mod+p [class="^Spotify$"] focus
 
 for_window [class="mpv"] resize set width 1370 px
 
@@ -213,7 +219,10 @@ for_window [class="firefox"] move to workspace 4
 
 # Work related programs.
 for_window [class="^Slack$"] move to workspace 5, layout stacked
+bindsym $mod+i [class="^Slack$"] focus
 for_window [class="Microsoft Teams - Preview"] move to workspace 5
+for_window [class="thunderbird"] move to workspace 6, layout stacked
+
 # Start them conditionally.
 exec --no-startup-id $HOME/.config/i3/work.sh
 
@@ -241,8 +250,8 @@ workspace 2  output $i3-wm.screen.middle
 workspace 3  output $i3-wm.screen.middle
 workspace 4  output $i3-wm.screen.right
 workspace 5  output $i3-wm.screen.left
-workspace 6  output $i3-wm.screen.middle
-workspace 7  output $i3-wm.screen.middle
+workspace 6  output $i3-wm.screen.right
+workspace 7  output $i3-wm.screen.right
 workspace 8  output $i3-wm.screen.right
 workspace 9  output $i3-wm.screen.left
 workspace 10 output $i3-wm.screen.left
