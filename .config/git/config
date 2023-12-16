@@ -21,7 +21,8 @@
     reb     = rebase
     rebco   = rebase --continue
     rebi    = rebase -i
-    res     = "!f() { git reset --soft HEAD~; git reset; }; f"
+    res     = reset
+    soft    = reset --soft
     softres = reset --soft HEAD~
     st      = status
 
