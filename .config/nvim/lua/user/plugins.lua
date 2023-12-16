@@ -63,8 +63,9 @@ return packer.startup(function(use)
   use "caenrique/nvim-maximize-window-toggle" -- Toggle fullscreen
   use "opdavies/toggle-checkbox.nvim" -- Check / uncheck markdown boxes.
   use "tpope/vim-fugitive" -- Git interactions.
+  use({ "vladdoster/remember.nvim", config = "require('remember')" })
+  use "folke/zen-mode.nvim" -- Chill while coding.
 
-  -- install without yarn or npm
   use({
       "iamcco/markdown-preview.nvim",
       run = function() vim.fn["mkdp#util#install"]() end,

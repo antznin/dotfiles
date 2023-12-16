@@ -83,28 +83,54 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 --
 
 -- Try git_files. If not in a repository, will fallback on find_files.
-local telescope_try_git_giles = function ()
-	local builtin = require("telescope.builtin")
-	local status_ok, _ = pcall(builtin.git_files)
-	if not status_ok then
-		builtin.find_files()
-	end
+local telescope_try_git_files = function(find_opts)
+  local builtin = require("telescope.builtin")
+  local status_ok, _ = pcall(builtin.git_files)
+  if not status_ok then
+    builtin.find_files(find_opts)
+  end
 end
 
-vim.keymap.set("n", "<leader>f", telescope_try_git_giles, opts)
+local function _get_visual_selection()
+  local s_start = vim.fn.getpos("'<")
+  local s_end = vim.fn.getpos("'>")
+  local n_lines = math.abs(s_end[2] - s_start[2]) + 1
+  local lines = vim.api.nvim_buf_get_lines(0, s_start[2] - 1, s_end[2], false)
+  lines[1] = string.sub(lines[1], s_start[3], -1)
+  if n_lines == 1 then
+    lines[n_lines] = string.sub(lines[n_lines], 1, s_end[3] - s_start[3] + 1)
+  else
+    lines[n_lines] = string.sub(lines[n_lines], 1, s_end[3])
+  end
+  return table.concat(lines, '\n')
+end
+
+vim.keymap.set("n", "<leader>f", telescope_try_git_files, opts)
+function _TELESCOPE_YANK_FIND_FILES()
+  local find_opts = { default_text = _get_visual_selection() }
+  telescope_try_git_files(find_opts)
+end
+keymap("v", "<leader>f", ":lua _TELESCOPE_YANK_FIND_FILES()<cr>", opts)
 keymap("n", "<leader>g", "<cmd>Telescope find_files<cr>", opts)
 keymap("n", "<C-t>", "<cmd>Telescope live_grep<cr>", opts)
-keymap("n", "<C-s>", "<cmd>Telescope grep_string<cr>", opts)
+
+function _TELESCOPE_YANK_LIVE_GREP()
+  require("telescope.builtin").live_grep({ default_text = _get_visual_selection() })
+end
+keymap("v", "<C-t>", ":lua _TELESCOPE_YANK_LIVE_GREP()<cr>", opts)
+
 keymap("n", "<leader>n", "<cmd>Telescope notify<cr>", opts) -- Requires nvim-notify
+keymap("n", "<leader>d", "<cmd>Telescope lsp_workspace_symbols<cr>", opts)
+keymap("n", "<leader>r", "<cmd>Telescope lsp_document_symbols<cr>", opts)
 
 local toggleterm_keymaps = function(bufnr)
-	local bufopts = { noremap = true }
-	-- vim.api.nvim_buf_set_keymap(bufnr, 't', '<esc>', [[<C-\><C-n>]], bufopts)
-	vim.api.nvim_buf_set_keymap(bufnr, 't', 'jk', [[<C-\><C-n>]], bufopts)
-	vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-h>', [[<C-\><C-n><C-W>h]], bufopts)
-	vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-j>', [[<C-\><C-n><C-W>j]], bufopts)
-	vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-k>', [[<C-\><C-n><C-W>k]], bufopts)
-	vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-l>', [[<C-\><C-n><C-W>l]], bufopts)
+  local bufopts = { noremap = true }
+  -- vim.api.nvim_buf_set_keymap(bufnr, 't', '<esc>', [[<C-\><C-n>]], bufopts)
+  vim.api.nvim_buf_set_keymap(bufnr, 't', 'jk', [[<C-\><C-n>]], bufopts)
+  vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-h>', [[<C-\><C-n><C-W>h]], bufopts)
+  vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-j>', [[<C-\><C-n><C-W>j]], bufopts)
+  vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-k>', [[<C-\><C-n><C-W>k]], bufopts)
+  vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-l>', [[<C-\><C-n><C-W>l]], bufopts)
 end
 
 --
@@ -170,25 +196,25 @@ keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<cr>', opts)
 
 -- Called by mason.lua.
 local lsp_keymaps = function(bufnr)
-	local bufopts = { noremap = true, silent = true, buffer = bufnr }
+  local bufopts = { noremap = true, silent = true, buffer = bufnr }
 
-	-- Mappings.
-	-- See `:help vim.lsp.*` for documentation on any of the below functions
-	vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-	vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-	vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-	vim.keymap.set('n', '<leader>k', vim.lsp.buf.signature_help, bufopts)
-	vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-	vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-	vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
-	vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
-	vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
-	vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-	vim.keymap.set('n', '<leader>wf', function() vim.lsp.buf.format { async = true } end, bufopts)
-	vim.keymap.set('n', '<leader>wl', function()
-		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-	end, bufopts)
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', '<leader>k', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+  vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+  vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', '<leader>wf', function() vim.lsp.buf.format { async = true } end, bufopts)
+  vim.keymap.set('n', '<leader>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, bufopts)
 end
 
 --
@@ -201,15 +227,15 @@ keymap("n", "<F11>", "<cmd>lua require('dap').step_into()<cr>", opts)
 keymap("n", "<F12>", "<cmd>lua require('dap').step_out()<cr>", opts)
 keymap("n", "<leader>b", "<cmd>lua require('dap').toggle_breakpoint()<cr>", opts)
 keymap(
-	"n",
-	"<leader>B",
-	"<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
-	opts)
+  "n",
+  "<leader>B",
+  "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
+opts)
 keymap(
-	"n",
-	"<leader>lp",
-	"<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
-	opts)
+  "n",
+  "<leader>lp",
+  "<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
+opts)
 keymap("n", "<leader>du", "<cmd>lua require('dapui').toggle()<cr>", opts)
 
 --
@@ -217,7 +243,7 @@ keymap("n", "<leader>du", "<cmd>lua require('dapui').toggle()<cr>", opts)
 --
 
 local function toggle_spell_check()
-    vim.opt.spell = not(vim.opt.spell:get())
+  vim.opt.spell = not(vim.opt.spell:get())
 end
 
 vim.keymap.set("n", "<leader>ts", toggle_spell_check, opts)
@@ -241,8 +267,15 @@ keymap("n", "<leader>c", ":lua require('toggle-checkbox').toggle()<CR>", opts)
 
 keymap("n", "<leader>gc", ":Git commit<CR>", opts)
 
+--
+-- Zen mode
+--
+
+
+keymap("n", "<leader>zz", ":ZenMode<CR>", opts)
+
 -- Return keymaps used by other files.
 return {
-	lsp_keymaps = lsp_keymaps,
-	toggleterm_keymaps = toggleterm_keymaps,
+  lsp_keymaps = lsp_keymaps,
+  toggleterm_keymaps = toggleterm_keymaps,
 }

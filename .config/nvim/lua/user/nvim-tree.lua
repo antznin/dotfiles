@@ -55,8 +55,8 @@ local function on_attach(bufnr)
   vim.keymap.set('n', 'gy', api.fs.copy.absolute_path, opts('Copy Absolute Path'))
   vim.keymap.set('n', '[e', api.node.navigate.diagnostics.prev, opts('Prev Diagnostic'))
   vim.keymap.set('n', '<C-f>', api.node.navigate.git.prev, opts('Prev Git'))
-  vim.keymap.set('n', ']e', api.node.navigate.diagnostics.next, opts('Next Diagnostic'))
-  vim.keymap.set('n', '<C-g>', api.node.navigate.git.next, opts('Next Git'))
+  vim.keymap.set('n', ']e', function() api.node.navigate.diagnostics.next({recurse=true}) end, opts('Next Diagnostic'))
+  vim.keymap.set('n', '<C-g>', function() api.node.navigate.git.next({recurse=true}) end, opts('Next Git'))
   vim.keymap.set('n', '-', api.tree.change_root_to_parent, opts('Up'))
   vim.keymap.set('n', '<leader>s', api.node.run.system, opts('Run System'))
   vim.keymap.set('n', 'f', api.live_filter.start, opts('Filter'))
@@ -70,6 +70,8 @@ local function on_attach(bufnr)
   vim.keymap.set('n', 'g?', api.tree.toggle_help, opts('Help'))
   vim.keymap.set('n', 'm', api.marks.toggle, opts('Toggle Bookmark'))
   vim.keymap.set('n', 'bmv', api.marks.bulk.move, opts('Move Bookmarked'))
+  vim.keymap.set('n', ']o', function() api.node.navigate.opened.next() end, opts('Next Opened'))
+  vim.keymap.set('n', '[o', api.node.navigate.opened.prev, opts('Next Opened'))
 
 end
 
@@ -91,6 +93,8 @@ nvim_tree.setup {
       warning = "",
       error = "",
     },
+    show_on_dirs = true,
+    show_on_open_dirs = true,
   },
   update_focused_file = {
     enable = true,
@@ -109,6 +113,8 @@ nvim_tree.setup {
     enable = true,
     ignore = true,
     timeout = 500,
+    show_on_dirs = true,
+    show_on_open_dirs = false,
   },
   actions = {
     open_file = {
@@ -121,7 +127,6 @@ nvim_tree.setup {
   },
   view = {
     width = 30,
-    hide_root_folder = false,
     side = "left",
     number = false,
     relativenumber = false,

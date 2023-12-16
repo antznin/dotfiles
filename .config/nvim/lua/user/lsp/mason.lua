@@ -47,7 +47,7 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 local on_attach = function(client, bufnr)
 	-- Enable completion triggered by <c-x><c-o>
 	vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
+	client.server_capabilities.semanticTokensProvider = nil  -- Disable preprocessor highlighting
 	require('user.keymaps').lsp_keymaps(bufnr)
 end
 

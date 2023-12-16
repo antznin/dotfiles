@@ -58,6 +58,26 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 -- Search with `*`, but don't jump dirst and don't add to jump list.
 vim.cmd "nnoremap * :keepjumps normal! mi*`i<CR>"
 
+-- Requires commentary.vim
+vim.api.nvim_create_user_command(
+  'CopyCommentPaste',
+  [[
+    silent exec 'Commentary'
+    silent exec 'normal! yyp'
+    silent exec 'Commentary'
+]],
+  {}
+)
+vim.cmd "nnoremap <silent> gcp :CopyCommentPaste<CR>"
+
+-- Make :W, :Q, … act the same as :w, :q, … as I always make these errors.
+vim.cmd "command! W write"
+vim.cmd "command! Q quit"
+vim.cmd "command! Wq wq"
+vim.cmd "command! WQ wq"
+vim.cmd "command! Wqa wqa"
+vim.cmd "command! WQa wqa"
+
 -- makes * and # work on visual mode too.
 vim.api.nvim_exec(
   [[
