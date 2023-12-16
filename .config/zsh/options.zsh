@@ -48,3 +48,6 @@ _fzf_comprun() {
 }
 
 export BATDIFF_USE_DELTA=true
+
+# Less history
+export LESSHISTFILE="$HOME/.lesshst"

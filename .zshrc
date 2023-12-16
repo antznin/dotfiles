@@ -19,6 +19,11 @@ fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
+# Custom completion directory
+fpath+="$HOME"/.config/zsh/completions
+autoload -U compinit
+compinit
+
 source "$HOME/.config/zsh/options.zsh"
 source "$HOME/.config/zsh/exports.zsh"
 source "$HOME/.config/zsh/aliases.zsh"

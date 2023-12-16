@@ -2,14 +2,6 @@
 # Utilities
 #
 
-alias_export ()
-{
-    local name="$1"
-    local path="$2"
-    alias $name="$path"
-    export $name="$path"
-}
-
 mkcd ()
 {
 	mkdir -p "$1" && cd "$1"
@@ -45,6 +37,13 @@ vimg () {
         | xargs)"
 
     vim "$file"
+}
+
+rf ()
+{
+    local file="$1"
+
+    readlink -f "$file" | xc
 }
 
 # Search in a directory for given dir_name. Prompt if multiple matches.
@@ -137,8 +136,9 @@ ipkfind ()
 {
     local deploydir="$1"
     local str="$2"
+    local pattern="${3:-*.ipk}"
 
-    find "$deploydir" -name "*.ipk" | while read ipk; do
+    find "$deploydir" -name "$pattern" | while read ipk; do
         if ipklist "$ipk" | grep -q "$str"; then
             echo "$(basename "$ipk")"
         fi

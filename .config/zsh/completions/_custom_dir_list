@@ -1,0 +1,10 @@
+#compdef dircmp -P -value-,*path,-default-
+
+# Copy of _directories but cd to $1 before completing
+
+local expl
+
+cd "$1"
+shift
+
+_wanted directories expl directory _files -/ "$@" -
