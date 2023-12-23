@@ -51,3 +51,30 @@ export BATDIFF_USE_DELTA=true
 
 # Less history
 export LESSHISTFILE="$HOME/.lesshst"
+
+# Show indicator on the bottom right of the terminal when completing
+zmodload zsh/terminfo
+
+function set_completion_indicator {
+  echoti sc # save_cursor
+  echoti cup $((LINES - 1)) $((COLUMNS - $#1)) # cursor_position (bottom right)
+  echoti setaf "$2" # set_foreground (color)
+  printf %s "$1"
+  echoti sgr 0 # exit_attribute_mode
+  echoti rc # restore_cursor
+}
+
+completion_wait_text="completing..."
+function display_completion_indicator {
+  compprefuncs+=(display_completion_indicator)
+  set_completion_indicator $completion_wait_text 3 # yellow
+}
+
+function hide_completion_indicator {
+  comppostfuncs+=(hide_completion_indicator)
+  # Kind of hack here, we print whitespaces to erase the text.
+  set_completion_indicator ${completion_wait_text//?/ } 0
+}
+
+compprefuncs+=(display_completion_indicator)
+comppostfuncs+=(hide_completion_indicator)
