@@ -166,3 +166,15 @@ rpmfind ()
         fi
     done
 }
+
+bbv ()
+{
+    local var="$1"
+    local recipe="$2"
+    local flag="$3"
+
+    [ -n "$recipe" ] && recipe="-r $recipe"
+    [ -n "$flag" ] && flag="-f $flag"
+
+    bitbake-getvar $var $recipe $flag
+}

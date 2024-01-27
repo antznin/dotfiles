@@ -8,6 +8,7 @@ plugins=(\
     fzf \
     git \
     zsh-autosuggestions \
+    zsh-bitbake \
     zsh-completions \
     zsh-syntax-highlighting \
     z \
@@ -29,7 +30,7 @@ source "$HOME/.config/zsh/exports.zsh"
 source "$HOME/.config/zsh/aliases.zsh"
 source "$HOME/.config/zsh/keymaps.zsh"
 source "$HOME/.config/zsh/utils.zsh"
-source "$HOME/.config/zsh/witekio.zsh"
+source "$HOME/.config/zsh/work.zsh"
 
 # SSH Agent (keychain)
 eval $(keychain --eval --quiet id_ed25519)
