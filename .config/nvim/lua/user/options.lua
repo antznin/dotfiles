@@ -102,3 +102,6 @@ vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
 vim.cmd "let g:HardMode_level = 'wannabe'"
 vim.cmd "let g:HardMode_hardmodeMsg = 'Don''t use this!'"
 vim.cmd "autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()"
+
+-- Markdown: don't consider bullet points as comments.
+vim.cmd "au FileType markdown setl comments=n:>"

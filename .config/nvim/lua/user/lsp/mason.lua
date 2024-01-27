@@ -69,9 +69,13 @@ if not status_ok then
 	return
 end
 
+require("lspconfig").bashls.setup {
+	filetypes = { 'bash', 'sh', 'zsh', },
+}
+
 mason_lspconfig.setup()
 
--- Automatic server steup
+-- Automatic server setup
 mason_lspconfig.setup_handlers {
 	-- The first entry (without a key) will be the default handler
 	-- and will be called for each installed server that doesn't have

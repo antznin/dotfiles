@@ -53,10 +53,10 @@ local function on_attach(bufnr)
   vim.keymap.set('n', 'y', api.fs.copy.filename, opts('Copy Name'))
   vim.keymap.set('n', 'Y', api.fs.copy.relative_path, opts('Copy Relative Path'))
   vim.keymap.set('n', 'gy', api.fs.copy.absolute_path, opts('Copy Absolute Path'))
-  vim.keymap.set('n', '[e', api.node.navigate.diagnostics.prev, opts('Prev Diagnostic'))
-  vim.keymap.set('n', '<C-f>', api.node.navigate.git.prev, opts('Prev Git'))
-  vim.keymap.set('n', ']e', function() api.node.navigate.diagnostics.next({recurse=true}) end, opts('Next Diagnostic'))
-  vim.keymap.set('n', '<C-g>', function() api.node.navigate.git.next({recurse=true}) end, opts('Next Git'))
+  vim.keymap.set('n', '[e', api.node.navigate.diagnostics.prev_recursive, opts('Prev Diagnostic Recursive'))
+  vim.keymap.set('n', '<C-f>', api.node.navigate.git.prev_recursive, opts('Prev Git Recursive'))
+  vim.keymap.set('n', ']e', api.node.navigate.diagnostics.next_recursive, opts('Next Diagnostic Recursive'))
+  vim.keymap.set('n', '<C-g>', api.node.navigate.git.next_recursive, opts('Next Git Recursive'))
   vim.keymap.set('n', '-', api.tree.change_root_to_parent, opts('Up'))
   vim.keymap.set('n', '<leader>s', api.node.run.system, opts('Run System'))
   vim.keymap.set('n', 'f', api.live_filter.start, opts('Filter'))
@@ -94,7 +94,7 @@ nvim_tree.setup {
       error = "",
     },
     show_on_dirs = true,
-    show_on_open_dirs = true,
+    show_on_open_dirs = false,
   },
   update_focused_file = {
     enable = true,
