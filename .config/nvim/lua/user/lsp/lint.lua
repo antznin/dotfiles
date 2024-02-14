@@ -8,6 +8,7 @@ nvim_lint.linters_by_ft = {
   bitbake = {'oelint-adv',},
   zsh = {'shellcheck'},
   sh = {'shellcheck'},
+  markdown = {'proselint'},
   -- c = {'checkpatch'},
 }
 
