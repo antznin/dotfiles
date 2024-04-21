@@ -5,7 +5,7 @@ set $mod Mod4
 set $alt Mod1
 
 # Font for window titles and bar.
-font pango:SF Pro 8
+font pango:JetBrainsMonoNerdFontCompleteM Nerd Font 9
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -173,16 +173,14 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Dropdowns.
-exec --no-startup-id pavucontrol
-bindsym $mod+a [class="Pavucontrol"] scratchpad show, move position center
-for_window [class="Pavucontrol"] floating enable, resize set 1000 800, move scratchpad
 
 exec --no-startup-id alacritty --class vim-notes,vim-notes --working-directory "$HOME/Notes" -e nvim +NvimTreeToggle
 bindsym $mod+$alt+2 [class="vim-notes"] scratchpad show, move position center
 for_window [class="vim-notes"] floating enable, resize set 1000 800, move scratchpad
 
 exec --no-startup-id gnome-calculator -m programming
-bindsym $mod+$alt+3 [class="gnome-calculator"] scratchpad show, move position center
+bindsym $mod+c [class="gnome-calculator"] scratchpad show, move position center
+bindsym XF86Calculator [class="gnome-calculator"] scratchpad show, move position center
 for_window [class="gnome-calculator"] floating enable, move scratchpad
 
 exec --no-startup-id keepassxc
@@ -193,21 +191,26 @@ exec --no-startup-id feh --title lafayette-helper $HOME/.config/i3/misc/lafayett
 bindsym $mod+$alt+5 [title="^lafayette-helper$"] scratchpad show, move position center
 for_window [title="^lafayette-helper$"] floating enable, move scratchpad
 
-exec --no-startup-id blueberry
-bindsym $mod+b [class="Blueberry.py" window_type="normal"] scratchpad show, move position center
-for_window [class="Blueberry.py" window_type="normal"] floating enable, resize set 1000 800, move scratchpad
+# Show these two side by side.
+exec --no-startup-id pavucontrol
+exec --no-startup-id blueman-manager
+bindsym $mod+b \
+    [class="Blueman-manager" window_type="normal"] scratchpad show, move position 960px 100px, \
+    [class="Pavucontrol"] scratchpad show, move position 120px 100px
+for_window [class="Pavucontrol"] floating enable, resize set 840px 880px, move scratchpad
+for_window [class="Blueman-manager" window_type="normal"] floating enable, resize set 840px 880px, move scratchpad
 
 exec --no-startup-id obsidian
 bindsym $mod+n [class="obsidian" window_type="normal"] scratchpad show, move position center
 for_window [class="obsidian" window_type="normal"] floating enable, resize set 1300 1000, move scratchpad
 
 exec --no-startup-id telegram-desktop
-for_window [class="^TelegramDesktop$"] move to workspace 9
+for_window [class="^TelegramDesktop$"] move to workspace 9, layout stacked
 bindsym $mod+o [class="^TelegramDesktop$"] focus
 
-exec --no-startup-id spotify
-for_window [class="^Spotify$"] move to workspace 10
-bindsym $mod+p [class="^Spotify$"] focus
+exec --no-startup-id tidal-hifi
+for_window [class="^tidal-hifi$"] move to workspace 10
+bindsym $mod+p [class="^tidal-hifi$"] focus
 
 for_window [class="mpv"] resize set width 1370 px
 
@@ -226,34 +229,36 @@ for_window [class="thunderbird"] move to workspace 6, layout stacked
 # Start them conditionally.
 exec --no-startup-id $HOME/.config/i3/work.sh
 
-exec --no-startup-id picom -D 5
+exec --no-startup-id picom --fade-delta 5 --shadow-radius 0
 
 # Screen layout.
-exec --no-startup-id xrandr --output eDP-1 --primary --mode 1920x1080 --pos 3840x120 --rotate normal --output HDMI-1 --off --output DP-1 --off --output DP-2 --off --output DP-2-1 --mode 1920x1200 --pos 0x0 --rotate normal --output DP-2-2 --mode 1920x1200 --pos 1920x0 --rotate normal --output DP-2-3 --off
+exec --no-startup-id "$HOME/.config/i3/screenlayout.sh"
 
 # Main monitor only.
 bindsym $mod+Shift+o exec --no-startup-id "xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-1 --off --output DP-1 --off --output DP-2 --off --output DP-2-1 --off --output DP-2-2 --off --output DP-2-3 --off"
 
 # All monitors.
-bindsym $mod+Shift+a exec --no-startup-id "xrandr --output eDP-1 --primary --mode 1920x1080 --pos 3840x60 --rotate normal --output HDMI-1 --off --output DP-1 --off --output DP-2 --off --output DP-2-1 --mode 1920x1200 --pos 0x0 --rotate normal --output DP-2-2 --mode 1920x1200 --pos 1920x0 --rotate normal --output DP-2-3 --off"
+bindsym $mod+Shift+a exec --no-startup-id "$HOME/.config/i3/screenlayout.sh"
 
 # Keyboard layout.
+# Permanently set with:
+# localectl --no-convert set-x11-keymap fr pc105 antznin caps:escape
 bindsym $mod+Shift+u exec --no-startup-id "setxkbmap fr antznin && setxkbmap -option caps:escape"
 
 
 # Windows assignments.
-set_from_resource $i3-wm.screen.left i3-wm.screen.left "eDP-1"
-set_from_resource $i3-wm.screen.middle i3-wm.screen.middle "DP-2-2"
-set_from_resource $i3-wm.screen.right i3-wm.screen.right "DP-2-1"
+set_from_resource $i3-wm.screen.left i3-wm.screen.left "DP-2-1" "HDMI-1"
+set_from_resource $i3-wm.screen.middle i3-wm.screen.middle "DP-2-2" "HDMI-1"
+set_from_resource $i3-wm.screen.right i3-wm.screen.right "eDP-1"
 workspace 1  output $i3-wm.screen.middle
 workspace 2  output $i3-wm.screen.middle
 workspace 3  output $i3-wm.screen.middle
-workspace 4  output $i3-wm.screen.right
-workspace 5  output $i3-wm.screen.left
-workspace 6  output $i3-wm.screen.right
-workspace 7  output $i3-wm.screen.right
-workspace 8  output $i3-wm.screen.right
-workspace 9  output $i3-wm.screen.left
+workspace 4  output $i3-wm.screen.left
+workspace 5  output $i3-wm.screen.right
+workspace 6  output $i3-wm.screen.left
+workspace 7  output $i3-wm.screen.left
+workspace 8  output $i3-wm.screen.left
+workspace 9  output $i3-wm.screen.right
 workspace 10 output $i3-wm.screen.left
 
 # Gaps.
@@ -261,11 +266,10 @@ gaps inner 15px
 gaps outer 0px
 smart_gaps on
 
-# Hide edges when only one container on ws.
-hide_edge_borders smart_no_gaps
+hide_edge_borders none
 
 # No titles.
-default_border pixel 5
+default_border pixel 7
 
 # Do not warp the mouse when switching workspaces.
 mouse_warping none
@@ -295,47 +299,78 @@ bindsym $mod+Shift+p mode "$mode_system"
 bindsym $mod+Shift+m exec --no-startup-id $locker
 
 # Colors.
-# Base16 Twilight by David Hart (http://hart-dev.com)
-# template by Matt Parnell, @parnmatt
-set $base00 #1e1e1e
-set $base01 #323537
-set $base02 #464b50
-set $base03 #5f5a60
-set $base04 #838184
-set $base05 #a7a7a7
-set $base06 #c3c3c3
-set $base07 #ffffff
-set $base08 #cf6a4c
-set $base09 #cda869
-set $base0A #f9ee98
-set $base0B #8f9d6a
-set $base0C #afc4db
-set $base0D #7587a6
-set $base0E #9b859d
-set $base0F #9b703f
+set $rosewater #dc8a78
+set $flamingo  #dd7878
+set $pink      #ea76cb
+set $mauve     #8839ef
+set $red       #d20f39
+set $maroon    #e64553
+set $peach     #fe640b
+set $yellow    #df8e1d
+set $green     #40a02b
+set $teal      #179299
+set $sky       #04a5e5
+set $sapphire  #209fb5
+set $blue      #1e66f5
+set $lavender  #7287fd
+set $subtext1  #5c5f77
+set $subtext0  #6c6f85
+set $overlay2  #7c7f93
+set $overlay1  #8c8fa1
+set $surface2  #acb0be
+set $surface1  #bcc0cc
+set $base      #eff1f5
+set $mantle    #e6e9ef
+set $crust     #dce0e8
 
-set $focused_border_color #3d2b5a
+# Github colors
+set $black           #1f2328
+set $bluey_purple    #6639ba
+set $cloudy_blue     #dae9f9
+set $cornflower_blue #0550ae
+set $grey            #6d7680
+set $marine          #0a3069
+set $navy_green      #436f27
+set $pale_grey       #f6f8fa
+set $grey            #9ca0b0
+set $scarlet_red     #cf222e
+set $scarlet_red_var #b6656a
+set $text            #4c4f69
+set $surface0        #ccd0da
 
-client.focused $focused_border_color $focused_border_color $base07 $base06
-client.focused_inactive $base05 $base05 $base04 $base06
-client.unfocused $base06 $base06 $base04 $base06
-client.urgent $base05 $base08 $base00 $base08
+#                       title        bg     text         indicator border
+client.focused          $black       $black $base        $black    $black
+client.focused_inactive $grey        $base  $text        $grey     $grey
+client.unfocused        $grey        $base  $text        $grey     $grey
+client.urgent           $scarlet_red $base  $scarlet_red $grey     $scarlet_red
+client.placeholder      $grey        $base  $text        $grey     $grey
+client.background       $base
 
+# bar
 bar {
     status_command i3status
+    separator_symbol " • "
+    # mode hide
+    # hidden_state hide
+    font pango:JetBrainsMonoNerdFontCompleteM Nerd Font 10
     colors {
-        separator $base04
-        background $base06
-        statusline $base02
-        focused_workspace $base0C $base0D $base07
-        active_workspace $base05 $base05 $base00
-        inactive_workspace $base06 $base06 $base04
-        urgent_workspace $base08 $base08 $base00
+        statusline         $text
+        background         $marine
+
+        focused_background $marine
+        focused_separator  $base
+        focused_statusline $base
+
+        active_workspace   $base        $base $text
+        inactive_workspace $marine        $marine   $base
+        # inactive_unfocused_workspace?
+        focused_workspace  $base      $marine   $base
+        urgent_workspace   $base        $base   $surface1
     }
 }
 
 # Background color.
-exec --no-startup-id hsetroot -solid "#000000"
+exec --no-startup-id xsetroot -solid "$surface0"
 
 # Volume control.
 exec --no-startup-id pasystray
@@ -344,9 +379,8 @@ exec --no-startup-id pasystray
 bindsym --release $mod+Shift+s exec --no-startup-id flameshot gui
 
 # Brightness.
-bindsym XF86MonBrightnessUp exec light -A 5
-bindsym XF86MonBrightnessDown exec light -U 5
-
+bindsym XF86MonBrightnessUp exec light -A 10
+bindsym XF86MonBrightnessDown exec light -U 10
 # Redshift.
 exec --no-startup-id redshift -l geoclue2 -b 1:0.9 -t 6500K:3500K
 
