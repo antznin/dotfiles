@@ -1,5 +1,5 @@
 [alias]
-    alog    = log --color --graph --abbrev-commit --branches --remotes --tags --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset %C(magenta)(%G?)%Creset'
+    alog    = log --color --graph --abbrev-commit --branches --remotes --tags --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
     am3     = am -3
     amab    = am --abort
     amco    = am --continue
@@ -7,7 +7,7 @@
     caa     = commit -a --amend -C HEAD
     caas    = commit --amend -C HEAD
     ch      = checkout
-    co      = commit --stat
+    co      = commit --signoff --stat
     corig   = commit -C ORIG_HEAD
     dif     = diff -p --stat
     difs    = dif --staged
