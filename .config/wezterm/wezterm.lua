@@ -36,6 +36,11 @@ config.keys = {
     key = 'phys:Semicolon',
     action = wezterm.action.Nop,
   },
+  {
+    key = 'phys:Semicolon',
+    mods = 'SHIFT',
+    action = wezterm.action.Nop,
+  },
 }
 config.debug_key_events = true
 
