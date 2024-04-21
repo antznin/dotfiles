@@ -16,6 +16,12 @@ eval "$(direnv hook zsh)"
 # FZF options
 #
 
+# Initialize fzf
+eval "$(fzf --zsh)"
+
+# Theme: github light
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS' --color=fg:#656d76,bg:#ffffff,hl:#ffffff --color=fg+:#1F2328,bg+:#deeeff,hl+:#953800 --color=info:#9a6700,prompt:#0969da,pointer:#8250df --color=marker:#1a7f37,spinner:#24292f,header:#eff1f3'
+
 # Options to fzf command
 export FZF_COMPLETION_OPTS='--border --info=inline'
 
@@ -42,7 +48,7 @@ _fzf_comprun() {
   case "$command" in
     cd)           fzf --preview 'tree -C {} | head -200'   "$@" ;;
     export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
-    ssh)          fzf --preview 'dig {}'                   "$@" ;;
+    # ssh)          fzf --preview 'dig {}'                   "$@" ;;
     *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
   esac
 }
@@ -52,29 +58,15 @@ export BATDIFF_USE_DELTA=true
 # Less history
 export LESSHISTFILE="$HOME/.lesshst"
 
-# Show indicator on the bottom right of the terminal when completing
-zmodload zsh/terminfo
+#
+# fzf-tab
+#
 
-function set_completion_indicator {
-  echoti sc # save_cursor
-  echoti cup $((LINES - 1)) $((COLUMNS - $#1)) # cursor_position (bottom right)
-  echoti setaf "$2" # set_foreground (color)
-  printf %s "$1"
-  echoti sgr 0 # exit_attribute_mode
-  echoti rc # restore_cursor
-}
-
-completion_wait_text="completing..."
-function display_completion_indicator {
-  compprefuncs+=(display_completion_indicator)
-  set_completion_indicator $completion_wait_text 3 # yellow
-}
-
-function hide_completion_indicator {
-  comppostfuncs+=(hide_completion_indicator)
-  # Kind of hack here, we print whitespaces to erase the text.
-  set_completion_indicator ${completion_wait_text//?/ } 0
-}
-
-compprefuncs+=(display_completion_indicator)
-comppostfuncs+=(hide_completion_indicator)
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# preview directory's content with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+# switch group using `,` and `.`
+zstyle ':fzf-tab:*' switch-group ',' '.'
