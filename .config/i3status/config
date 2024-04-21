@@ -7,10 +7,8 @@
 # If the above line is not correctly displayed, fix your editor first!
 
 general {
-  colors = true
+  colors = false
   interval = 5
-  color_good = "#8f9d6a"
-  color_bad = "#cf6a4c"
 }
 
 order += "wireless _first_"
@@ -22,7 +20,7 @@ order += "load"
 order += "memory"
 order += "volume master"
 order += "tztime lyon"
-order += "tztime local"
+order += "tztime seattle"
 order += "tztime date"
 
 wireless _first_ {
@@ -71,11 +69,12 @@ volume master {
 
 tztime lyon {
   timezone = "Europe/Paris"
-  format = "Lyon: %H:%M:%S"
+  format = "Lyon: %H:%M"
 }
 
-tztime local {
-  format = "Seattle: %H:%M:%S"
+tztime seattle {
+  timezone = "US/Pacific"
+  format = "Seattle: %H:%M"
 }
 
 tztime date {
