@@ -265,7 +265,9 @@ keymap("n", "<leader>c", ":lua require('toggle-checkbox').toggle()<CR>", opts)
 -- Git fugitive
 --
 
-keymap("n", "<leader>gc", ":Git commit<CR>", opts)
+keymap("n", "<leader>gc", ":Git commit -s<CR>", opts)
+keymap("n", "<leader>pp", ":Git push<CR>", opts)
+keymap("n", "<leader>ppf", ":Git push --force-with-lease<CR>", opts)
 
 --
 -- Zen mode

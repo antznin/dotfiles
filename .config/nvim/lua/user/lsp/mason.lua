@@ -70,7 +70,7 @@ if not status_ok then
 end
 
 require("lspconfig").bashls.setup {
-	filetypes = { 'bash', 'sh', 'zsh', },
+	filetypes = { 'bash', 'sh', },
 }
 
 mason_lspconfig.setup()

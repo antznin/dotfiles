@@ -6,9 +6,10 @@ end
 nvim_lint.linters_by_ft = {
   python = {'flake8',},
   bitbake = {'oelint-adv',},
-  zsh = {'shellcheck'},
+  zsh = {'zsh'},
   sh = {'shellcheck'},
   markdown = {'proselint'},
+  systemd = {'systemdlint'},
   -- c = {'checkpatch'},
 }
 
