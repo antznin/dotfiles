@@ -37,7 +37,7 @@ then
     SHELL_CWD=$(pwd -P)
     popd
     # Start wezterm with the working directory
-    wezterm start --always-new-process --cwd $SHELL_CWD $@ &
+    wezterm start --always-new-process --cwd "$SHELL_CWD" $@ &
 else
     wezterm start --always-new-process $@ &
 fi
