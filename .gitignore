@@ -1,1 +1,3 @@
 .config/newsboat/cache.db
+.ssh/*
+!.ssh/config
