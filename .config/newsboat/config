@@ -1,0 +1,25 @@
+# Theme
+include /usr/share/doc/newsboat/contrib/colorschemes/solarized-light
+include theme
+
+# Options
+auto-reload yes
+reload-threads 20
+browser xdg-open
+confirm-exit yes
+
+# Bindings
+unbind-key g # bound to `sort` by default
+bind-key g home
+unbind-key G # bound to `rev-sort` by default
+bind-key G end
+unbind-key h
+bind-key h quit
+unbind-key j
+bind-key j down
+unbind-key k
+bind-key k up
+unbind-key l
+bind-key l open
+
+bind-key o open-in-browser-and-mark-read

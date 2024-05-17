@@ -1,0 +1,8 @@
+color listnormal         color246   default
+color listnormal_unread  black   default
+color listfocus          color246   color195
+color listfocus_unread   black     color195
+
+highlight article "^(Title):.*$" blue default
+highlight article "https?://[^ ]+" red default
+highlight article "\\[image\\ [0-9]+\\]" green default
