@@ -63,6 +63,7 @@
 [core]
     editor = nvim
     pager = delta
+    fsmonitor = true  # faster git stasuses
 
 [interactive]
     diffFilter = delta --color-only
@@ -79,6 +80,7 @@
 
 [fetch]
     prune = true
+    writeCommitGraph = true  # incremental updates for faster graph logs
 
 [rebase]
     autoStash = true
@@ -92,3 +94,6 @@
 
 [color]
     ui = auto
+
+[format]
+    signOff = true
