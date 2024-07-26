@@ -196,8 +196,8 @@ exec --no-startup-id pavucontrol
 exec --no-startup-id blueman-manager
 bindsym $mod+b \
     [class="Blueman-manager" window_type="normal"] scratchpad show, move position 960px 100px, \
-    [class="Pavucontrol"] scratchpad show, move position 120px 100px
-for_window [class="Pavucontrol"] floating enable, resize set 840px 880px, move scratchpad
+    [class="pavucontrol"] scratchpad show, move position 120px 100px
+for_window [class="pavucontrol"] floating enable, resize set 840px 880px, move scratchpad
 for_window [class="Blueman-manager" window_type="normal"] floating enable, resize set 840px 880px, move scratchpad
 
 exec --no-startup-id obsidian
@@ -206,23 +206,27 @@ for_window [class="obsidian" window_type="normal"] floating enable, resize set 1
 
 exec --no-startup-id telegram-desktop
 for_window [class="^TelegramDesktop$"] move to workspace 9, layout stacked
-bindsym $mod+o [class="^TelegramDesktop$"] focus
 
 exec --no-startup-id tidal-hifi
 for_window [class="^tidal-hifi$"] move to workspace 10
-bindsym $mod+p [class="^tidal-hifi$"] focus
+
+exec --no-startup-id wezterm start --class newsboat newsboat
+for_window [class="^newsboat$"] move to workspace 8
+
+exec --no-startup-id wezterm start --class circumflex clx --nerdfonts
+for_window [class="^circumflex$"] move to workspace 8
+
 
 for_window [class="mpv"] resize set width 1370 px
 
 # Startup programs.
 exec --no-startup-id dunst
 
-exec --no-startup-id firefox
+# exec --no-startup-id firefox
 for_window [class="firefox"] move to workspace 4
 
 # Work related programs.
 for_window [class="^Slack$"] move to workspace 5, layout stacked
-bindsym $mod+i [class="^Slack$"] focus
 for_window [class="Microsoft Teams - Preview"] move to workspace 5
 for_window [class="thunderbird"] move to workspace 6, layout stacked
 

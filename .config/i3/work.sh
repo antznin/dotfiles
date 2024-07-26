@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
+sleep 3
+
 hour="$(date +%H)"
 
 declare -a apps=(
     slack
     thunderbird
-    protonmail-bridge
     teams
 )
 
