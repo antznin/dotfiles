@@ -44,7 +44,6 @@ return packer.startup(function(use)
   use "wbthomason/packer.nvim" -- Have packer manage itself
   use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/plenary.nvim" -- Useful lua functions used in lots of plugins
-  use "wikitopian/hardmode" -- Stop using arrows
   use "mg979/vim-visual-multi" -- Multiple cursors support
   use "tpope/vim-commentary" -- Comment with gcc
   use "tpope/vim-sleuth" -- Automatically adjusts 'shiftwidth' and 'expandtab'
@@ -53,32 +52,20 @@ return packer.startup(function(use)
   use "kyazdani42/nvim-web-devicons"
   use "kyazdani42/nvim-tree.lua" -- Tree file navigation
   use "nvim-lualine/lualine.nvim" -- Sleek line
-  use "akinsho/toggleterm.nvim" -- Show a terminal
-  -- use "windwp/nvim-autopairs" -- Autopairs of bracket, etc.
   use "cappyzawa/trim.nvim" -- Trim whitespace, etc.
   use "tpope/vim-repeat" -- Repeat plugin maps
   use "rcarriga/nvim-notify" -- Better notifications
   use "gabrielpoca/replacer.nvim" -- Replace through a quickfix list
   use "echasnovski/mini.align" -- Better alignments
   use "caenrique/nvim-maximize-window-toggle" -- Toggle fullscreen
-  use "opdavies/toggle-checkbox.nvim" -- Check / uncheck markdown boxes.
   use "tpope/vim-fugitive" -- Git interactions.
-  use({ "vladdoster/remember.nvim", config = "require('remember')" })
+  use({ "vladdoster/remember.nvim", config = "require('remember')" }) -- Re-open at last position in file.
   use "folke/zen-mode.nvim" -- Chill while coding.
-
-  use({
-      "iamcco/markdown-preview.nvim",
-      run = function() vim.fn["mkdp#util#install"]() end,
-  })
-
-  use {
-    'TimUntersberger/neogit',
-    requires = 'nvim-lua/plenary.nvim'
-  }
+  use "tadmccorkle/markdown.nvim" -- Easier markdown editing.
+  use "rmagatti/auto-session" -- Restore sessions (buffers, etc.)
 
   -- Colorschemes
   use "projekt0n/github-nvim-theme"
-
 
   -- cmp plugins
   use "hrsh7th/nvim-cmp" -- The completion plugin

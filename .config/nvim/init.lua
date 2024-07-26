@@ -7,6 +7,7 @@ require "user.keymaps"
 require "user.colorscheme"
 
 -- Plugin-specific
+require "user.auto-session"
 require "user.autopairs"
 require "user.autosave"
 require "user.bitbake"

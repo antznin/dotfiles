@@ -6,6 +6,7 @@ local options = {
   conceallevel = 0,                        -- so that `` is visible in markdown files
   fileencoding = "utf-8",                  -- the encoding written to a file
   hlsearch = true,                         -- highlight all matches on previous search pattern
+  inccommand = "split",                    -- "for incsearch while sub
   ignorecase = true,                       -- ignore case in search patterns
   mouse = "a",                             -- allow the mouse to be used in neovim
   pumheight = 10,                          -- pop up menu height
@@ -41,6 +42,9 @@ local options = {
   spelllang = "en_us",                     -- English by default.
 }
 
+-- don't give ins-completion-menu messages; for example, "-- XXX completion
+-- (YYY)", "match 1 of 2", "The only match", "Pattern not found", "Back at
+-- original", etc.
 vim.opt.shortmess:append "c"
 
 for k, v in pairs(options) do
@@ -96,12 +100,9 @@ vim.api.nvim_exec(
 
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
-vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
-
--- Hardmode
-vim.cmd "let g:HardMode_level = 'wannabe'"
-vim.cmd "let g:HardMode_hardmodeMsg = 'Don''t use this!'"
-vim.cmd "autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()"
 
 -- Markdown: don't consider bullet points as comments.
-vim.cmd "au FileType markdown setl comments=n:>"
+-- vim.cmd "au FileType markdown setl comments=n:>"
+-- vim.opt.showbreak = "  "
+vim.cmd [[let &formatlistpat='^\s*\d\+\.\s\+\|^[-*+]\s\+']]
+vim.cmd [[set formatoptions+=n]]

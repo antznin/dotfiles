@@ -50,10 +50,6 @@ keymap("n", "<A-h>", ":tabprevious<CR>", opts)
 -- Create new tab
 keymap("n", "<A-t>", ":tabnew<CR>", opts)
 
--- Insert --
--- Press kj fast to enter
-keymap("i", "kj", "<ESC>", opts)
-
 -- Visual --
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)
@@ -123,16 +119,6 @@ keymap("n", "<leader>n", "<cmd>Telescope notify<cr>", opts) -- Requires nvim-not
 keymap("n", "<leader>d", "<cmd>Telescope lsp_workspace_symbols<cr>", opts)
 keymap("n", "<leader>r", "<cmd>Telescope lsp_document_symbols<cr>", opts)
 
-local toggleterm_keymaps = function(bufnr)
-  local bufopts = { noremap = true }
-  -- vim.api.nvim_buf_set_keymap(bufnr, 't', '<esc>', [[<C-\><C-n>]], bufopts)
-  vim.api.nvim_buf_set_keymap(bufnr, 't', 'jk', [[<C-\><C-n>]], bufopts)
-  vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-h>', [[<C-\><C-n><C-W>h]], bufopts)
-  vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-j>', [[<C-\><C-n><C-W>j]], bufopts)
-  vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-k>', [[<C-\><C-n><C-W>k]], bufopts)
-  vim.api.nvim_buf_set_keymap(bufnr, 't', '<C-l>', [[<C-\><C-n><C-W>l]], bufopts)
-end
-
 --
 -- Gitsigns
 --
@@ -147,17 +133,6 @@ keymap("n", "<leader>lb", ":Gitsigns toggle_current_line_blame<CR>", opts)
 --
 
 keymap("n", "<C-e>", ":NvimTreeToggle<CR>", opts)
-
---
--- Toggleterm
---
-
-keymap("n", "<leader>yp", ":lua _PYTHON_TOGGLE()<CR>", opts)
-keymap("n", "<leader>yn", ":lua _NCDU_TOGGLE()<CR>", opts)
-keymap("n", "<leader>yh", ":lua _HTOP_TOGGLE()<CR>", opts)
-keymap("n", "<leader>yt", ":lua _TSHELL_TOGGLE()<CR>", opts)
-keymap("n", "<leader>yl", ":lua _LAZYGIT_TOGGLE()<CR>", opts)
-keymap("n", "<leader>yw", ":lua _WALOG_TOGGLE()<CR>", opts)
 
 --
 -- Bufferline

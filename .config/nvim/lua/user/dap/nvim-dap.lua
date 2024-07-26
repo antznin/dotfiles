@@ -53,23 +53,3 @@ dap.configurations.cpp = {
 }
 -- Same configs for C and CPP
 dap.configurations.c = dap.configurations.cpp
-
-local nvim_dap_vscode_ext
-status_ok, nvim_dap_vscode_ext = pcall(require, "dap.ext.vscode")
-if status_ok then
-  local vscode_dir = vim.fs.find(
-    ".vscode",
-    { upward = true, type = "directory", limit = 1 })
-  if next(vscode_dir) == nil then
-    nvim_dap_vscode_ext.load_launchjs()
-  else
-    local launchjs = vscode_dir[1] .. "/launch.json"
-    if vim.fn.filereadable(launchjs) then
-      nvim_dap_vscode_ext.load_launchjs(launchjs,
-        {
-          cppdbg = {"c", "cpp"}, -- Map cppbdg types for c and cpp files.
-        })
-      -- vim.notify("Loaded " .. launchjs .. ".")
-    end
-  end
-end
