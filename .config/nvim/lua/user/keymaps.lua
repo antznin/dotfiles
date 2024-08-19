@@ -138,7 +138,7 @@ keymap("n", "<C-e>", ":NvimTreeToggle<CR>", opts)
 -- Bufferline
 --
 
-keymap("n", "<C-w>", ":Bdelete<CR>", opts)
+keymap("n", "<C-w>", ":bdelete<CR>", { noremap = true, silent = true, nowait = true })
 
 --
 -- Luasnip

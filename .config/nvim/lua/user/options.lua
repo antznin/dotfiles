@@ -106,3 +106,6 @@ vim.cmd [[set iskeyword+=-]]
 -- vim.opt.showbreak = "  "
 vim.cmd [[let &formatlistpat='^\s*\d\+\.\s\+\|^[-*+]\s\+']]
 vim.cmd [[set formatoptions+=n]]
+
+-- Better session restore experience.
+vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"

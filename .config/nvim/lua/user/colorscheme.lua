@@ -12,7 +12,7 @@ theme.setup({
     },
     darken = {
       sidebars = {
-        enabled = true,
+        enable = true,
       },
     },
   }

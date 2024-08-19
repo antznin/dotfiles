@@ -10,7 +10,7 @@ zenmode.setup {
     -- * an absolute number of cells when > 1
     -- * a percentage of the width / height of the editor when <= 1
     -- * a function that returns the width or the height
-    width = 82, -- width of the Zen window
+    width = 88, -- width of the Zen window
     height = 1, -- height of the Zen window
     -- by default, no options are changed for the Zen window
     -- uncomment any of the options below, or add other vim.wo options you want to apply
@@ -18,9 +18,9 @@ zenmode.setup {
       -- signcolumn = "no", -- disable signcolumn
       number = false, -- disable number column
       relativenumber = false, -- disable relative numbers
-      -- cursorline = false, -- disable cursorline
-      -- cursorcolumn = false, -- disable cursor column
-      -- foldcolumn = "0", -- disable fold column
+      cursorline = false, -- disable cursorline
+      cursorcolumn = false, -- disable cursor column
+      foldcolumn = "0", -- disable fold column
       -- list = false, -- disable whitespace characters
     },
   },
@@ -48,13 +48,26 @@ zenmode.setup {
     -- this will change the font size on wezterm when in zen mode
     -- See alse also the Plugins/Wezterm section in this projects README
     wezterm = {
-      enabled = false,
+      enabled = true,
       -- can be either an absolute font size or the number of incremental steps
       font = "+4", -- (10% increase per step)
     },
   },
   -- callback where you can add custom code when the Zen window opens
   on_open = function(win)
+    local view = require("zen-mode.view")
+    local layout = view.layout(view.opts)
+    vim.api.nvim_win_set_config(win, {
+      width = layout.width,
+      height = layout.height - 1,
+    })
+    vim.api.nvim_win_set_config(view.bg_win, {
+      width = vim.o.columns,
+      height = view.height() - 1,
+      row = 1,
+      col = layout.col,
+      relative = "editor",
+    })
   end,
   -- callback where you can add custom code when the Zen window closes
   on_close = function()
