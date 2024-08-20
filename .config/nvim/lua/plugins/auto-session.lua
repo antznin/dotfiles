@@ -1,16 +1,14 @@
-local options = {
-  log_level = "error",
-  auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/"},
-}
-
 return {
-  'rmagatti/auto-session',
+  "rmagatti/auto-session",
   lazy = false,
-  version = '*',
+  version = "*",
   dependencies = {
-    'nvim-telescope/telescope.nvim',
+    "nvim-telescope/telescope.nvim",
   },
   config = function()
-    require('auto-session').setup(options)
+    require("auto-session").setup({
+      log_level = "error",
+      auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+    })
   end,
 }

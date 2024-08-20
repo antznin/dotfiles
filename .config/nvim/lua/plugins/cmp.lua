@@ -3,39 +3,10 @@ local function define_custom_snippets(ls)
   local i = ls.insert_node
   local fmt = require("luasnip.extras.fmt").fmt
 
-  ls.add_snippets("text", {
-    s(
-      "txl_chlg",
-      fmt("- [] \n\n  ", {})
-    ),
-  })
-
-  ls.add_snippets("yaml", {
-    s(
-      "patch",
-      fmt([[- names:
-    -
-    modified_files:
-    -
-    description: ]], {})
-    ),
-  })
-
-  ls.add_snippets("yaml", {
-    s(
-      "rev",
-      fmt("      reason: {}\n      category: *category-config", {
-        i(1, "reason"),
-      })
-    ),
-  })
-
-  ls.add_snippets("python", {
-    s(
-      "cvecheck",
-      fmt("\"\": _Check(config=\"\"),", {})
-    ),
-  })
+  -- custom snippets here. example:
+  -- ls.add_snippets("python", {
+  --   s("cvecheck", fmt('"": Check(config=""),', {})),
+  -- })
 end
 
 return {
@@ -66,8 +37,8 @@ return {
     define_custom_snippets(luasnip)
 
     local check_backspace = function()
-      local col = vim.fn.col "." - 1
-      return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
+      local col = vim.fn.col(".") - 1
+      return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
     end
 
     local kind_icons = {
@@ -102,7 +73,7 @@ return {
       snippet = {
         -- Specify a snippet engine.
         expand = function(args)
-          require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+          require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
         end,
       },
       window = {
@@ -116,44 +87,42 @@ return {
         ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
         ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
         ["<C-y>"] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-        ["<C-e>"] = cmp.mapping {
+        ["<C-e>"] = cmp.mapping({
           i = cmp.mapping.abort(),
           c = cmp.mapping.close(),
-        },
+        }),
         -- Accept currently selected item. If none selected, `select` first item.
         -- Set `select` to `false` to only confirm explicitly selected items.
-        ["<CR>"] = cmp.mapping.confirm { select = true },
-        ["<Tab>"] = cmp.mapping(
-          function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif luasnip.expandable() then
-              luasnip.expand()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            elseif check_backspace() then
-              fallback()
-            else
-              fallback()
-            end
-          end, {
-            "i",
-            "s",
-          }),
-        ["<S-Tab>"] = cmp.mapping(
-          function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
-            else
-              fallback()
-            end
-          end, {
-            "i",
-            "s",
-          }),
-        ["<CR>"] = cmp.mapping.confirm { select = true },
+        ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif luasnip.expandable() then
+            luasnip.expand()
+          elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+          elseif check_backspace() then
+            fallback()
+          else
+            fallback()
+          end
+        end, {
+          "i",
+          "s",
+        }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, {
+          "i",
+          "s",
+        }),
+        ["<CR>"] = cmp.mapping.confirm({ select = true }),
       },
       sources = {
         { name = "nvim_lsp" },
@@ -162,7 +131,7 @@ return {
         { name = "path" },
         { name = "bitbake_path" },
         {
-          name = 'spell',
+          name = "spell",
           option = {
             keep_all_entries = false,
             enable_in_context = function()
@@ -192,6 +161,5 @@ return {
         select = false,
       },
     })
-
   end,
 }
