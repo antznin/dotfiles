@@ -138,7 +138,7 @@ keymap("n", "<C-e>", ":NvimTreeToggle<CR>", opts)
 -- Bufferline
 --
 
-keymap("n", "<C-w>", ":bdelete<CR>", { noremap = true, silent = true, nowait = true })
+keymap("n", "<C-w>", ":Bdelete<CR>", { noremap = true, silent = true, nowait = true })
 
 --
 -- Luasnip
@@ -186,7 +186,7 @@ local lsp_keymaps = function(bufnr)
   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<leader>wf', function() vim.lsp.buf.format { async = true } end, bufopts)
+  -- vim.keymap.set('n', '<leader>wf', function() vim.lsp.buf.format { async = true } end, bufopts)
   vim.keymap.set('n', '<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, bufopts)
@@ -248,11 +248,15 @@ keymap("n", "<leader>ppf", ":Git push --force-with-lease<CR>", opts)
 -- Zen mode
 --
 
-
 keymap("n", "<leader>zz", ":ZenMode<CR>", opts)
+
+--
+-- Formatter
+--
+
+keymap("n", "<leader>wf", ":Format<CR>", opts)
 
 -- Return keymaps used by other files.
 return {
   lsp_keymaps = lsp_keymaps,
-  toggleterm_keymaps = toggleterm_keymaps,
 }

@@ -109,3 +109,13 @@ vim.cmd [[set formatoptions+=n]]
 
 -- Better session restore experience.
 vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+-- Bitbake files.
+vim.cmd [[
+  au BufRead,BufNewFile *.bb set filetype=bitbake
+  au BufRead,BufNewFile *.bbclass set filetype=bitbake
+  au BufRead,BufNewFile *.bbappend set filetype=bitbake
+  au BufRead,BufNewFile *.inc set filetype=bitbake
+  au BufRead,BufNewFile local.conf.sample set filetype=bitbake
+  au BufRead,BufNewFile bblayers.conf.sample set filetype=bitbake
+]]

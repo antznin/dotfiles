@@ -1,13 +1,3 @@
--- Following options are the default
--- Each of these are documented in `:help nvim-tree.OPTION_NAME`
-
-local status_ok, nvim_tree
-
-status_ok, nvim_tree = pcall(require, "nvim-tree")
-if not status_ok then
-  return
-end
-
 local function on_attach(bufnr)
 
   local api = require('nvim-tree.api')
@@ -75,7 +65,7 @@ local function on_attach(bufnr)
 
 end
 
-nvim_tree.setup {
+local options = {
   disable_netrw = false,
   hijack_netrw = true,
   hijack_cursor = false,
@@ -170,20 +160,32 @@ nvim_tree.setup {
 -- This code below adds an event that resets the dapui interface
 -- when nvim-tree is closed only if one of them is already open.
 -- This is done by simply resetting the UI to its defaults.
-local dapui, status_ok_dapui
-status_ok_dapui, dapui = pcall(require, "dapui")
-if status_ok_dapui then
-  local api = require("nvim-tree.api")
-  local event = api.events.Event
-  api.events.subscribe(event.TreeClose, function()
-    local bufs = vim.api.nvim_list_bufs()
-    for bufno, _ in pairs(bufs) do
-      local bufname
-      _, bufname = pcall(vim.api.nvim_buf_get_name, bufno)
-      if string.find(bufname, "DAP REPL$") then
-        dapui.open({ reset = true })
-        break
-      end
-    end
-  end)
-end
+-- local dapui, status_ok_dapui
+-- status_ok_dapui, dapui = pcall(require, "dapui")
+-- if status_ok_dapui then
+--   local api = require("nvim-tree.api")
+--   local event = api.events.Event
+--   api.events.subscribe(event.TreeClose, function()
+--     local bufs = vim.api.nvim_list_bufs()
+--     for bufno, _ in pairs(bufs) do
+--       local bufname
+--       _, bufname = pcall(vim.api.nvim_buf_get_name, bufno)
+--       if string.find(bufname, "DAP REPL$") then
+--         dapui.open({ reset = true })
+--         break
+--       end
+--     end
+--   end)
+-- end
+
+return {
+  "nvim-tree/nvim-tree.lua",
+  version = "*",
+  lazy = false,
+  dependencies = {
+    "nvim-tree/nvim-web-devicons",
+  },
+  config = function()
+    require("nvim-tree").setup(options)
+  end,
+}

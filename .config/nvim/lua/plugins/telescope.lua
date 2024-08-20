@@ -1,14 +1,6 @@
-local status_ok, telescope = pcall(require, "telescope")
-if not status_ok then
-  return
-end
-
-telescope.load_extension('media_files')
-telescope.load_extension('fzf')
-
 local actions = require "telescope.actions"
 
-telescope.setup {
+local options = {
   defaults = {
 
     prompt_prefix = " → ",
@@ -109,4 +101,22 @@ telescope.setup {
     -- }
     -- please take a look at the readme of the extension you want to configure
   },
+}
+
+return {
+  'nvim-telescope/telescope.nvim',
+  dependencies = { 
+    'nvim-lua/plenary.nvim',
+    'nvim-telescope/telescope-media-files.nvim',
+    {
+      'nvim-telescope/telescope-fzf-native.nvim',
+      build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release',
+    }
+  },
+  config = function()
+    local telescope = require('telescope')
+    telescope.setup(options)
+    telescope.load_extension('media_files')
+    telescope.load_extension('fzf')
+  end,
 }

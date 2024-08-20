@@ -1,9 +1,4 @@
-local status_ok, mini_align = pcall(require, "mini.align")
-if not status_ok then
-  return
-end
-
-mini_align.setup {
+local options = {
   -- Module mappings. Use `''` (empty string) to disable one.
   mappings = {
     start = 'ga',
@@ -26,4 +21,12 @@ mini_align.setup {
     pre_merge = {},
     merge = nil,
   },
+}
+
+return {
+  'echasnovski/mini.align', 
+  version = '*',
+  config = function()
+    require('mini.align').setup(options)
+  end,
 }

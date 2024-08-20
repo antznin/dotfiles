@@ -1,9 +1,4 @@
-local status_ok, zenmode = pcall(require, "zen-mode")
-if not status_ok then
-  return
-end
-
-zenmode.setup {
+local options = {
   window = {
     backdrop = 1, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
     -- height and width can be:
@@ -71,5 +66,13 @@ zenmode.setup {
   end,
   -- callback where you can add custom code when the Zen window closes
   on_close = function()
+  end,
+}
+
+return {
+  'folke/zen-mode.nvim', 
+  version = '*',
+  config = function()
+    require('zen-mode').setup(options)
   end,
 }
