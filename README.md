@@ -15,7 +15,7 @@
 * Clone:
 
   ```
-  git clone --bare $HOME/.dotfiles https://github.com/antznin/dotfiles.git
+  git clone --bare https://github.com/antznin/dotfiles.git $HOME/.dotfiles
   git --git-dir=$HOME/.dotfiles --work-tree=$HOME config status.showUntrackedFiles no
   git --git-dir=$HOME/.dotfiles --work-tree=$HOME checkout
   ```
