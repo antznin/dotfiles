@@ -1,0 +1,8 @@
+[Unit]
+Description=MPRIS proxy
+
+[Service]
+ExecStart=/usr/bin/mpris-proxy
+
+[Install]
+WantedBy=default.target
