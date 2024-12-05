@@ -178,3 +178,26 @@ bbv ()
 
     bitbake-getvar $var $recipe $flag
 }
+
+ggs ()
+{
+  local text="$*"
+
+  sha="$(git log --oneline --format="%h %s" | grep -F "$text" | head -1 | awk '{print $1}')"
+
+  [ -n "$sha" ] && git show "$sha"
+}
+
+b4test ()
+{
+  local message_id="$1"
+  shift
+  local command="$*"
+  local random_name="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13; echo)"
+
+  git checkout -b "$random_name"
+  b4 shazam --no-thank-you --sloppy-trailers --no-add-trailers "$message_id"
+  eval "$command" || true
+  git switch - 2>/dev/null || git switch --detach -
+  git branch -D "$random_name"
+}
