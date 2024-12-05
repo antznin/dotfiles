@@ -4,12 +4,10 @@ ZSH_THEME="${ARG_THEME:-robbyrussell}"
 
 plugins=(\
     colored-man-pages \
-    fd \
     fzf \
     git \
     zsh-autosuggestions \
     zsh-bitbake \
-    zsh-completions \
     zsh-syntax-highlighting \
     z \
 )
