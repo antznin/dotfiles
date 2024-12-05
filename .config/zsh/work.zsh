@@ -20,9 +20,7 @@ DATA_ROOT="/data"
 # Projects
 #
 
-export_and_add t3home "${DATA_ROOT}/txl/md20xx"
-export_and_add shome "${DATA_ROOT}/sonendo"
-export_and_add ehome "${DATA_ROOT}/etc"
+export_and_add ...home "${DATA_ROOT}/..."
 
 # Source per-project aliases and functions.
 for key in ${(k)ALIAS_FUNCS}; do
