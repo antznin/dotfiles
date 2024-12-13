@@ -1,0 +1,10 @@
+X-Mailer: aerc {{version}}
+
+Hi {{index (.To | firstnames) 0}},
+
+
+
+Antonin{{.Signature}}
+
+On {{dateFormat (.OriginalDate | toLocal) "Mon Jan 2, 2006 at 3:04 PM MST"}}, {{.OriginalFrom | names | join ", "}} wrote:
+{{trimSignature .OriginalText | quote}}
