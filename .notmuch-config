@@ -1,0 +1,12 @@
+[database]
+path=/data/mail/<maildir>
+
+[user]
+name=<firstname lastname>
+primary_email=<email>
+
+[new]
+
+[search]
+
+[maildir]
