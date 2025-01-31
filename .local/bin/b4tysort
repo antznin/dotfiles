@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+"""
+Run `b4 ty -l` and sort lines based on:
+
+1. The subject of the patch
+2. The patch revision
+
+And print it on stdout.
+"""
+
+import operator
+import re
+import subprocess
+
+from typing import Tuple
+
+
+out = subprocess.check_output("b4 ty -l 2>&1 | grep PATCH",
+                              shell=True,
+                              encoding="utf-8")
+
+title_re = re.compile(r"\s*([0-9])+: \[.*(PATCH.*)\] (.+)")
+
+
+def get_groups(line: str) -> Tuple:
+    if m := re.match(title_re, line):
+        reason, patch, num = m.group(3), m.group(2), m.group(1)
+        if patch == "PATCH":
+            patch = "PATCH v1"
+        return reason, patch, num
+
+
+title_list = []
+
+for line in out.splitlines():
+    groupped_line = get_groups(line)
+    title_list.append(groupped_line)
+
+title_list = sorted(title_list)
+
+for line in title_list:
+    print(f"{line[1]: >13} │ {line[2]: >} │ {line[0]}")
