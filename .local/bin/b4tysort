@@ -38,5 +38,11 @@ for line in out.splitlines():
 
 title_list = sorted(title_list)
 
+print(f"\033[1m{"Version": >13}\033[0m │ \033[1m{"Id": >}\033[0m │ \033[1mSubject\033[0m")
+
+subject = ""
 for line in title_list:
-    print(f"{line[1]: >13} │ {line[2]: >} │ {line[0]}")
+    if line[0] != subject:
+        print(f"{"": >13} │ {" ": >2} │")
+    print(f"{line[1]: >13} │ {line[2]: >2} │ {line[0]}")
+    subject = line[0]
