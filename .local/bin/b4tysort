@@ -19,7 +19,7 @@ out = subprocess.check_output("b4 ty -l 2>&1 | grep PATCH",
                               shell=True,
                               encoding="utf-8")
 
-title_re = re.compile(r"\s*([0-9])+: \[.*(PATCH.*)\] (.+)")
+title_re = re.compile(r"\s*([0-9]+): \[.*(PATCH.*)\] (.+)")
 
 
 def get_groups(line: str) -> Tuple:
