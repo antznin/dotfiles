@@ -19,8 +19,9 @@
     pu      = push
     re      = reset
     reb     = rebase
+    reba    = rebase --autosquash
     rebco   = rebase --continue
-    rebi    = rebase -i
+    rebi    = rebase --interactive --autosquash
     res     = reset
     soft    = reset --soft
     softres = reset --soft HEAD~
@@ -28,34 +29,30 @@
 
     # stash, checkout, stash pop
     chst  = "!f() { git stash; git checkout $1; git stash pop; }; f"
+
     # git commit with [squash] prefix and optional "msg"
-    cosq = "!f() { \
-	git commit -m \"[squash] $1\"; \
-	}; f"
+    cosq = commit --fixup
+
     # mini and pretty log
     mlog = "!f() { \
 	git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit | head -15; \
 	}; f"
+
     # git rebonto $1 $2
     rebonto = "!f() { \
 	git rebase --onto $1 origin/$1 $2; \
 	}; f"
-    # rename a branch on local and remote
-    rename-branch = "!f() { \
-	git checkout $2; \
-	git branch -m $3; \
-	git push $1 -u $3; \
-	git push $1 --delete $2; \
+
+    cac = "!f() { \
+  staged_file="$(git diff --name-only --cached | head -1)"; \
+  last_commit="$(git log --oneline --format="%H" --follow -- $staged_file | head -1)"; \
+	git commit --signoff --reset-author -c "$last_commit"; \
 	}; f"
-    brp = "!f() { \
-	branches=\"$(git branch --merged \
-	  | grep -Ev '(^\\*|master|main|dev|develop|kirkstone|dunfell)')\"; \
-	[ -z \"$branches\" ] && exit 0; \
-	echo -n \"Delete following branches? [Y/n]\n$branches\nAnswer: \"; \
-	read resp; \
-	resp=\"${resp:-y}\"; \
-	[ \"$resp\" = "y" ] && git branch -d $branches; \
-	}; f"
+
+    cof = "!f() { \
+      staged_file="$(git diff --name-only --cached | head -1 | sed -E "s@^documentation/@@")"; \
+      git commit --signoff --edit --message "$staged_file: "; \
+      }; f"
 
 [commit]
     verbose = true
@@ -69,11 +66,11 @@
     diffFilter = delta --color-only
 
 [delta]
-    navigate = true    # use n and N to move between diff sections
-    light = true      # set to true if you're in a terminal w/ a light background color
+    navigate = false
+    light = true
 
 [merge]
-    conflictstyle = diff3
+    conflictstyle = zdiff3
 
 [diff]
     colorMoved = default
@@ -84,6 +81,7 @@
 
 [rebase]
     autoStash = true
+    autoSquash = true
     abbreviateCommands = true
     updateRefs = true
 
@@ -97,3 +95,17 @@
 
 [format]
     signOff = true
+    coverLetter = auto
+    forceInBodyFrom = true
+
+[maintenance]
+	  repo = /home/agodard/.oh-my-zsh
+
+[sendemail]
+    annotate = true
+
+[am]
+    threeWay = true
+
+[include]
+  path = ~/.config/git/mail.gitconfig
