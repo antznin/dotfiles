@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+remote=$1
+user_mail=$2
+secret_file=$3
+shift; shift; shift
+script_files=$*
+
+for script_file in $script_files; do
+  sieve-connect \
+    --server "$remote" \
+    --port 4190 \
+    --user "$user_mail" \
+    --notlsverify \
+    --localsieve "$script_file" \
+    --upload \
+    --passwordfd=5 \
+    5<<<"$(gpg --batch --decrypt "$secret_file" 2>/dev/null)"
+done

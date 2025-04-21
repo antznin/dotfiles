@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+#
+# Depends on fzf and mblaze.
+
+find "$1" -name ".*" -prune -o -type f -print | maddr | sort | uniq | fzf --filter "$2"

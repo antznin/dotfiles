@@ -1,0 +1,312 @@
+#!/bin/env python
+
+# bits: get help working with binary, hexadecimal numbers and bitfields. The 0x
+# and 0b prefix are understood.
+#
+# Credits: https://git.sr.ht/~tleb/bin/tree/main/item/bits
+# SPDX-License-Identifier: MIT
+#
+# Sample output:
+#
+#    ⟩ bits 0x102
+#    Dec: 258
+#    Bin: 0b100000010
+#    Hex: 0x102
+#    Oct: 0402
+#    1s:  8, 1
+#    OR:  (1<<8) | (1<<1)
+#    Msk: GENMASK(8, 1)
+#    2^<: 0x100
+#    2^>: 0x200
+#
+#    15  13  11  09  07  05  03  01
+#      14  12  10  08  06  04  02  00
+#    --------------------------------
+#                   1             1
+#     0 0 0 0 0 0 0   0 0 0 0 0 0   0
+
+
+import argparse
+import sys
+
+
+def variable_assignment(s):
+    parts = s.split("=", maxsplit=1)
+    assert len(parts) == 2
+    return parts
+
+
+# Parse CLI arguments
+parser = argparse.ArgumentParser(prog="bits")
+parser.add_argument("expression")
+parser.add_argument(
+    "-e", "--execute", action="store_true"
+)  # evaluate Python expressions
+parser.add_argument("-v", "--variable", action="append", type=variable_assignment)
+parser.add_argument(
+    "-n", "--negate", action="store_true"
+)  # negate the value before displaying
+parser.add_argument("-f", "--field", action="append")  # pick field to highlight
+args = parser.parse_args()
+
+
+# Make it available to `--execute` code. Naive implementation.
+def GENMASK(a, b):
+    res = 0
+    for x in range(b, a + 1):
+        res += 1 << x
+    return res
+
+
+# Make it available to `--execute` code.
+def BIT(a):
+    return 1 << a
+
+
+def ffs(a):
+    i = 0
+    while a & 1 == 0:
+        a = a >> 1
+        i += 1
+    return i if i != 0 else 0
+
+
+# Make it available to `--execute` code.
+def FIELD_GET(mask, val):
+    return (val & mask) >> ffs(mask) if mask != 0 else 0
+
+
+def str_to_int(s):
+    s = s.lower()
+    base = 2 if s.startswith("0b") else (16 if any(c in s for c in "abcdef") else 0)
+    return int(s, base)
+
+
+# Parse the expression, potentially executing it
+n = None
+if args.execute:
+    locals_ = {}
+    if args.variable:
+        for k, v in args.variable:
+            locals_[k] = str_to_int(v)
+    # if --execute is given, WE ARE EXECUTING THE INPUT
+    n = int(eval(args.expression, None, locals_))
+else:
+    try:
+        n = str_to_int(args.expression)
+    except ValueError:
+        print(
+            (
+                "Invalid integer: {0}\n"
+                + "You might want to execute Python code using the -e flag."
+            ).format(args.expression),
+            file=sys.stderr,
+        )
+        exit(1)
+
+# Calculate the integer size
+if n < 0:
+    print("Negative number", file=sys.stderr)
+    exit(1)
+elif n < 2**8:
+    m = 8
+elif n < 2**16:
+    m = 16
+elif n < 2**32:
+    m = 32
+elif n < 2**64:
+    m = 64
+elif n >= 2**64:
+    print("Too big of a number", file=sys.stderr)
+    exit(1)
+
+# Potentially negate
+# TODO: are all edge cases correct?
+if args.negate:
+    n = (~n) & ((1 << m) - 1)
+
+# List ones and zeroes
+ones = []
+zeroes = []
+for i in range(m):
+    if n & (1 << i) != 0:
+        ones.append(i)
+    else:
+        zeroes.append(i)
+ones = sorted(ones, reverse=True)
+zeroes = sorted(zeroes, reverse=True)
+ones_str = " | ".join(map(lambda x: f"(1<<{x})", ones))
+zeroes_str = " | ".join(map(lambda x: f"(1<<{x})", zeroes)) if len(zeroes) != 0 else "0"
+zeroes_str = f"~({zeroes_str})" if len(zeroes) > 1 else f"~{zeroes_str}"
+
+# Compute the thinnest mask that contains all high bits
+if len(ones) == 1:
+    mask = f"BIT({ones[0]})"
+elif len(ones):
+    maxmask = ones[0]
+    minmask = ones[-1]
+    mask = f"GENMASK({maxmask}, {minmask})"
+else:
+    mask = "0"
+
+# Compute the previous/next power of two below/above our value
+# eg 0x19292C0 => (0x1000000, 0x2000000)
+if len(ones):
+    prev_pow = 1 << (ones[0])
+    next_pow = 1 << (ones[0] + 1)
+else:
+    prev_pow = 0
+    next_pow = 0
+
+
+def human(n):
+    # Turn n into a human-friendly string such as "2016MiB" or "2113MB + 929KB + 216".
+    # Pick the shortest representation of the two (ie powers of two or ten).
+
+    def sum_of_units_str(m, units):
+        parts = []
+        for i, (unit_name, unit_value) in enumerate(units.items()):
+            if i == len(units) - 1 or m % unit_value == 0:
+                threshold = 1
+            else:
+                threshold = 10
+            if m // unit_value >= threshold:
+                parts.append(f"{m // unit_value}{unit_name}")
+                m -= (m // unit_value) * unit_value
+        if m:
+            parts.append(str(m))
+        return " + ".join(parts)
+
+    pow2 = sum_of_units_str(
+        n, {"PiB": 2**50, "TiB": 2**40, "GiB": 2**30, "MiB": 2**20, "KiB": 2**10}
+    )
+    pow10 = sum_of_units_str(
+        n, {"PB": 10**15, "TB": 10**12, "GB": 10**9, "MB": 10**6, "KB": 10**3}
+    )
+    return pow2 if len(pow2) <= len(pow10) else pow10
+
+
+# Display a summary
+print(f"Dec: {n}")
+print(f"Bin: {bin(n)}")
+print(f"Hex: 0x{n:X}")
+print(f"Oct: 0{n:o}")
+print(f"Hum: {human(n)}")
+print(f"1s:  {', '.join(map(str, ones))}")
+print(f"Msk: {mask}")
+print(f"nb0: {len(zeroes)}")
+print(f"nb1: {len(ones)}")
+print(f"2^<: 0x{prev_pow:X}")
+print(f"2^>: 0x{next_pow:X}")
+
+print()
+
+
+# Formats possible:
+#  - "27:26": GENMASK(27, 26)
+#  - "27:26:foo": GENMASK(27, 26), field name is "foo"
+#  - "0xF0": mask
+#  - "0xF0:foo": mask, field name is "foo"
+def parse_field(field_str):
+    parts = field_str.split(":")
+
+    try:
+        a = int(parts[0], base=0)
+    except (ValueError, IndexError):
+        a = None  # if len(parts) == 0 or if parts[0] is not an integer
+
+    try:
+        b = int(parts[1], base=0)
+    except (ValueError, IndexError):
+        b = None  # if len(parts) < 2 or if parts[1] is not an integer
+
+    if len(parts) == 1 and a is not None:
+        return (a, "")
+    elif len(parts) == 2 and a is not None and b is not None:
+        return (GENMASK(a, b), "")
+    elif len(parts) == 2 and a is not None:
+        return (a, parts[1])
+    elif len(parts) == 3 and a is not None and b is not None:
+        return (GENMASK(a, b), parts[2])
+    else:
+        raise ValueError(
+            f"field format should be bit range or mask value, '{field_str}' is invalid"
+        )
+
+
+# Turn an integer representing a mask into a string. Formats:
+#  - BIT(a)
+#  - GENMASK(a, b)
+#  - 0xA
+def field_mask_to_str(field):
+    # TODO: this is naive, improve.
+    ones = []
+    for i in range(64):
+        if field & (1 << i):
+            ones.append(i)
+
+    if len(ones) == 1:
+        return f"BIT({ones[0]})"
+    if len(ones) and ones[-1] - ones[0] + 1 == len(ones):
+        # ones are consecutive, there are no holes
+        return f"GENMASK({ones[-1]}, {ones[0]})"
+    return f"0x{field[0]:X}"
+
+
+fields = [parse_field(field) for field in args.field or []]
+
+# Display the bit field
+a, b, c, d, e = "", "", "", "", ""
+
+isatty = sys.stdout.isatty()
+COLOR_BOLD, COLOR_END = "\033[1m", "\033[0m"
+
+for i in range(m - 1, -1, -1):
+    # We highlight only when a single field is selected.
+    in_field = len(fields) == 1 and (fields[0][0] & (1 << i))
+    if in_field and isatty:
+        a += COLOR_BOLD
+        b += COLOR_BOLD
+        c += COLOR_BOLD
+        d += COLOR_BOLD
+        e += COLOR_BOLD
+
+    a += str(i).zfill(2) if i % 2 == 1 else "  "
+    b += str(i).zfill(2) if i % 2 == 0 else "  "
+    c += "==" if in_field else "--"
+    d += " 1" if n & (1 << i) else "  "
+    e += " 0" if not n & (1 << i) else "  "
+
+    if in_field and isatty:
+        a += COLOR_END
+        b += COLOR_END
+        c += COLOR_END
+        d += COLOR_END
+        e += COLOR_END
+
+
+print(a)
+print(b)
+print(c)
+print(d)
+print(e)
+
+if len(fields) == 0:
+    exit(0)
+
+print()
+print("Fields:")
+
+field_rows = []
+for field in fields:
+    field_value = (n & field[0]) >> ffs(field[0])
+    field_rows.append((field[1], field_mask_to_str(field[0]), f"=> 0x{field_value:X}"))
+
+col0_width = max([len(row[0]) for row in field_rows])
+col1_width = max([len(row[1]) for row in field_rows])
+
+if col0_width != 0:
+    col0_width += 2
+
+for row in field_rows:
+    print(" -", row[0].ljust(col0_width), row[1].ljust(col1_width), row[2])
