@@ -1,7 +1,7 @@
 return {
   {
     "mg979/vim-visual-multi", -- Multiple cursors support
-    lazy = true,
+    lazy = false,
     version = "*",
   },
   {
@@ -11,16 +11,6 @@ return {
   },
   {
     "tpope/vim-sleuth", -- Automatically adjusts 'shiftwidth' and 'expandtab'
-    lazy = true,
-    version = "*",
-  },
-  {
-    "tpope/vim-surround", -- Delete, change and add surroundings in pairs
-    lazy = true,
-    version = "*",
-  },
-  {
-    "tpope/vim-repeat", -- Repeat plugin maps
     lazy = true,
     version = "*",
   },
@@ -36,12 +26,16 @@ return {
   },
   {
     "tpope/vim-fugitive", -- Git interactions
-    lazy = true,
+    lazy = false,
     version = "*",
   },
   {
-    "moll/vim-bbye", -- Needed by bufferline
-    lazy = false,
-    version = "*",
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && npm install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
   },
 }

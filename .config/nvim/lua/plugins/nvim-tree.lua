@@ -65,28 +65,6 @@ local function on_attach(bufnr)
   vim.keymap.set("n", "[o", api.node.navigate.opened.prev, opts("Next Opened"))
 end
 
--- Opening and closing nvim-tree resizes the dapui left column.
--- This code below adds an event that resets the dapui interface
--- when nvim-tree is closed only if one of them is already open.
--- This is done by simply resetting the UI to its defaults.
--- local dapui, status_ok_dapui
--- status_ok_dapui, dapui = pcall(require, "dapui")
--- if status_ok_dapui then
---   local api = require("nvim-tree.api")
---   local event = api.events.Event
---   api.events.subscribe(event.TreeClose, function()
---     local bufs = vim.api.nvim_list_bufs()
---     for bufno, _ in pairs(bufs) do
---       local bufname
---       _, bufname = pcall(vim.api.nvim_buf_get_name, bufno)
---       if string.find(bufname, "DAP REPL$") then
---         dapui.open({ reset = true })
---         break
---       end
---     end
---   end)
--- end
-
 return {
   "nvim-tree/nvim-tree.lua",
   version = "*",
@@ -151,7 +129,6 @@ return {
         number = false,
         relativenumber = false,
       },
-      -- git_hl = 1,
       renderer = {
         root_folder_modifier = ":t",
         full_name = true, -- Display name in full when too big.

@@ -9,6 +9,7 @@ return {
     require("auto-session").setup({
       log_level = "error",
       auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+      use_git_branch = true,
     })
   end,
 }

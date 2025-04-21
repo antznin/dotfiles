@@ -3,10 +3,27 @@ local function define_custom_snippets(ls)
   local i = ls.insert_node
   local fmt = require("luasnip.extras.fmt").fmt
 
-  -- custom snippets here. example:
-  -- ls.add_snippets("python", {
-  --   s("cvecheck", fmt('"": Check(config=""),', {})),
-  -- })
+  ls.add_snippets("custom_mail", {
+    s("ab", fmt('Acked-by: Antonin Godard <antonin.godard@bootlin.com>', {})),
+    s("rb", fmt('Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>', {})),
+    s("tb", fmt('Tested-by: Antonin Godard <antonin.godard@bootlin.com>', {})),
+  })
+
+  ls.add_snippets("c", {
+    s("prd", fmt('pr_info("[%s,%d]\\n", __func__, __LINE__);', {})),
+  })
+
+  ls.add_snippets("dts", {
+    s("muxam62", fmt('AM62X_IOPAD(0x, , ) /* () . [] */', {})),
+  })
+
+  ls.add_snippets("text", {
+    s("ly", fmt('https://lore.kernel.org/r/', {})),
+    -- s("ypt", fmt('Participate in the Yocto Project Technical Meeting.', {})),
+    -- s("ypb", fmt('Participate in the Yocto Project Bug Triage Meeting.', {})),
+    -- s("ypp", fmt('Participate in the Yocto Project Patch Review Meeting.', {})),
+    -- s("aw", fmt('Participate in the Yocto Project Patch Review Meeting.', {})),
+  })
 end
 
 return {
@@ -21,7 +38,6 @@ return {
     "hrsh7th/cmp-nvim-lsp", -- LSP completions
     "f3fora/cmp-spell", -- Spell checking cmp intergration
     "antznin/cmp-bitbake-path", -- Path completion for bitbake
-    -- snippets
     "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",
     "rafamadriz/friendly-snippets",
@@ -77,7 +93,6 @@ return {
         end,
       },
       window = {
-        -- completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered(),
       },
       mapping = {

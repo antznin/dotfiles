@@ -9,6 +9,7 @@ return {
         [[%s/\($\n\s*\)\+\%$//]], -- trim last line
         [[%s/\%^\n\+//]], -- trim first line
       },
+      trim_on_write = false,
     })
   end,
 }

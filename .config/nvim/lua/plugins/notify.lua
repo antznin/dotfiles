@@ -5,7 +5,7 @@ return {
     local vim_notify = require("notify")
 
     vim_notify.setup({
-      background_colour = "Normal",
+      background_colour = "#000000",
       fps = 30,
       icons = {
         DEBUG = "",

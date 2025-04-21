@@ -5,12 +5,12 @@ return {
     local nvim_lint = require("lint")
 
     nvim_lint.linters_by_ft = {
-      -- python = { "flake8" },
       bitbake = { "oelint-adv" },
       zsh = { "zsh" },
       sh = { "shellcheck" },
       markdown = { "proselint" },
       systemd = { "systemdlint" },
+      rst = { "sphinx-lint" },
       -- c = {'checkpatch'},
     }
 

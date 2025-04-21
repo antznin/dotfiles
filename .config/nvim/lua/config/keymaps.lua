@@ -34,8 +34,8 @@ keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
 -- Navigate buffers
-keymap("n", "<S-l>", ":bnext<CR>", opts)
-keymap("n", "<S-h>", ":bprevious<CR>", opts)
+keymap("n", "<S-l>", ":BufferLineCycleNext<CR>", opts)
+keymap("n", "<S-h>", ":BufferLineCyclePrev<CR>", opts)
 
 -- Move text up and down
 keymap("n", "<A-j>", "<Esc>:m .+1<CR>==gi", opts)
@@ -60,6 +60,13 @@ keymap("v", "<A-j>", ":m .+1<CR>==", opts)
 keymap("v", "<A-k>", ":m .-2<CR>==", opts)
 keymap("v", "p", '"_dP', opts)
 
+-- RST mappings
+keymap("v", "<C-i>", 'mtc`<C-r>"`<esc>`t', opts)  -- surround `
+keymap("v", "<C-x>", 'mtc``<C-r>"``<esc>`t', opts)   -- surround ``
+
+-- Contract to "[...]"
+keymap("v", "<C-e>", 'c[...]<esc>j', { noremap = true, silent = true })
+
 -- Visual Block --
 -- Move text up and down
 keymap("x", "J", ":move '>+1<CR>gv-gv", opts)
@@ -67,26 +74,48 @@ keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
--- Terminal --
--- Better terminal navigation
--- keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
--- keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
--- keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
--- keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
+-- Move file to `where` and notify.
+local function move_to(where)
+  local path = vim.api.nvim_buf_get_name(0)
+  if string.sub(path, -5) == "patch" then
+    local parent = vim.fs.dirname(path)
+    local source = vim.fs.basename(parent)
+    local filename = vim.fs.basename(path)
+    vim.system({'mv', '-v', path, parent .. "/" .. where})
+    vim.notify("Moved file:\n" .. filename .. "\n" .. source .. " 🡒 " .. where)
+    vim.cmd("Bdelete")
+  end
+end
+
+local function move_to_done()
+  move_to("../done/")
+end
+
+local function move_to_todo()
+  move_to("../todo/")
+end
+
+local function move_to_unreviewed()
+  move_to("../unreviewed/")
+end
+
+-- Quick moves for patch reviews.
+vim.keymap.set("n", "<leader>md", move_to_done, opts)
+vim.keymap.set("n", "<leader>mt", move_to_todo, opts)
+vim.keymap.set("n", "<leader>mu", move_to_unreviewed, opts)
+
+-- Spell checking
+local function toggle_spell_check()
+  vim.opt.spell = not (vim.opt.spell:get())
+end
+
+vim.keymap.set("n", "<leader>ts", toggle_spell_check, opts)
 
 --
 -- Telescope
 --
 
--- Try git_files. If not in a repository, will fallback on find_files.
-local telescope_try_git_files = function(find_opts)
-  local builtin = require("telescope.builtin")
-  local status_ok, _ = pcall(builtin.git_files)
-  if not status_ok then
-    builtin.find_files(find_opts)
-  end
-end
-
+-- Return what's under the visual selection
 local function _get_visual_selection()
   local s_start = vim.fn.getpos("'<")
   local s_end = vim.fn.getpos("'>")
@@ -101,20 +130,41 @@ local function _get_visual_selection()
   return table.concat(lines, "\n")
 end
 
-vim.keymap.set("n", "<leader>f", telescope_try_git_files, opts)
-function _TELESCOPE_YANK_FIND_FILES()
-  local find_opts = { default_text = _get_visual_selection() }
-  telescope_try_git_files(find_opts)
+-- Try git_files. If not in a repository, will fallback on find_files.
+local function _telescope_try_git_files(find_opts)
+  local builtin = require("telescope.builtin")
+  local status_ok, _ = pcall(builtin.git_files)
+  if not status_ok then
+    builtin.find_files(find_opts)
+  end
 end
-keymap("v", "<leader>f", ":lua _TELESCOPE_YANK_FIND_FILES()<cr>", opts)
-keymap("n", "<leader>g", "<cmd>Telescope find_files<cr>", opts)
-keymap("n", "<C-t>", "<cmd>Telescope live_grep<cr>", opts)
 
-function _TELESCOPE_YANK_LIVE_GREP()
+vim.keymap.set("n", "<leader>f", _telescope_try_git_files, opts)
+
+-- Search dotfiles
+local function _telescope_find_dotfiles()
+  require("telescope.builtin").find_files({
+    prompt_title = "Find dotfiles",
+    cwd = vim.env.HOME,
+    find_command = {
+      "git",
+      "--git-dir", vim.env.HOME .. "/.dotfiles",
+      "--work-tree", vim.env.HOME,
+      "ls-files",
+      "--exclude-standard",
+      "--cached"
+    }
+  })
+end
+vim.keymap.set("n", "<leader>u", _telescope_find_dotfiles, opts)
+
+local function _telescope_yank_live_grep()
   require("telescope.builtin").live_grep({ default_text = _get_visual_selection() })
 end
-keymap("v", "<C-t>", ":lua _TELESCOPE_YANK_LIVE_GREP()<cr>", opts)
+vim.keymap.set("v", "<c-t>", _telescope_yank_live_grep, opts)
 
+keymap("n", "<C-t>", "<cmd>Telescope live_grep<cr>", opts)
+keymap("n", "<leader>g", "<cmd>Telescope find_files<cr>", opts)
 keymap("n", "<leader>n", "<cmd>Telescope notify<cr>", opts) -- Requires nvim-notify
 keymap("n", "<leader>d", "<cmd>Telescope lsp_workspace_symbols<cr>", opts)
 keymap("n", "<leader>r", "<cmd>Telescope lsp_document_symbols<cr>", opts)
@@ -138,6 +188,8 @@ keymap("n", "<C-e>", ":NvimTreeToggle<CR>", opts)
 --
 
 keymap("n", "<C-w>", ":Bdelete<CR>", { noremap = true, silent = true, nowait = true })
+keymap("n", "<A-h>", ":BufferLineMovePrev<CR>", { noremap = true, silent = true, nowait = true })
+keymap("n", "<A-l>", ":BufferLineMoveNext<CR>", { noremap = true, silent = true, nowait = true })
 
 --
 -- Luasnip
@@ -164,81 +216,71 @@ keymap("n", "<leader>o", "<cmd>ToggleOnly<cr>", opts)
 
 -- Global LSP mappings.
 keymap("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>", opts)
-keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>", opts)
-keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>", opts)
+keymap("n", "<C-z>", "<cmd>Lspsaga diagnostic_jump_prev<cr>", opts)
+keymap("n", "<C-c>", "<cmd>Lspsaga diagnostic_jump_next<cr>", opts)
 keymap("n", "<space>q", "<cmd>lua vim.diagnostic.setloclist()<cr>", opts)
 
--- Called by mason.lua.
-local lsp_keymaps = function(bufnr)
-  local bufopts = { noremap = true, silent = true, buffer = bufnr }
+vim.api.nvim_create_autocmd('LspAttach', {
+  desc = 'LSP keymaps',
+  callback = function(event)
+    local opts = {buffer = event.buf}
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", opts)
+    vim.keymap.set("n", "<leader>D", "<cmd>Lspsaga peek_definition<cr>", opts)
+    vim.keymap.set("n", "<leader>k", vim.lsp.buf.signature_help, opts)
+    vim.keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<cr>", opts)
+    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "<leader>O", "<cmd>Lspsaga outline<cr>", opts)
+    vim.keymap.set("n", "<leader>lr", "<cmd>Lspsaga finder<cr>", opts)
+  end,
+})
 
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
-  vim.keymap.set("n", "<leader>k", vim.lsp.buf.signature_help, bufopts)
-  vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, bufopts)
-  vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
-  vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, bufopts)
-  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, bufopts)
-  vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
-  -- vim.keymap.set('n', '<leader>wf', function() vim.lsp.buf.format { async = true } end, bufopts)
-  vim.keymap.set("n", "<leader>wl", function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, bufopts)
+--
+-- DAP (unused)
+--
+
+-- keymap("n", "<F5>", "<cmd>lua require('dap').continue()<cr>", opts)
+-- keymap("n", "<F10>", "<cmd>lua require('dap').step_over()<cr>", opts)
+-- keymap("n", "<F11>", "<cmd>lua require('dap').step_into()<cr>", opts)
+-- keymap("n", "<F12>", "<cmd>lua require('dap').step_out()<cr>", opts)
+-- keymap("n", "<leader>b", "<cmd>lua require('dap').toggle_breakpoint()<cr>", opts)
+-- keymap("n", "<leader>B", "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>", opts)
+-- keymap(
+--   "n",
+--   "<leader>lp",
+--   "<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
+--   opts
+-- )
+-- keymap("n", "<leader>du", "<cmd>lua require('dapui').toggle()<cr>", opts)
+
+--
+-- Toggle wrapping
+--
+
+local function toggle_line_wrapping()
+  textwidth = vim.opt.textwidth._value
+  if textwidth ~= 0 then
+    vim.opt.textwidth = 0
+    vim.notify("Line wrapping disabled")
+  else
+    vim.opt.textwidth = 80
+    vim.notify("Line wrapping enabled")
+  end
 end
 
---
--- DAP
---
-
-keymap("n", "<F5>", "<cmd>lua require('dap').continue()<cr>", opts)
-keymap("n", "<F10>", "<cmd>lua require('dap').step_over()<cr>", opts)
-keymap("n", "<F11>", "<cmd>lua require('dap').step_into()<cr>", opts)
-keymap("n", "<F12>", "<cmd>lua require('dap').step_out()<cr>", opts)
-keymap("n", "<leader>b", "<cmd>lua require('dap').toggle_breakpoint()<cr>", opts)
-keymap("n", "<leader>B", "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>", opts)
-keymap(
-  "n",
-  "<leader>lp",
-  "<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
-  opts
-)
-keymap("n", "<leader>du", "<cmd>lua require('dapui').toggle()<cr>", opts)
-
---
--- Spell checking
---
-
-local function toggle_spell_check()
-  vim.opt.spell = not (vim.opt.spell:get())
-end
-
-vim.keymap.set("n", "<leader>ts", toggle_spell_check, opts)
+vim.keymap.set("n", "<leader>lw", toggle_line_wrapping, opts)
 
 --
 -- Trim
 --
 
--- Toggle trim
-keymap("n", "<leader>tt", "<cmd>TrimToggle<cr>", opts)
-
---
--- Toggle-checkbox
---
-
-keymap("n", "<leader>c", ":lua require('toggle-checkbox').toggle()<CR>", opts)
+keymap("n", "<leader>tt", "<cmd>Trim<cr>", opts)
 
 --
 -- Git fugitive
 --
 
-keymap("n", "<leader>gc", ":Git commit -s<CR>", opts)
-keymap("n", "<leader>pp", ":Git push<CR>", opts)
-keymap("n", "<leader>ppf", ":Git push --force-with-lease<CR>", opts)
+keymap("n", "<leader>gc", ":Git cof -s<CR>", opts)
 
 --
 -- Zen mode

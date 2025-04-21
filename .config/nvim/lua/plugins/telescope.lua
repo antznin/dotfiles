@@ -1,3 +1,22 @@
+local function livegreprecursive(p_bufnr)
+  -- send results to quick fix list
+  require("telescope.actions").send_to_qflist(p_bufnr)
+  local qflist = vim.fn.getqflist()
+  local paths = {}
+  local hash = {}
+  for k in pairs(qflist) do
+    local path = vim.fn.bufname(qflist[k]["bufnr"]) -- extract path from quick fix list
+    if not hash[path] then -- add to paths table, if not already appeared
+      paths[#paths + 1] = path
+      hash[path] = true -- remember existing paths
+    end
+  end
+  -- show search scope with message
+  vim.notify("find in ...\n  " .. table.concat(paths, "\n  "))
+  -- execute live_grep_args with search scope
+  require("telescope").extensions.live_grep_args.live_grep_args({ search_dirs = paths })
+end
+
 return {
   "nvim-telescope/telescope.nvim",
   dependencies = {
@@ -5,8 +24,9 @@ return {
     "nvim-telescope/telescope-media-files.nvim",
     {
       "nvim-telescope/telescope-fzf-native.nvim",
-      build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
+      build = "cmake -S. -Bbuild -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
     },
+    { "nvim-telescope/telescope-live-grep-args.nvim" },
   },
   config = function()
     local actions = require("telescope.actions")
@@ -21,6 +41,16 @@ return {
 
         mappings = {
           i = {
+            ["<C-r>"] = {
+              livegreprecursive,
+              type = "action",
+              opts = {
+                nowait = true,
+                silent = true,
+                desc = "Live grep on results",
+              },
+            },
+
             ["<C-n>"] = actions.cycle_history_next,
             ["<C-p>"] = actions.cycle_history_prev,
 
@@ -52,6 +82,16 @@ return {
           },
 
           n = {
+            ["<C-r>"] = {
+              livegreprecursive,
+              type = "action",
+              opts = {
+                nowait = true,
+                silent = true,
+                desc = "Live grep on results",
+              },
+            },
+
             ["<esc>"] = actions.close,
             ["<CR>"] = actions.select_default,
             ["<C-x>"] = actions.select_horizontal,
@@ -114,6 +154,7 @@ return {
         -- please take a look at the readme of the extension you want to configure
       },
     })
+    telescope.load_extension("live_grep_args")
     telescope.load_extension("media_files")
     telescope.load_extension("fzf")
   end,

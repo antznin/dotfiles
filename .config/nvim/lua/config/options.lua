@@ -27,7 +27,7 @@ local options = {
   tabstop = 2, -- insert 2 spaces for a tab
   cursorline = true, -- highlight the current line
   number = true, -- set numbered lines
-  relativenumber = true, -- set relative numbered lines
+  relativenumber = false, -- set relative numbered lines
   numberwidth = 2, -- set number column width to 2 {default 4}
   signcolumn = "yes", -- always show the sign column, otherwise it would shift the text each time
   wrap = true, -- display lines as one long line
@@ -40,6 +40,7 @@ local options = {
   textwidth = 80,
   colorcolumn = "81", -- Colored column.
   spelllang = "en_us", -- English by default.
+  shell = "/usr/bin/zsh",
 }
 
 -- don't give ins-completion-menu messages; for example, "-- XXX completion
@@ -51,13 +52,8 @@ for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
-vim.api.nvim_create_augroup("NeovimConfig", {})
-vim.api.nvim_create_autocmd("BufWritePost", {
-  group = "NeovimConfig",
-  pattern = "init.lua",
-  command = "source %",
-  desc = "Auto-reload the configuration.",
-})
+vim.cmd('set list')
+vim.cmd('set listchars=tab:»\\ ,extends:›,precedes:‹,nbsp:·,trail:·')
 
 -- Search with `*`, but don't jump dirst and don't add to jump list.
 vim.cmd("nnoremap * :keepjumps normal! mi*`i<CR>")
@@ -99,11 +95,11 @@ vim.api.nvim_exec(
 )
 
 vim.cmd("set whichwrap+=<,>,[,],h,l")
-vim.cmd([[set iskeyword+=-]])
+vim.opt.iskeyword:append("-")
 
 -- Markdown: don't consider bullet points as comments.
--- vim.cmd "au FileType markdown setl comments=n:>"
--- vim.opt.showbreak = "  "
+vim.cmd "au FileType markdown setl comments=n:>"
+vim.opt.showbreak = "  "
 vim.cmd([[let &formatlistpat='^\s*\d\+\.\s\+\|^[-*+]\s\+']])
 vim.cmd([[set formatoptions+=n]])
 
@@ -119,3 +115,46 @@ vim.cmd([[
   au BufRead,BufNewFile local.conf.sample set filetype=bitbake
   au BufRead,BufNewFile bblayers.conf.sample set filetype=bitbake
 ]])
+
+-- Spell file
+vim.cmd("set spellfile=" .. vim.env.HOME .. "/.config/nvim/spell/en.utf-8.add")
+
+-- Turn on spell checking
+vim.cmd([[
+  au BufRead,BufNewFile filetype=rst set spell
+  au BufRead,BufNewFile filetype=md  set spell
+  au BufRead,BufNewFile filetype=gitcommit set spell
+  au BufRead,BufNewFile filetype=mail set spell
+]])
+
+-- Turn on exrc
+-- Place files called .nvim.lua in project directories to have special autocmd
+-- executed when running nvim from there.
+vim.cmd([[
+  set exrc
+]])
+
+-- Jump options, go back to closed buffer with ctrl-o
+vim.cmd([[
+  set jumpoptions-=clean
+]])
+
+-- Custom colors for emails
+-- From the catpuccin palette
+vim.cmd([[
+  hi mailQuoted1 guifg=#6c6f85
+  hi mailQuoted2 guifg=#696969
+  hi mailQuoted3 guifg=#6c6f85
+  hi mailQuoted4 guifg=#696969
+  hi mailQuoted5 guifg=#6c6f85
+  hi mailQuoted6 guifg=#696969
+  hi mailQuotedDiffPlus1 guifg=#6c6f85 guibg=#d0ffd0
+  hi mailQuotedDiffMinus1 guifg=#6c6f85 guibg=#ffe0e0
+]])
+
+-- Display aerc emails with custom syntax file.
+-- Open them in zen mode.
+vim.cmd([[
+  au BufRead aerc-compose-*.eml setlocal filetype=custom_mail
+]])
+

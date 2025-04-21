@@ -3,7 +3,11 @@ return {
     "williamboman/mason.nvim", -- Install linters, formatters, LSPs...
     version = "*",
     config = function()
-      require("mason").setup()
+      require("mason").setup({
+        registries = {
+          "github:mason-org/mason-registry",
+        },
+      })
     end,
   },
   {

@@ -1,6 +1,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    enabled = false,
     dependencies = {
       "p00f/nvim-ts-rainbow", -- colored brackets/parenthesis/…
       "nvim-treesitter/nvim-treesitter-textobjects", -- manipulate text-objects
@@ -16,7 +17,7 @@ return {
         ignore_install = { "" }, -- List of parsers to ignore installing
         highlight = {
           enable = true, -- false will disable the whole extension
-          disable = { "" }, -- list of language that will be disabled
+          disable = { "rst", "javascript", "c" }, -- list of language that will be disabled
           additional_vim_regex_highlighting = true,
         },
         rainbow = {
@@ -124,6 +125,7 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
+    enabled = false,
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
     },

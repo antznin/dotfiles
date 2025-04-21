@@ -9,12 +9,12 @@ return {
         -- * an absolute number of cells when > 1
         -- * a percentage of the width / height of the editor when <= 1
         -- * a function that returns the width or the height
-        width = 88, -- width of the Zen window
+        width = 90, -- width of the Zen window
         height = 1, -- height of the Zen window
         -- by default, no options are changed for the Zen window
         -- uncomment any of the options below, or add other vim.wo options you want to apply
         options = {
-          -- signcolumn = "no", -- disable signcolumn
+          signcolumn = "no", -- disable signcolumn
           number = false, -- disable number column
           relativenumber = false, -- disable relative numbers
           cursorline = false, -- disable cursorline
@@ -34,9 +34,7 @@ return {
           -- statusline will be shown only if 'laststatus' == 3
           laststatus = 0, -- turn off the statusline in zen mode
         },
-        twilight = { enabled = true }, -- enable to start Twilight when zen mode opens
         gitsigns = { enabled = true }, -- disables git signs
-        tmux = { enabled = false }, -- disables the tmux statusline
         -- this will change the font size on alacritty when in zen mode
         -- requires  Alacritty Version 0.10.0 or higher
         -- uses `alacritty msg` subcommand to change font size
@@ -67,9 +65,29 @@ return {
           col = layout.col,
           relative = "editor",
         })
+        vim.cmd("cabbrev <buffer> q let b:quit_zen = 1 <bar> q")
+        vim.cmd("cabbrev <buffer> Q let b:quit_zen = 1 <bar> q")
+        vim.cmd("cabbrev <buffer> wq let b:quit_zen = 1 <bar> wq")
+        vim.cmd("cabbrev <buffer> Wq let b:quit_zen = 1 <bar> wq")
       end,
       -- callback where you can add custom code when the Zen window closes
-      on_close = function() end,
+      on_close = function()
+        if vim.b.quit_zen == 1 then
+          vim.b.quit_zen = 0
+          vim.cmd("q")
+        end
+      end,
     })
+
+    vim.api.nvim_create_autocmd({ "VimEnter" }, {
+      pattern = { "aerc-compose-*.eml" },
+      callback = require("zen-mode").open,
+    })
+
+    vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
+      pattern = { "aerc-compose-*.eml" },
+      callback = require("zen-mode").close,
+    })
+
   end,
 }
