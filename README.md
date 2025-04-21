@@ -1,6 +1,6 @@
 # dotfiles
 
-> Configuration files in my home directory.
+Configuration files in my home directory.
 
 ## Install
 
