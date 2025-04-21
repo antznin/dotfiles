@@ -1,6 +1,14 @@
 #!/usr/bin/env sh
 
-ZSH_THEME="${ARG_THEME:-robbyrussell}"
+if [ -f /usr/bin/liquidprompt ]; then
+  export LP_PATH_LENGTH=15
+  export LP_PATH_METHOD=truncate_chars_to_unique_dir
+  source /usr/bin/liquidprompt
+  source /usr/share/liquidprompt/themes/powerline/powerline.theme
+  command -v lp_theme >/dev/null && lp_theme powerline
+else
+ ZSH_THEME="${ARG_THEME:-robbyrussell}"
+fi
 
 plugins=(\
     colored-man-pages \
@@ -29,6 +37,7 @@ source "$HOME/.config/zsh/aliases.zsh"
 source "$HOME/.config/zsh/keymaps.zsh"
 source "$HOME/.config/zsh/utils.zsh"
 source "$HOME/.config/zsh/work.zsh"
+source "$HOME/.config/zsh/wezterm.zsh"
 
 # SSH Agent (keychain)
 eval $(keychain --eval --quiet id_ed25519)

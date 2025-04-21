@@ -25,6 +25,7 @@ export_and_add ...home "${DATA_ROOT}/..."
 # Source per-project aliases and functions.
 for key in ${(k)ALIAS_FUNCS}; do
     source "$ALIAS_FUNCS[$key]/config.zsh" || true
+    export PATH="$ALIAS_FUNCS[$key]/scripts:$PATH"
 done
 
 #

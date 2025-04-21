@@ -20,7 +20,12 @@ eval "$(direnv hook zsh)"
 eval "$(fzf --zsh)"
 
 # Theme: github light
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS' --color=fg:#656d76,bg:#ffffff,hl:#ffffff --color=fg+:#1F2328,bg+:#deeeff,hl+:#953800 --color=info:#9a6700,prompt:#0969da,pointer:#8250df --color=marker:#1a7f37,spinner:#24292f,header:#eff1f3'
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
+--color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
+--color=marker:#7287fd,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39 \
+--color=selected-bg:#bcc0cc \
+--multi"
 
 # Options to fzf command
 export FZF_COMPLETION_OPTS='--border --info=inline'
@@ -70,3 +75,11 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 # switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'
+
+#
+# git plugin
+#
+
+# only show commits when completing
+zstyle ':completion::complete:git-rebase:argument-rest:commit-tag-refs' command "echo"
+# zstyle ':completion::complete:git-rebase:argument-rest:blob-tag-refs' command "echo"

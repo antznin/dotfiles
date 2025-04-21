@@ -196,8 +196,20 @@ b4test ()
   local random_name="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13; echo)"
 
   git checkout -b "$random_name"
-  b4 shazam --no-thank-you --sloppy-trailers --no-add-trailers "$message_id"
+  b4 shazam --sloppy-trailers --no-add-trailers "$message_id"
   eval "$command" || true
   git switch - 2>/dev/null || git switch --detach -
   git branch -D "$random_name"
 }
+
+gitf ()
+{
+  local sha="$1"
+  git --no-pager log --abbrev=12 -1 --pretty='%h ("%s")' "$sha"
+}
+
+lesspatches ()
+{
+  LESSOPEN='||cat %s | delta --true-color always' less "$@"
+}
+
