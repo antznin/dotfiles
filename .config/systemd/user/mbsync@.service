@@ -1,0 +1,11 @@
+[Unit]
+Description=Mailbox synchronization service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/mbsync -V %i
+ExecStartPost=/usr/bin/notmuch --config %h/.config/notmuch/%i.config new
+ExecStartPost=%h/.config/mbsync/notify.py %i
+
+[Install]
+WantedBy=default.target
