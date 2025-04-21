@@ -11,6 +11,11 @@ cursor_fg = '#ffffff'
 selection_bg = '#bbdfff'
 selection_fg = '#1F2328'
 
+quick_select_label_bg = { Color = '#bbdfff' }
+quick_select_label_fg = { Color = 'red' }
+quick_select_match_bg = { Color = '#bbdfff' }
+quick_select_match_fg = { Color = '#1F2328' }
+
 ansi = [
     '#24292f',
     '#cf222e',
