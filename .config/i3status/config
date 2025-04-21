@@ -20,7 +20,7 @@ order += "load"
 order += "memory"
 order += "volume master"
 order += "tztime lyon"
-order += "tztime seattle"
+order += "tztime weekday"
 order += "tztime date"
 
 wireless _first_ {
@@ -72,9 +72,9 @@ tztime lyon {
   format = "Lyon: %H:%M"
 }
 
-tztime seattle {
-  timezone = "US/Pacific"
-  format = "Seattle: %H:%M"
+tztime weekday {
+  timezone = "Europe/Paris"
+  format = "Week %V"
 }
 
 tztime date {

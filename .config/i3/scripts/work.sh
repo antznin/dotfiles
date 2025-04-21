@@ -5,9 +5,7 @@ sleep 3
 hour="$(date +%H)"
 
 declare -a apps=(
-    slack
-    thunderbird
-    teams
+    element-desktop
 )
 
 if [[ ! $(date +%u) -gt 5 ]]; then

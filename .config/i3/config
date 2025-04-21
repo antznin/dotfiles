@@ -9,7 +9,7 @@ font pango:JetBrainsMonoNerdFontCompleteM Nerd Font 9
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
-exec --no-startup-id dex --autostart --environment i3
+# exec --no-startup-id dex --autostart --environment i3
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
@@ -40,7 +40,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # Start a terminal.
-bindsym $mod+Return exec $HOME/.config/i3/wezterm-cwd.sh
+bindsym $mod+Return exec $HOME/.config/i3/scripts/wezterm-cwd.sh
 
 # Kill focused window.
 bindsym $mod+Shift+q kill
@@ -83,7 +83,7 @@ bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s split h, layout stacking
-bindsym $mod+w split h, layout tabbed
+# bindsym $mod+w split h, layout tabbed  # not used that much
 bindsym $mod+t layout toggle tabbed splith splitv stacking
 
 # toggle tiling / floating
@@ -172,11 +172,9 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Dropdowns.
+bindsym $mod+Shift+n exec --no-startup-id dunstctl set-paused toggle
 
-exec --no-startup-id alacritty --class vim-notes,vim-notes --working-directory "$HOME/Notes" -e nvim +NvimTreeToggle
-bindsym $mod+$alt+2 [class="vim-notes"] scratchpad show, move position center
-for_window [class="vim-notes"] floating enable, resize set 1000 800, move scratchpad
+# Dropdowns.
 
 exec --no-startup-id gnome-calculator -m programming
 bindsym $mod+c [class="gnome-calculator"] scratchpad show, move position center
@@ -195,8 +193,8 @@ for_window [title="^lafayette-helper$"] floating enable, move scratchpad
 exec --no-startup-id pavucontrol
 exec --no-startup-id blueman-manager
 bindsym $mod+b \
-    [class="Blueman-manager" window_type="normal"] scratchpad show, move position 960px 100px, \
-    [class="pavucontrol"] scratchpad show, move position 120px 100px
+    [class="Blueman-manager" window_type="normal"] scratchpad show, move position 960px 900px, \
+    [class="pavucontrol"] scratchpad show, move position 120px 900px
 for_window [class="pavucontrol"] floating enable, resize set 840px 880px, move scratchpad
 for_window [class="Blueman-manager" window_type="normal"] floating enable, resize set 840px 880px, move scratchpad
 
@@ -223,32 +221,35 @@ for_window [class="mpv"] resize set width 1370 px
 exec --no-startup-id dunst
 
 # exec --no-startup-id firefox
-for_window [class="firefox"] move to workspace 4
+# for_window [class="firefox"] move to workspace 4
 
 # Work related programs.
-for_window [class="^Slack$"] move to workspace 5, layout stacked
-for_window [class="Microsoft Teams - Preview"] move to workspace 5
 for_window [class="thunderbird"] move to workspace 6, layout stacked
 
 # Start them conditionally.
-exec --no-startup-id $HOME/.config/i3/work.sh
+exec --no-startup-id $HOME/.config/i3/scripts/work.sh
 
-exec --no-startup-id picom --fade-delta 5 --shadow-radius 0
+# Compositing manager
+exec --no-startup-id picom
 
 # Screen layout.
-exec --no-startup-id "$HOME/.config/i3/screenlayout.sh"
+exec --no-startup-id "$HOME/.config/i3/scripts/screenlayout.sh"
 
-# Main monitor only.
-bindsym $mod+Shift+o exec --no-startup-id "xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-1 --off --output DP-1 --off --output DP-2 --off --output DP-2-1 --off --output DP-2-2 --off --output DP-2-3 --off"
+# Force single screen
+bindsym $mod+Shift+o exec --no-startup-id xrandr \
+  --output eDP-1 --primary --mode 2256x1504 --pos 0x0 --rotate normal \
+  --output DP-1 --off \
+  --output DP-2 --off \
+  --output DP-3 --off \
+  --output DP-4 --off
 
 # All monitors.
-bindsym $mod+Shift+a exec --no-startup-id "$HOME/.config/i3/screenlayout.sh"
+bindsym $mod+Shift+a exec --no-startup-id "$HOME/.config/i3/scripts/screenlayout.sh"
 
 # Keyboard layout.
 # Permanently set with:
 # localectl --no-convert set-x11-keymap fr pc105 antznin caps:escape
-bindsym $mod+Shift+u exec --no-startup-id "setxkbmap fr antznin && setxkbmap -option caps:escape"
-
+bindsym $mod+Shift+u exec --no-startup-id "setxkbmap custom && setxkbmap -option caps:escape"
 
 # Windows assignments.
 set_from_resource $i3-wm.screen.left i3-wm.screen.left "DP-2-1" "HDMI-1"
@@ -303,78 +304,67 @@ bindsym $mod+Shift+p mode "$mode_system"
 bindsym $mod+Shift+m exec --no-startup-id $locker
 
 # Colors.
-set $rosewater #dc8a78
-set $flamingo  #dd7878
-set $pink      #ea76cb
-set $mauve     #8839ef
-set $red       #d20f39
-set $maroon    #e64553
-set $peach     #fe640b
-set $yellow    #df8e1d
-set $green     #40a02b
-set $teal      #179299
-set $sky       #04a5e5
-set $sapphire  #209fb5
-set $blue      #1e66f5
-set $lavender  #7287fd
-set $subtext1  #5c5f77
-set $subtext0  #6c6f85
-set $overlay2  #7c7f93
-set $overlay1  #8c8fa1
-set $surface2  #acb0be
-set $surface1  #bcc0cc
-set $base      #eff1f5
-set $mantle    #e6e9ef
-set $crust     #dce0e8
+set $rosewater #f2d5cf
+set $flamingo #eebebe
+set $pink #f4b8e4
+set $mauve #ca9ee6
+set $red #e78284
+set $maroon #ea999c
+set $peach #ef9f76
+set $orange #fe640b
+set $yellow #e5c890
+set $green #a6d189
+set $teal #81c8be
+set $sky #99d1db
+set $sapphire #85c1dc
+set $blue #8caaee
+set $lavender #babbf1
+set $text #c6d0f5
+set $subtext1 #b5bfe2
+set $subtext0 #a5adce
+set $overlay2 #949cbb
+set $overlay1 #838ba7
+set $overlay0 #737994
+set $surface2 #626880
+set $surface1 #51576d
+set $surface0 #414559
+set $base #303446
+set $mantle #292c3c
+set $crust #232634
 
-# Github colors
-set $black           #1f2328
-set $bluey_purple    #6639ba
-set $cloudy_blue     #dae9f9
-set $cornflower_blue #0550ae
-set $grey            #6d7680
-set $marine          #0a3069
-set $navy_green      #436f27
-set $pale_grey       #f6f8fa
-set $grey            #9ca0b0
-set $scarlet_red     #cf222e
-set $scarlet_red_var #b6656a
-set $text            #4c4f69
-set $surface0        #ccd0da
-
-#                       title        bg     text         indicator border
-client.focused          $black       $black $base        $black    $black
-client.focused_inactive $grey        $base  $text        $grey     $grey
-client.unfocused        $grey        $base  $text        $grey     $grey
-client.urgent           $scarlet_red $base  $scarlet_red $grey     $scarlet_red
-client.placeholder      $grey        $base  $text        $grey     $grey
+#target                 title     bg      text       indicator  border
+client.focused          $orange $orange $rosewater $rosewater $orange
+client.focused_inactive $overlay0 $base   $text      $rosewater $base
+client.unfocused        $overlay0 $base   $text      $rosewater $base
+client.urgent           $peach    $base   $red       $overlay0  $red
+client.placeholder      $overlay0 $base   $text      $overlay0  $base
 client.background       $base
 
 # bar
 bar {
     status_command i3status
-    separator_symbol " • "
-    # mode hide
-    # hidden_state hide
+    separator_symbol " | "
+    modifier None
     font pango:JetBrainsMonoNerdFontCompleteM Nerd Font 10
     colors {
+        background         $base
         statusline         $text
-        background         $marine
+        focused_statusline $text
+        focused_separator  $text
 
-        focused_background $marine
-        focused_separator  $base
-        focused_statusline $base
-
-        active_workspace   $base        $base $text
-        inactive_workspace $marine        $marine   $base
-        # inactive_unfocused_workspace?
-        focused_workspace  $base      $marine   $base
-        urgent_workspace   $base        $base   $surface1
+        # target           border bg        text
+        focused_workspace  $base  $blue     $crust
+        active_workspace   $base  $surface2 $text
+        inactive_workspace $base  $base     $text
+        urgent_workspace   $base  $red      $crust
     }
 }
 
+# Toggle if bar is shown or not.
+bindsym $mod+i bar mode toggle
+
 # Background color.
-exec --no-startup-id xsetroot -solid "$surface0"
+# exec --no-startup-id xsetroot -solid "$base"
 
 # Volume control.
 exec --no-startup-id pasystray
@@ -390,3 +380,9 @@ exec --no-startup-id redshift -l geoclue2 -b 1:0.9 -t 6500K:3500K
 
 # Focus on window when link clicked.
 focus_on_window_activation focus
+
+# Turn off screensaver
+exec --no-startup-id "xset s off && xset -dpms"
+
+# Create /tmp/me
+exec --no-startup-id mkdir -p /tmp/me
