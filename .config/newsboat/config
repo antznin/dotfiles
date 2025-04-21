@@ -1,6 +1,6 @@
 # Theme
 include /usr/share/doc/newsboat/contrib/colorschemes/solarized-light
-include theme
+include latte
 
 # Options
 auto-reload yes
