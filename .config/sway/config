@@ -1,0 +1,356 @@
+#
+# Globals
+#
+
+# Modifier
+set $mod Mod4
+
+# Alt modifier
+set $alt Mod1
+
+# Global font
+set $font "pango:JetBrainsMonoNerdFontCompleteM Nerd Font"
+
+# Font for window titles and bar.
+font $font 9
+
+# Status bar refresh command
+set $refresh_status killall -SIGUSR1 i3status
+
+# Workspace names
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+set $ws11 "11"
+set $ws12 "12"
+set $ws13 "13"
+set $ws14 "14"
+
+# Lockscreen
+set $locker swaylock -c 000000
+
+#
+# General settings
+#
+
+# Gaps
+gaps inner 15px
+gaps outer 0px
+smart_gaps on
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+hide_edge_borders none
+
+# No titles
+default_border pixel 7
+
+# Do not warp the mouse when switching workspaces
+mouse_warping none
+
+# Focus on window when link clicked.
+focus_on_window_activation focus
+
+#
+# Bindings
+#
+
+bindsym {
+  # Start a terminal
+  $mod+Return exec $HOME/.config/sway/scripts/wezterm-cwd
+
+  # Kill focused window
+  $mod+Shift+q kill
+
+  # Program launcher
+  $mod+Escape exec --no-startup-id "rofi -modi drun,run -show drun -show-icons"
+
+  # Change focus
+  $mod+h focus left
+  $mod+j focus down
+  $mod+k focus up
+  $mod+l focus right
+  $mod+Left focus left
+  $mod+Down focus down
+  $mod+Up focus up
+  $mod+Right focus right
+
+  # Move focused window
+  $mod+Shift+h move left
+  $mod+Shift+j move down
+  $mod+Shift+k move up
+  $mod+Shift+l move right
+  $mod+Shift+Left move left
+  $mod+Shift+Down move down
+  $mod+Shift+Up move up
+  $mod+Shift+Right move right
+
+  # Split in horizontal orientation
+  $mod+g split h
+
+  # Split in vertical orientation
+  $mod+v split v
+
+  # Enter fullscreen mode for the focused container
+  $mod+f fullscreen toggle
+
+  # Change container layout
+  $mod+s split h, layout stacking
+  $mod+t layout toggle tabbed splith splitv stacking
+
+  # Toggle tiling / floating
+  $mod+Shift+f floating toggle
+
+  # Change focus between tiling / floating windows
+  $mod+Shift+space focus mode_toggle
+
+  # Focus the parent container
+  $mod+$alt+a focus parent
+  $mod+1 workspace number $ws1
+  $mod+2 workspace number $ws2
+  $mod+3 workspace number $ws3
+  $mod+4 workspace number $ws4
+  $mod+5 workspace number $ws5
+  $mod+6 workspace number $ws6
+  $mod+7 workspace number $ws7
+  $mod+8 workspace number $ws8
+  $mod+9 workspace number $ws9
+  $mod+0 workspace number $ws10
+
+  # move focused container to workspace
+  $mod+Shift+1 move container to workspace number $ws1
+  $mod+Shift+2 move container to workspace number $ws2
+  $mod+Shift+3 move container to workspace number $ws3
+  $mod+Shift+4 move container to workspace number $ws4
+  $mod+Shift+5 move container to workspace number $ws5
+  $mod+Shift+6 move container to workspace number $ws6
+  $mod+Shift+7 move container to workspace number $ws7
+  $mod+Shift+8 move container to workspace number $ws8
+  $mod+Shift+9 move container to workspace number $ws9
+  $mod+Shift+0 move container to workspace number $ws10
+
+  # Move workspace to next monitor
+  $mod+Shift+w move workspace to output next
+
+  $mod+Shift+c reload
+
+  # Quick lock.
+  $mod+Shift+m exec --no-startup-id $locker
+
+  # Toggle if bar is shown or not.
+  $mod+i bar mode toggle
+
+  # Screenshot
+  --release $mod+Shift+s exec --no-startup-id flameshot gui
+
+  # Brightness
+  XF86MonBrightnessUp exec light -A 10
+  XF86MonBrightnessDown exec light -U 10
+
+# Volume control
+  XF86AudioRaiseVolume exec --no-startup-id pamixer --increase 10 && $refresh_status
+  XF86AudioLowerVolume exec --no-startup-id pamixer --decrease 10 && $refresh_status
+  XF86AudioMute exec --no-startup-id pamixer --toggle-mute && $refresh_status
+  XF86AudioMicMute exec --no-startup-id pamixer --default-source --toggle-mute && $refresh_status
+
+  # Force single screen
+  $mod+Shift+o output eDP-1 mode 2256x1504 scale 1
+  # All monitors
+  $mod+Shift+a exec --no-startup-id $HOME/.config/sway/scripts/screenlayout
+}
+
+#
+# Menus (modes)
+#
+
+mode resize {
+  bindsym h resize shrink width 10 px or 10 ppt
+  bindsym j resize grow height 10 px or 10 ppt
+  bindsym k resize shrink height 10 px or 10 ppt
+  bindsym l resize grow width 10 px or 10 ppt
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+  bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode resize
+
+# Poweroff menu.
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+  bindsym l exec --no-startup-id $locker, mode "default"
+  bindsym e exec --no-startup-id swaymsg exit, mode "default"
+  bindsym s exec --no-startup-id systemctl suspend, mode "default"
+  bindsym h exec --no-startup-id systemctl hibernate, mode "default"
+  bindsym r exec --no-startup-id systemctl reboot, mode "default"
+  bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+
+  # back to normal: Enter or Escape
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+
+bindsym $mod+Shift+p mode "$mode_system"
+
+#
+# Startup programs
+#
+
+exec --no-startup-id {
+  # nm-applet
+  $HOME/.config/sway/scripts/work-startup
+  blueman-manager && sleep 1 && killall blueman-applet
+  dunst
+  feh --title lafayette-helper $HOME/.config/sway/misc/lafayette.png
+  gammastep -l geoclue2 -b 1:0.9 -t 6500K:3500K
+  gnome-calculator -m programming
+  keepassxc
+  mkdir -p /tmp/me
+  obsidian
+  pamixer --set-volume 0 && $refresh_status
+  pavucontrol
+  systemctl --user start xdg-desktop-portal-wlr
+  telegram-desktop
+  tidal-hifi
+  unclutter --timeout 5 # Hide the mouse after 5 seconds
+  wezterm start --class circumflex clx --nerdfonts
+  wezterm start --class newsboat newsboat
+  xss-lock --transfer-sleep-lock -- $locker
+}
+
+bindsym {
+  $mod+c [app_id="org.gnome.Calculator"] scratchpad show, move position center
+  $mod+d [app_id="org.keepassxc.KeePassXC" title=".* - KeePassXC$"] scratchpad show, resize set 1000 800, move position center
+  $mod+$alt+5 [title="^lafayette-helper$"] scratchpad show, move position center
+  $mod+n [class="obsidian" window_type="normal"] scratchpad show, resize set 1800 1000, move position center
+  $mod+b [app_id="blueman-manager"] scratchpad show, move position center
+  $mod+a [app_id="org.pulseaudio.pavucontrol"] scratchpad show, move position center
+}
+
+# Scratchpad
+for_window {
+  [app_id="^org.pulseaudio.pavucontrol$"] floating enable, move scratchpad
+  [app_id="blueman-manager"] floating enable, move scratchpad
+  [app_id="org.gnome.Calculator"] floating enable, move scratchpad
+  [app_id="org.keepassxc.KeePassXC" title=".* - KeePassXC$"] floating enable, move scratchpad
+  [class="obsidian" window_type="normal"] floating enable, move scratchpad
+  [title="lafayette-helper"] floating enable, move scratchpad
+}
+
+# Workspace assignments
+for_window {
+  [app_id="circumflex"] move to workspace 8
+  [app_id="newsboat"] move to workspace 8
+  [app_id="org.telegram.desktop"] move to workspace 9
+  [class="Element"] move to workspace 5
+  [class="tidal-hifi"] move to workspace 10
+}
+
+#
+# Outputs / Workspaces
+#
+
+# Default output configuration
+output eDP-1 mode 2256x1504 scale 1
+
+# Workspace assignments
+set $monitor_left "DP-2-1" "HDMI-1"
+set $monitor_middle "DP-2-2" "HDMI-1"
+set $monitor_right "eDP-1"
+workspace $ws1  output $monitor_middle
+workspace $ws2  output $monitor_middle
+workspace $ws3  output $monitor_middle
+workspace $ws4  output $monitor_left
+workspace $ws5  output $monitor_right
+workspace $ws6  output $monitor_left
+workspace $ws7  output $monitor_left
+workspace $ws8  output $monitor_left
+workspace $ws9  output $monitor_right
+workspace $ws10 output $monitor_left
+
+#
+# Inputs
+#
+
+input type:keyboard {
+  # qwerty-antznin
+  xkb_layout custom
+  xkb_options caps:escape
+}
+
+input type:touchpad {
+  natural_scroll enabled
+  tap enabled
+}
+
+#
+# Colors
+#
+
+set $rosewater #f2d5cf
+set $flamingo  #eebebe
+set $pink      #f4b8e4
+set $mauve     #ca9ee6
+set $red       #e78284
+set $maroon    #ea999c
+set $peach     #ef9f76
+set $orange    #fe640b
+set $yellow    #e5c890
+set $green     #a6d189
+set $teal      #81c8be
+set $sky       #99d1db
+set $sapphire  #85c1dc
+set $blue      #8caaee
+set $lavender  #babbf1
+set $text      #c6d0f5
+set $subtext1  #b5bfe2
+set $subtext0  #a5adce
+set $overlay2  #949cbb
+set $overlay1  #838ba7
+set $overlay0  #737994
+set $surface2  #626880
+set $surface1  #51576d
+set $surface0  #414559
+set $base      #303446
+set $mantle    #292c3c
+set $crust     #232634
+
+#target                 title     bg      text       indicator  border
+client.focused          $orange   $orange $rosewater $rosewater $orange
+client.focused_inactive $overlay0 $base   $text      $rosewater $base
+client.unfocused        $overlay0 $base   $text      $rosewater $base
+client.urgent           $peach    $base   $red       $overlay0  $red
+client.placeholder      $overlay0 $base   $text      $overlay0  $base
+client.background       $base
+
+bar {
+  status_command i3status
+  separator_symbol " | "
+  font $font 10
+  colors {
+    background         $base
+    statusline         $text
+    focused_statusline $text
+    focused_separator  $text
+    #target            border bg        text
+    focused_workspace  $base  $blue     $crust
+    active_workspace   $base  $surface2 $text
+    inactive_workspace $base  $base     $text
+    urgent_workspace   $base  $red      $crust
+  }
+}
+
+#
+# Includes
+#
+
+include /etc/sway/config.d/*systemd-user.conf
+include include/work.config

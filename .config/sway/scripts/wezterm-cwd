@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# Spawn a new instance of Wezterm using the CWD of the focused process.
+
+declare -a wezterm_opts=(
+  --always-new-process
+)
+
+pid=$(swaymsg -t get_tree | jq '.. | select(.type?) | select(.focused==true) | .pid')
+parent_pid=$(pgrep -P $pid)
+
+pushd "/proc/$parent_pid/cwd"
+shell_cwd=$(pwd -P)
+popd
+
+if [ -d "$shell_cwd" ]; then
+  wezterm_opts+=(--cwd "$shell_cwd")
+fi
+
+wezterm start "${wezterm_opts[@]}" &
