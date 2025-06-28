@@ -1,0 +1,20 @@
+{
+  "Acked-by": {
+    "prefix": "ab",
+    "body": [
+      "Acked-by: Antonin Godard <antonin.godard@bootlin.com>"
+    ]
+  },
+  "Reviewed-by": {
+    "prefix": "rb",
+    "body": [
+      "Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>"
+    ]
+  },
+  "Tested-by": {
+    "prefix": "tb",
+    "body": [
+      "Tested-by: Antonin Godard <antonin.godard@bootlin.com>"
+    ]
+  }
+}

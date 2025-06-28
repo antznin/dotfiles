@@ -7,6 +7,7 @@ return {
       },
     })
   end,
+  event = 'LspAttach',
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
     'nvim-tree/nvim-web-devicons',

@@ -39,6 +39,9 @@ luac.out
 *.x86_64
 *.hex
 
+# Custom
 plugin/packer_compiled.lua
-
 spell/
+snippets/weekly.json
+lua/config/work.lua
+syntax/weekly.vim

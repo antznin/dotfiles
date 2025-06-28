@@ -2,6 +2,7 @@ return {
   {
     "williamboman/mason.nvim", -- Install linters, formatters, LSPs...
     version = "*",
+    lazy = false,
     config = function()
       require("mason").setup({
         registries = {
@@ -13,7 +14,7 @@ return {
   {
     "williamboman/mason-lspconfig.nvim", -- Gives a configuration that nvim-lspconfig can use
     version = "*",
-    lazy = false,
+    cmd = "Mason",
     config = function()
       local mason_lspconfig = require("mason-lspconfig")
 

@@ -87,22 +87,10 @@ local function move_to(where)
   end
 end
 
-local function move_to_done()
-  move_to("../done/")
-end
-
-local function move_to_todo()
-  move_to("../todo/")
-end
-
-local function move_to_unreviewed()
-  move_to("../unreviewed/")
-end
-
 -- Quick moves for patch reviews.
-vim.keymap.set("n", "<leader>md", move_to_done, opts)
-vim.keymap.set("n", "<leader>mt", move_to_todo, opts)
-vim.keymap.set("n", "<leader>mu", move_to_unreviewed, opts)
+keymap("n", "<leader>md", ":lua move_to('../done/')", opts)
+keymap("n", "<leader>mt", ":lua move_to('../todo/')", opts)
+keymap("n", "<leader>mu", ":lua move_to('../unreviewed/')", opts)
 
 -- Spell checking
 local function toggle_spell_check()

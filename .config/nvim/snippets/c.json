@@ -1,0 +1,8 @@
+{
+  "pr_info (debug)": {
+    "prefix": "prd",
+    "body": [
+      "pr_info(\"[%s,%d]\\n\", __func__, __LINE__);"
+    ]
+  }
+}

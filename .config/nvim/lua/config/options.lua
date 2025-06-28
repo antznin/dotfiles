@@ -121,7 +121,7 @@ vim.cmd("set spellfile=" .. vim.env.HOME .. "/.config/nvim/spell/en.utf-8.add")
 
 -- Turn on spell checking
 vim.cmd([[
-  au BufRead,BufNewFile filetype=rst set spell
+  au BufRead,BufNewFile filetype=rst set spell tabstop=3 softtabstop=3 shiftwidth=3 expandtab=true
   au BufRead,BufNewFile filetype=md  set spell
   au BufRead,BufNewFile filetype=gitcommit set spell
   au BufRead,BufNewFile filetype=mail set spell
@@ -158,3 +158,4 @@ vim.cmd([[
   au BufRead aerc-compose-*.eml setlocal filetype=custom_mail
 ]])
 
+pcall(require, "config.options.work")

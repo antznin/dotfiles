@@ -1,6 +1,7 @@
 return {
   "mhartington/formatter.nvim",
   version = "*",
+  cmd = "Format",
   config = function()
     local util = require("formatter.util")
     require("formatter").setup({

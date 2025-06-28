@@ -1,0 +1,19 @@
+{
+  "name": "personal-snippets",
+  "contributes": {
+    "snippets": [
+      {
+        "language": "text",
+        "path": "./text.json"
+      },
+      {
+        "language": ["custom_mail", "gitcommit"],
+        "path": "./trailers.json"
+      },
+      {
+        "language": "weekly",
+        "path": "./weekly.json"
+      }
+    ]
+  }
+}

@@ -2,32 +2,22 @@ return {
   {
     "mg979/vim-visual-multi", -- Multiple cursors support
     lazy = false,
-    version = "*",
   },
   {
     "tpope/vim-commentary", -- Comment with gcc
     lazy = true,
-    version = "*",
   },
-  {
-    "tpope/vim-sleuth", -- Automatically adjusts 'shiftwidth' and 'expandtab'
-    lazy = true,
-    version = "*",
-  },
+  -- {
+  --   "tpope/vim-sleuth", -- Automatically adjusts 'shiftwidth' and 'expandtab'
+  --   lazy = true,
+  -- },
   {
     "gabrielpoca/replacer.nvim", -- Replace through a quickfix list
     lazy = true,
-    version = "*",
-  },
-  {
-    "caenrique/nvim-maximize-window-toggle", -- Toggle fullscreen
-    lazy = true,
-    version = "*",
   },
   {
     "tpope/vim-fugitive", -- Git interactions
-    lazy = false,
-    version = "*",
+    cmd = "Git",
   },
   {
     "iamcco/markdown-preview.nvim",
@@ -37,5 +27,17 @@ return {
       vim.g.mkdp_filetypes = { "markdown" }
     end,
     ft = { "markdown" },
+  },
+  {
+    "folke/snacks.nvim",
+    lazy = false,
+    opts = {
+      bigfile = { enabled = true },
+      dashboard = { enabled = true },
+      indent = { enabled = true },
+      -- input = { enabled = true },
+      toggle = { enabled = true },
+      words = { enabled = true },
+    },
   },
 }
