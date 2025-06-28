@@ -8,9 +8,11 @@ declare -a wezterm_opts=(
 pid=$(swaymsg -t get_tree | jq '.. | select(.type?) | select(.focused==true) | .pid')
 parent_pid=$(pgrep -P $pid)
 
-pushd "/proc/$parent_pid/cwd"
-shell_cwd=$(pwd -P)
-popd
+if [ -d "/proc/$parent_pid/cwd" ]; then
+  pushd "/proc/$parent_pid/cwd"
+  shell_cwd=$(pwd -P)
+  popd
+fi
 
 if [ -d "$shell_cwd" ]; then
   wezterm_opts+=(--cwd "$shell_cwd")

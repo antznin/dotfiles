@@ -3,7 +3,6 @@
 hour="$(date +%H)"
 
 declare -a apps=(
-    element-desktop
 )
 
 if [[ ! $(date +%u) -gt 5 ]]; then
