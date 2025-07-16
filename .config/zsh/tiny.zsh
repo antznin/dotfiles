@@ -14,6 +14,10 @@ ZSH_THEME="robbyrussell"
 
 plugins=(\
   git \
+  zsh-syntax-highlighting \
+  zsh-autosuggestions \
+  zsh-completions \
+  zsh-bitbake \
 )
 
 source $ZSH/oh-my-zsh.sh
