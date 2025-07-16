@@ -22,6 +22,9 @@ plugins=(\
 
 source $ZSH/oh-my-zsh.sh
 
+# Enable direnv
+eval "$(direnv hook zsh)"
+
 bindkey "^h" backward-word
 bindkey "^j" down-line-or-beginning-search
 bindkey "^k" up-line-or-beginning-search
