@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+#
+# pit : git through proxy
+# uses nc with a localhost SOCKS5 proxy (e.g. ssh -D)
+
+# create temporary file for the proxy script
+GIT_PROXY_COMMAND=$(mktemp -t ncprox-XXXXXXXXXX) || exit 1
+trap 'rm "$GIT_PROXY_COMMAND"' EXIT
+
+# Set the proxy command in the script
+cat > "$GIT_PROXY_COMMAND" << "EOF"
+#!/bin/sh
+nc -x127.0.0.1:8080 -X5 $*
+EOF
+chmod +x "$GIT_PROXY_COMMAND"
+
+# run git with the command line arguments
+export GIT_PROXY_COMMAND
+git $*
