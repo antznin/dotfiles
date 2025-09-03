@@ -1,7 +1,5 @@
 X-Mailer: aerc {{version}}
 
-Hi {{index (.To | firstnames) 0}},
-
 
 
 Antonin{{.Signature}}
