@@ -1,0 +1,39 @@
+# Rename to isyncrc and replace <name> etc. below
+# With mbsync@ you can run `systemctl --user start mbsync@<name>`
+
+# General settings
+
+Create Both
+Remove Both
+Expunge Both
+
+#
+# Account 1
+#
+
+IMAPAccount <name>
+Host mail.something.com
+User email@address.com
+PassCmd "gpg2 --batch -q --decrypt /path/to/gpg.key"
+TLSType IMAPS
+TLSVersions +1.2
+
+MaildirStore <name>-local
+Path /path/to/maildir
+Inbox /path/to/maildir/INBOX
+SubFolders Verbatim
+
+IMAPStore <name>-remote
+Account <name>
+
+Channel <name>
+Far :<name>-remote:
+Near :<name>-local:
+Patterns * INBOX*
+SyncState *
+
+#
+# Account 2
+#
+
+# ...
