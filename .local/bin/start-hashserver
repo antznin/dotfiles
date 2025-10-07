@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+project="$1"
+
+if [ -z "$project" ]; then
+   echo Project must be passed
+   exit 1
+fi
+
+mkdir -p "$HOME"/.cache
+mkdir -p "$HOME"/yocto-cache/hashserv
+
+[ ! -d "$HOME"/.cache/bitbake ] && git clone https://git.openembedded.org/bitbake "$HOME"/.cache/bitbake
+
+if pgrep -f hashserv-$project; then
+   echo Server for $project already running
+   exit 0
+fi
+
+"$HOME"/.cache/bitbake/bin/bitbake-hashserv \
+    --log INFO \
+    --bind unix://"$HOME"/yocto-cache/hashserv/hashserv-$project.sock \
+    --database "$HOME"/yocto-cache/hashserv/hashserver-$project.db \
+    >"$HOME"/yocto-cache/hashserv/hashserv-$project.log 2>&1 &

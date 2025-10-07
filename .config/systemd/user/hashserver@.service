@@ -1,0 +1,9 @@
+[Unit]
+Description=Bitbake hashserver for %i
+
+[Service]
+Type=forking
+ExecStart=%h/.local/bin/start-hashserver %i
+
+[Install]
+WantedBy=default.target
