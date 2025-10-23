@@ -1,111 +1,112 @@
 [alias]
-    alog    = log --color --graph --abbrev-commit --branches --remotes --tags --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
-    am3     = am -3
-    amab    = am --abort
-    amco    = am --continue
-    br      = branch
-    caa     = commit -a --amend -C HEAD
-    caas    = commit --amend -C HEAD
-    ch      = checkout
-    co      = commit --signoff --stat
-    corig   = commit -C ORIG_HEAD
-    dif     = diff -p --stat
-    difs    = dif --staged
-    fpatch1 = format-patch -1
-    hardres = reset --hard HEAD~
-    olog    = log --pretty=format:'%C(red)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ar)%Creset'
-    pfl     = push --force-with-lease
-    plog    = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-    pu      = push
-    re      = reset
-    reb     = rebase
-    reba    = rebase --autosquash
-    rebco   = rebase --continue
-    rebi    = rebase --interactive --autosquash
-    res     = reset
-    soft    = reset --soft
-    softres = reset --soft HEAD~
-    st      = status
+  alog    = log --color --graph --abbrev-commit --branches --remotes --tags --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+  am3     = am -3
+  amab    = am --abort
+  amco    = am --continue
+  br      = branch
+  caa     = commit -a --amend -C HEAD
+  caas    = commit --amend -C HEAD
+  ch      = checkout
+  co      = commit --signoff --stat
+  cosq    = commit --fixup
+  dif     = diff -p --stat
+  difs    = dif --staged
+  hardres = reset --hard HEAD~
+  plog    = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  reb     = rebase
+  reba    = rebase --autosquash
+  rebco   = rebase --continue
+  rebi    = rebase --interactive --autosquash
+  softres = reset --soft HEAD~
+  st      = status
 
-    # stash, checkout, stash pop
-    chst  = "!f() { git stash; git checkout $1; git stash pop; }; f"
+  # Start commit message with last commit message modifying the file as starting point
+  cac = "!f() { \
+    staged_file="$(git diff --name-only --cached | head -1)"; \
+    last_commit="$(git log --oneline --format="%H" --follow -- $staged_file | head -1)"; \
+    git commit --signoff --reset-author -c "$last_commit"; \
+    }; f"
 
-    # git commit with [squash] prefix and optional "msg"
-    cosq = commit --fixup
+  # Start commit message with filename as prefix
+  cof = "!f() { \
+    staged_file="$(git diff --name-only --cached | head -1 | sed -E "s@^documentation/@@")"; \
+    git commit --signoff --edit --message "$staged_file: "; \
+    }; f"
 
-    # mini and pretty log
-    mlog = "!f() { \
-	git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit | head -15; \
-	}; f"
+  # Drop commits passed on command-line (one or more)
+  # We need to sort them first otherwise some of them change will rebasing
+  drop = "!f() { \
+    commit_list=\"$1\"; \
+    shift; \
+    commits=$*; \
+    for commit in $commits; do \
+      commit_list=\"$commit_list|$commit\"; \
+    done; \
+    commits_sorted=\"$(git log --format=%H | grep -E \"($commit_list)\" | awk '{print}' ORS=' ')\"; \
+    for commit in $commits_sorted; do \
+      git rebase --onto $commit^ $commit $(git symbolic-ref --short HEAD); \
+    done; \
+    }; f"
 
-    # git rebonto $1 $2
-    rebonto = "!f() { \
-	git rebase --onto $1 origin/$1 $2; \
-	}; f"
+  res = "!f() { \
+    git reset --soft HEAD~; \
+    git reset; \
+    }; f"
 
-    cac = "!f() { \
-  staged_file="$(git diff --name-only --cached | head -1)"; \
-  last_commit="$(git log --oneline --format="%H" --follow -- $staged_file | head -1)"; \
-	git commit --signoff --reset-author -c "$last_commit"; \
-	}; f"
-
-    cof = "!f() { \
-      staged_file="$(git diff --name-only --cached | head -1 | sed -E "s@^documentation/@@")"; \
-      git commit --signoff --edit --message "$staged_file: "; \
-      }; f"
+[rerere]
+  enabled = true
 
 [commit]
-    verbose = true
+  verbose = true
 
 [core]
-    editor = nvim
-    pager = delta
-    fsmonitor = true  # faster git stasuses
+  editor = nvim
+  pager = delta
+  fsmonitor = true  # faster git stasuses
 
 [interactive]
-    diffFilter = delta --color-only
+  diffFilter = delta --color-only
 
 [delta]
-    navigate = false
-    light = true
+  navigate = false
+  light = true
 
 [merge]
-    conflictstyle = zdiff3
+  conflictstyle = zdiff3
 
 [diff]
-    colorMoved = default
+  colorMoved = default
 
 [fetch]
-    prune = true
-    writeCommitGraph = true  # incremental updates for faster graph logs
+  prune = true
+  writeCommitGraph = true  # incremental updates for faster graph logs
 
 [rebase]
-    autoStash = true
-    autoSquash = true
-    abbreviateCommands = true
-    updateRefs = true
+  autoStash = true
+  autoSquash = true
+  abbreviateCommands = true
+  instructionFormat = "[%an @ %ar] %s"
+  updateRefs = true
 
 [user]
-    name  = Antonin Godard
-    email = agodard@witekio.com
-    signingkey = D180414029A3A836
+  name  = Antonin Godard
 
 [color]
-    ui = auto
+  ui = auto
 
 [format]
-    signOff = true
-    coverLetter = auto
-    forceInBodyFrom = true
+  signOff = true
+    ; coverLetter = auto
+  forceInBodyFrom = true
 
 [maintenance]
-	  repo = /home/agodard/.oh-my-zsh
+  repo = /home/agodard/.oh-my-zsh
 
 [sendemail]
-    annotate = true
+  annotate = true
 
 [am]
-    threeWay = true
+  threeWay = true
 
 [include]
-  path = ~/.config/git/mail.gitconfig
+  path = ~/.config/git/work.gitconfig
