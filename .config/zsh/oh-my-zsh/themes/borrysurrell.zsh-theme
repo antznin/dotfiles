@@ -44,6 +44,7 @@ preexec() {
 precmd() {
     setopt localoptions nopromptsubst
     vcs_info # Get version control info before we start outputting stuff
-    export PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} )%F{yellow}$(cmd_exec_time)%f %{$fg[cyan]%}%c%{$reset_color%}$(repo_information)"
+    _current_dir="${_CURRENT_DIR:-%c}"
+    export PROMPT="%(?:%{$fg_bold[green]%}%1{➜%}${PS1_PREFIX} :%{$fg_bold[red]%}%1{➜%} )%F{yellow}$(cmd_exec_time)%f %{$fg[cyan]%}${_current_dir}%{$reset_color%}$(repo_information)"
     unset cmd_timestamp #Reset cmd exec time.
 }
