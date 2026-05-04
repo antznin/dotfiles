@@ -160,6 +160,16 @@ bindsym {
   XF86AudioLowerVolume exec --no-startup-id pamixer --decrease 10 && $refresh_status
   XF86AudioMute exec --no-startup-id pamixer --toggle-mute && $refresh_status
   XF86AudioMicMute exec --no-startup-id pamixer --default-source --toggle-mute && $refresh_status
+
+  # Notification center
+  $mod+Shift+n exec swaync-client -t -sw
+
+  # Wezterm font size control
+  $mod+Minus exec --no-startup-id $HOME/.config/wezterm/scripts/font decrease
+  $mod+Equal exec --no-startup-id $HOME/.config/wezterm/scripts/font increase
+
+  # Emoji
+  $mod+e exec --no-startup-id "rofi -modi emoji -show emoji"
 }
 
 #
@@ -200,23 +210,19 @@ bindsym $mod+Shift+p mode "$mode_system"
 #
 
 exec --no-startup-id {
-  # nm-applet
   $HOME/.config/sway/scripts/work-startup
   blueman-manager && sleep 1 && killall blueman-applet
-  dunst
   feh --title lafayette-helper $HOME/.config/sway/misc/lafayette.png
   gammastep -l geoclue2 -b 1:0.9 -t 6500K:3500K
   gnome-calculator -m programming
+  kanshi
   keepassxc
   mkdir -p /tmp/me
   obsidian
   pamixer --set-volume 0 && $refresh_status
   pavucontrol
   systemctl --user start xdg-desktop-portal-wlr
-  telegram-desktop
   tidal-hifi
-  wezterm start --class circumflex clx --nerdfonts
-  wezterm start --class newsboat newsboat
   xss-lock --transfer-sleep-lock -- $locker
 }
 
@@ -224,7 +230,7 @@ bindsym {
   $mod+c [app_id="org.gnome.Calculator"] scratchpad show, move position center
   $mod+d [app_id="org.keepassxc.KeePassXC" title=".* - KeePassXC$"] scratchpad show, resize set 1000 800, move position center
   $mod+$alt+5 [title="^lafayette-helper$"] scratchpad show, move position center
-  $mod+n [class="obsidian" window_type="normal"] scratchpad show, resize set 1800 1000, move position center
+  $mod+n [app_id=".*obsidian.*"] scratchpad show, resize set 1800 1000, move position center
   $mod+b [app_id="blueman-manager"] scratchpad show, move position center
   $mod+a [app_id="org.pulseaudio.pavucontrol"] scratchpad show, move position center
 }
@@ -235,7 +241,7 @@ for_window {
   [app_id="blueman-manager"] floating enable, move scratchpad
   [app_id="org.gnome.Calculator"] floating enable, move scratchpad
   [app_id="org.keepassxc.KeePassXC" title=".* - KeePassXC$"] floating enable, move scratchpad
-  [class="obsidian" window_type="normal"] floating enable, move scratchpad
+  [app_id=".*obsidian.*"] floating enable, move scratchpad
   [title="lafayette-helper"] floating enable, move scratchpad
 }
 
@@ -249,28 +255,6 @@ for_window {
 }
 
 #
-# Outputs / Workspaces
-#
-
-# Default output configuration
-output eDP-1 mode 2256x1504 scale 1
-
-# Workspace assignments
-set $monitor_left "DP-2-1" "HDMI-1"
-set $monitor_middle "DP-2-2" "HDMI-1"
-set $monitor_right "eDP-1"
-workspace $ws1  output $monitor_middle
-workspace $ws2  output $monitor_middle
-workspace $ws3  output $monitor_middle
-workspace $ws4  output $monitor_left
-workspace $ws5  output $monitor_right
-workspace $ws6  output $monitor_left
-workspace $ws7  output $monitor_left
-workspace $ws8  output $monitor_left
-workspace $ws9  output $monitor_right
-workspace $ws10 output $monitor_left
-
-#
 # Inputs
 #
 
@@ -278,6 +262,7 @@ input type:keyboard {
   # qwerty-antznin
   xkb_layout custom
   xkb_options caps:escape
+  xkb_numlock enabled
 }
 
 input type:touchpad {
@@ -328,7 +313,7 @@ client.background       $base
 bar {
   status_command i3status
   separator_symbol " | "
-  font $font 10
+  font $font 9
   colors {
     background         $base
     statusline         $text
