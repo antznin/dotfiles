@@ -1,0 +1,45 @@
+output "eDP-1" {
+    mode  2256x1504@60
+    position 621,0
+    scale 1
+    alias $INTERNAL
+}
+
+output "LG Electronics IPS235 Serial Number" {
+    mode  1920x1080@60
+    position 2244,2
+    scale 1
+    alias $HOME_1
+}
+
+output "Iiyama North America PL2530H 1154383102390" {
+    mode  1920x1080@60
+    position 4164,2
+    scale 1
+    alias $HOME_2
+}
+
+output "LG Electronics LG HDR 4K 404NTTQ1T801" {
+  mode 3840x2160@60
+  position 2877,0
+  scale 1
+  alias $WORK
+}
+
+profile mono {
+  output $INTERNAL enable
+  exec ~/.config/wezterm/scripts/font set 14
+}
+
+profile home {
+  output $INTERNAL enable scale 1.4
+  output $HOME_1 enable
+  output $HOME_2 enable
+  exec ~/.config/wezterm/scripts/font set 11
+}
+
+profile work {
+  output $INTERNAL enable
+  output $WORK enable
+  exec ~/.config/wezterm/scripts/font set 14
+}
