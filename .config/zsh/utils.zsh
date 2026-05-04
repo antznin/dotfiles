@@ -145,6 +145,13 @@ ipkfind ()
     done
 }
 
+ipkx ()
+{
+  local f="$1"
+  shift
+  ar p "$f" data.tar.zst | zstd -d - | tar xavf - $*
+}
+
 rpmlist ()
 {
     local files="$*"
@@ -195,6 +202,7 @@ b4test ()
   local command="$*"
   local random_name="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13; echo)"
 
+  git checkout origin/master
   git checkout -b "$random_name"
   b4 shazam --sloppy-trailers --no-add-trailers "$message_id"
   eval "$command" || true
@@ -202,10 +210,19 @@ b4test ()
   git branch -D "$random_name"
 }
 
-gitf ()
+unalias gf
+gf ()
 {
   local sha="$1"
-  git --no-pager log --abbrev=12 -1 --pretty='%h ("%s")' "$sha"
+  local phrase="$2"
+  desc=$(git --no-pager log --abbrev=12 -1 --pretty='%h ("%s")' "$sha")
+  if [ "$phrase" = "1" ]; then
+    repo=$(basename $(git rev-parse --show-toplevel))
+    if [ "$repo" = "openembedded-core" ]; then
+      desc=$(echo "Added by commit $desc in OE-Core." | fold --width 70 --spaces | sed 's/ $//')
+    fi
+  fi
+  echo "$desc" | xc
 }
 
 lesspatches ()
@@ -213,3 +230,12 @@ lesspatches ()
   LESSOPEN='||cat %s | delta --true-color always' less "$@"
 }
 
+vince ()
+{
+  evince "$@" & disown
+}
+
+nt ()
+{
+  nautilus $* & disown
+}
