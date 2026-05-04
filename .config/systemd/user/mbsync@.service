@@ -3,8 +3,9 @@ Description=Mailbox synchronization service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/mbsync -V %i
-ExecStartPost=/usr/bin/notmuch --config %h/.config/notmuch/%i.config new
+Environment=NOTMUCH_PROFILE=%i
+ExecStart=/usr/bin/mbsync %i
+ExecStartPost=/usr/bin/notmuch new --quiet
 ExecStartPost=%h/.config/mbsync/notify.py %i
 
 [Install]
