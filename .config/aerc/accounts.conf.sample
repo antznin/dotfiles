@@ -5,8 +5,7 @@
 # source-cred-cmd   = gpg2 --batch -q --decrypt …/account.gpg
 
 # Notmuch
-source              = notmuch:///data/mail/<maildir>
-maildir-store       = /data/mail/<maildir>
+source              = notmuch://<confname>
 check-mail          = 1m
 check-mail-cmd      = systemctl start --user mbsync
 multi-file-strategy = act-all

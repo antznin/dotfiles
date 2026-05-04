@@ -21,9 +21,16 @@ msglist_flagged.fg=#df8e1d
 msglist_flagged.bold=true
 msglist_result.fg=#1e66f5
 msglist_result.bold=true
-msglist_*.selected.bold=false
-msglist_unread.selected.bold=true
 msglist_*.selected.bg=#ccd0da
+
+msglist*.To,~/.*antonin.*/.fg = #30686b
+msglist_unread.To,~/.*antonin.*/.fg = #209fb5
+msglist_unread.To,~/.*antonin.*/.bold = true
+msglist*.Cc,~/.*antonin.*/.fg = #30686b
+msglist_unread.Cc,~/.*antonin.*/.fg = #209fb5
+msglist_unread.Cc,~/.*antonin.*/.bold = true
+msglist*.From,~/.*antonin.*/.fg = #4c4f69
+msglist_unread.From,~/.*antonin.*/.bold = true
 
 dirlist_*.selected.bold=true
 dirlist_*.selected.bg=#ccd0da
