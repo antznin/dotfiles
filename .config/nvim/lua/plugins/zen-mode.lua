@@ -20,6 +20,7 @@ return {
           cursorcolumn = false, -- disable cursor column
           foldcolumn = "0", -- disable fold column
           -- list = false, -- disable whitespace characters
+          colorcolumn = "0",
         },
       },
       plugins = {
@@ -38,7 +39,7 @@ return {
         -- requires  Alacritty Version 0.10.0 or higher
         -- uses `alacritty msg` subcommand to change font size
         alacritty = {
-          enabled = true,
+          enabled = false,
           font = "13", -- font size
         },
         -- this will change the font size on wezterm when in zen mode

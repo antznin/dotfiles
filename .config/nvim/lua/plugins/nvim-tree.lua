@@ -124,7 +124,7 @@ return {
         },
       },
       view = {
-        width = 30,
+        width = 60,
         side = "left",
         number = false,
         relativenumber = false,

@@ -35,7 +35,6 @@ local options = {
   sidescrolloff = 8,
   guifont = "monospace:h17", -- the font used in graphical neovim applications
   foldmethod = "expr",
-  foldexpr = "nvim_treesitter#foldexpr()", -- use tree-sitter folding
   foldenable = false, -- disable folding at startup
   textwidth = 80,
   colorcolumn = "81", -- Colored column.
@@ -52,8 +51,8 @@ for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
-vim.cmd('set list')
-vim.cmd('set listchars=tab:»\\ ,extends:›,precedes:‹,nbsp:·,trail:·')
+vim.cmd("set list")
+vim.cmd("set listchars=tab:»\\ ,extends:›,precedes:‹,nbsp:·,trail:·")
 
 -- Search with `*`, but don't jump dirst and don't add to jump list.
 vim.cmd("nnoremap * :keepjumps normal! mi*`i<CR>")
@@ -98,7 +97,7 @@ vim.cmd("set whichwrap+=<,>,[,],h,l")
 vim.opt.iskeyword:append("-")
 
 -- Markdown: don't consider bullet points as comments.
-vim.cmd "au FileType markdown setl comments=n:>"
+vim.cmd("au FileType markdown setl comments=n:>")
 vim.opt.showbreak = "  "
 vim.cmd([[let &formatlistpat='^\s*\d\+\.\s\+\|^[-*+]\s\+']])
 vim.cmd([[set formatoptions+=n]])
@@ -118,14 +117,6 @@ vim.cmd([[
 
 -- Spell file
 vim.cmd("set spellfile=" .. vim.env.HOME .. "/.config/nvim/spell/en.utf-8.add")
-
--- Turn on spell checking
-vim.cmd([[
-  au BufRead,BufNewFile filetype=rst set spell tabstop=3 softtabstop=3 shiftwidth=3 expandtab=true
-  au BufRead,BufNewFile filetype=md  set spell
-  au BufRead,BufNewFile filetype=gitcommit set spell
-  au BufRead,BufNewFile filetype=mail set spell
-]])
 
 -- Turn on exrc
 -- Place files called .nvim.lua in project directories to have special autocmd
@@ -158,4 +149,15 @@ vim.cmd([[
   au BufRead aerc-compose-*.eml setlocal filetype=custom_mail
 ]])
 
-pcall(require, "config.options.work")
+-- Yocto docs
+vim.cmd([[
+  au BufRead /data/yoctoproject/ws/repos/yocto-docs/**/*.rst set tabstop=3 softtabstop=3 shiftwidth=3 expandtab filetype=custom_rst
+  au BufRead /data/yoctoproject/ws/repos/bitbake/**/*.rst set tabstop=3 softtabstop=3 shiftwidth=3 expandtab filetype=custom_rst
+]])
+
+-- Bitbake
+vim.cmd([[
+  au BufRead /data/yoctoproject/ws/repos/bitbake/**/*.py set textwidth=100
+]])
+
+pcall(require, "config.work")

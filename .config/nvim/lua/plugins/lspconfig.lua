@@ -1,6 +1,6 @@
 return {
-  'neovim/nvim-lspconfig',
-  dependencies = { 'saghen/blink.cmp' },
+  "neovim/nvim-lspconfig",
+  dependencies = { "saghen/blink.cmp" },
 
   -- example using `opts` for defining servers
   opts = {
@@ -9,19 +9,40 @@ return {
         filetypes = { "bash", "sh" },
       },
       gopls = {},
-      lua_ls = {},
+      lua_ls = {
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = { "vim" },
+            },
+          },
+        },
+      },
       quick_lint_js = {},
-      pylsp = {},
       rust_analyzer = {},
       tinymist = {},
       clangd = {},
-    }
+      jsonls = {},
+      ruff = {},
+      pylsp = {
+        settings = {
+          pylsp = {
+            plugins = {
+              pycodestyle = {
+                ignore = { "E302", "E305" },
+                maxLineLength = 80,
+              },
+            },
+          },
+        },
+      },
+    },
   },
   config = function(_, opts)
-    local lspconfig = require('lspconfig')
     for server, config in pairs(opts.servers) do
-      config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
-      lspconfig[server].setup(config)
+      config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
+      vim.lsp.config(server, config)
+      vim.lsp.enable(server)
     end
   end,
 }

@@ -1,6 +1,7 @@
 return {
   "echasnovski/mini.align",
   version = "*",
+  enabled = false,
   config = function()
     require("mini.align").setup({
       -- Module mappings. Use `''` (empty string) to disable one.

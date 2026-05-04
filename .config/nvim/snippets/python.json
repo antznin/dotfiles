@@ -1,0 +1,9 @@
+{
+  "print (debug)": {
+    "prefix": "prd",
+    "body": [
+      "print(f\"{}\", __func__, __LINE__);"
+    ]
+  }
+}
+

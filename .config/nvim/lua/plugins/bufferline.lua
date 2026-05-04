@@ -35,6 +35,12 @@ return {
         separator_style = "thin",
         enforce_regular_tabs = true,
         always_show_bufferline = true,
+        -- filter out filetypes you don't want to see
+        custom_filter = function(buf_number, buf_numbers)
+          if vim.bo[buf_number].filetype ~= "qf" then
+            return true
+          end
+        end,
       },
       highlights = {
         fill = {

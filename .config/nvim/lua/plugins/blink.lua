@@ -36,10 +36,21 @@ return {
       },
 
       completion = {
-        documentation = { auto_show = true },
+        documentation = {
+          auto_show = true,
+          window = {
+            border = "rounded",
+          },
+        },
         menu = {
           draw = {
             columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "source_name", gap = 1 } },
+          },
+          border = "rounded",
+        },
+        list = {
+          selection = {
+            auto_insert = false,
           },
         },
       },
@@ -51,11 +62,66 @@ return {
           "snippets",
           "buffer",
           "bitbake",
+          "projects",
+          "yoctodocs_terms",
+          "yoctodocs_refs",
+          "yoctodocs_titles",
         },
         providers = {
           bitbake = {
             name = "bitbake_path",
             module = "blink.compat.source",
+          },
+          projects = {
+            name = "projects",
+            module = "plugins.blink.cmd",
+            opts = {
+              cmd = "env -C /data/bootlin/intragit/weeklies/antonin-godard/"
+                .. vim.fn.strftime("%Y")
+                .. ' rg --no-filename "^ \\* .+:" | cut -c4- | cut -d: -f1 | sort | uniq',
+              ft = "weekly",
+            },
+          },
+          yoctodocs_refs = {
+            name = "refs",
+            module = "plugins.blink.cmd",
+            opts = {
+              cmd = 'env -C $ydocs '
+                .. 'rg --no-filename "^(\\.\\. _ref-.+:|\\.\\. _structure-.+:)" '
+                .. '| cut -c5- '
+                .. '| cut -d: -f1 '
+                .. '| sort | uniq',
+              ft = "custom_rst",
+              trigger_characters = { "\\`" },
+            },
+          },
+          yoctodocs_terms = {
+            name = "terms",
+            module = "plugins.blink.cmd",
+            opts = {
+              cmd = {
+                'env -C $ydocs/documentation/ref-manual '
+                .. 'rg --no-filename "^   :term:\\`" terms.rst variables.rst '
+                .. '| cut -d\\` -f 2 '
+                .. '| sort | uniq',
+              },
+              ft = "custom_rst",
+              trigger_characters = { '`' },
+            },
+          },
+          yoctodocs_titles = {
+            name = "titles",
+            module = "plugins.blink.cmd",
+            opts = {
+              cmd = {
+                'env -C $ydocs '
+                .. 'rg --no-filename -U "(\\*|-|=|~)+\nYocto Project .+\n(\\*|-|=|~)+" '
+                .. '| grep "^Yocto Project" '
+                .. '| sort | uniq',
+              },
+              ft = "custom_rst",
+              trigger_characters = { "Y" },
+            },
           },
         },
       },

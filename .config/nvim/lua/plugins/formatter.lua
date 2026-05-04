@@ -8,9 +8,9 @@ return {
       logging = true,
       log_level = vim.log.levels.WARN,
       filetype = {
-        go = {
-          require("formatter.filetypes.go").gofumpt,
-        },
+        go = { require("formatter.filetypes.go").gofumpt, },
+        json = { require("formatter.filetypes.json").prettier, },
+        javascript = { require("formatter.filetypes.javascript").prettier, },
         lua = {
           require("formatter.filetypes.lua").stylua,
 

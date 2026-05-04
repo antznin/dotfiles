@@ -64,6 +64,9 @@ keymap("v", "p", '"_dP', opts)
 keymap("v", "<C-i>", 'mtc`<C-r>"`<esc>`t', opts)  -- surround `
 keymap("v", "<C-x>", 'mtc``<C-r>"``<esc>`t', opts)   -- surround ``
 
+-- Yocto docs mappings
+keymap("v", "<space>syr", 'mtc:ref:`<C-r>"`<esc>`t', opts)   -- surround ``
+
 -- Contract to "[...]"
 keymap("v", "<C-e>", 'c[...]<esc>j', { noremap = true, silent = true })
 
@@ -75,22 +78,22 @@ keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
 -- Move file to `where` and notify.
-local function move_to(where)
+function MOVE_TO(where)
   local path = vim.api.nvim_buf_get_name(0)
   if string.sub(path, -5) == "patch" then
     local parent = vim.fs.dirname(path)
     local source = vim.fs.basename(parent)
-    local filename = vim.fs.basename(path)
-    vim.system({'mv', '-v', path, parent .. "/" .. where})
-    vim.notify("Moved file:\n" .. filename .. "\n" .. source .. " 🡒 " .. where)
+    -- local filename = vim.fs.basename(path)
+    vim.system({'mv', path, parent .. "/../../" .. where .. "/" .. source})
+    -- vim.notify("Moved file:\n" .. filename .. "\n" .. source .. " 🡒 " .. "../../" .. where .. "/" .. source)
     vim.cmd("Bdelete")
   end
 end
 
 -- Quick moves for patch reviews.
-keymap("n", "<leader>md", ":lua move_to('../done/')", opts)
-keymap("n", "<leader>mt", ":lua move_to('../todo/')", opts)
-keymap("n", "<leader>mu", ":lua move_to('../unreviewed/')", opts)
+keymap("n", "<leader>md", ":lua MOVE_TO('done')<CR>", opts)
+keymap("n", "<leader>mt", ":lua MOVE_TO('todo')<CR>", opts)
+keymap("n", "<leader>mu", ":lua MOVE_TO('unreviewed')<CR>", opts)
 
 -- Spell checking
 local function toggle_spell_check()
@@ -157,6 +160,10 @@ keymap("n", "<leader>n", "<cmd>Telescope notify<cr>", opts) -- Requires nvim-not
 keymap("n", "<leader>d", "<cmd>Telescope lsp_workspace_symbols<cr>", opts)
 keymap("n", "<leader>r", "<cmd>Telescope lsp_document_symbols<cr>", opts)
 
+keymap("v", "<leader>al", "j?<<<<<CR>V/>>>><CR>:diffget LO<CR>", opts)
+keymap("v", "<leader>ab", "j?<<<<<CR>V/>>>><CR>:diffget BA<CR>", opts)
+keymap("v", "<leader>ar", "j?<<<<<CR>V/>>>><CR>:diffget RE<CR>", opts)
+
 --
 -- Gitsigns
 --
@@ -211,15 +218,15 @@ keymap("n", "<space>q", "<cmd>lua vim.diagnostic.setloclist()<cr>", opts)
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP keymaps',
   callback = function(event)
-    local opts = {buffer = event.buf}
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", opts)
-    vim.keymap.set("n", "<leader>D", "<cmd>Lspsaga peek_definition<cr>", opts)
-    vim.keymap.set("n", "<leader>k", vim.lsp.buf.signature_help, opts)
-    vim.keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<cr>", opts)
-    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-    vim.keymap.set("n", "<leader>O", "<cmd>Lspsaga outline<cr>", opts)
-    vim.keymap.set("n", "<leader>lr", "<cmd>Lspsaga finder<cr>", opts)
+    local lsp_opts = {buffer = event.buf}
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, lsp_opts)
+    vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", lsp_opts)
+    vim.keymap.set("n", "<leader>D", "<cmd>Lspsaga peek_definition<cr>", lsp_opts)
+    vim.keymap.set("n", "<leader>k", vim.lsp.buf.signature_help, lsp_opts)
+    vim.keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<cr>", lsp_opts)
+    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, lsp_opts)
+    vim.keymap.set("n", "<leader>O", "<cmd>Lspsaga outline<cr>", lsp_opts)
+    vim.keymap.set("n", "<leader>lr", "<cmd>Lspsaga finder<cr>", lsp_opts)
   end,
 })
 
@@ -246,7 +253,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 --
 
 local function toggle_line_wrapping()
-  textwidth = vim.opt.textwidth._value
+  local textwidth = vim.opt.textwidth._value
   if textwidth ~= 0 then
     vim.opt.textwidth = 0
     vim.notify("Line wrapping disabled")
@@ -268,7 +275,7 @@ keymap("n", "<leader>tt", "<cmd>Trim<cr>", opts)
 -- Git fugitive
 --
 
-keymap("n", "<leader>gc", ":Git cof -s<CR>", opts)
+keymap("n", "<leader>gc", ":vertical Git cof -s<CR>", opts)
 
 --
 -- Zen mode
@@ -283,6 +290,4 @@ keymap("n", "<leader>zz", ":ZenMode<CR>", opts)
 keymap("n", "<leader>wf", ":Format<CR>", opts)
 
 -- Return keymaps used by other files.
-return {
-  lsp_keymaps = lsp_keymaps,
-}
+return {}
