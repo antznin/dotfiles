@@ -1,0 +1,10 @@
+${cover}
+
+---
+${shortlog}
+
+${diffstat}
+---
+base-commit: ${base_commit}
+change-id: ${change_id}
+${prerequisites}

@@ -33,24 +33,31 @@
     git commit --signoff --edit --message "$staged_file: "; \
     }; f"
 
-  # Drop commits passed on command-line (one or more)
-  # We need to sort them first otherwise some of them change will rebasing
+  # poky obsolete
+  cofp = "!f() { \
+    staged_file="$(git diff --name-only --cached | head -1 | sed -E "s@^documentation/@@")"; \
+    git commit --signoff --edit --message \"$staged_file: remove obsolete poky repo references\" --message \"Refresh the document now that the Poky repository is obsolete.\"; \
+    }; f"
+
+  # Drop commits passed on command-line either a list of commits or a range.
+  # We need to sort them first otherwise they change when rebasing.
   drop = "!f() { \
-    commit_list=\"$1\"; \
-    shift; \
-    commits=$*; \
-    for commit in $commits; do \
-      commit_list=\"$commit_list|$commit\"; \
-    done; \
+    commits=\"$1\"; \
+    if bash -c \"[[ $commits =~ .*\\.\\..* ]]\"; then \
+      base=$(echo $commits | cut -d'.' -f1); \
+      tip=$(echo $commits | cut -d'.' -f3); \
+      commits=$(git log $base~..$tip --format=%H); \
+    else \
+      commits=""; \
+    fi; \
+    if [ -z \"$commits\" ]; then \
+      commits=$*; \
+    fi; \
+    commit_list=$(echo $commits | tr ' ' '|'); \
     commits_sorted=\"$(git log --format=%H | grep -E \"($commit_list)\" | awk '{print}' ORS=' ')\"; \
     for commit in $commits_sorted; do \
       git rebase --onto $commit^ $commit $(git symbolic-ref --short HEAD); \
     done; \
-    }; f"
-
-  res = "!f() { \
-    git reset --soft HEAD~; \
-    git reset; \
     }; f"
 
 [rerere]
@@ -73,6 +80,7 @@
 
 [merge]
   conflictstyle = zdiff3
+  tool = nvimdiff
 
 [diff]
   colorMoved = default
@@ -86,7 +94,6 @@
   autoSquash = true
   abbreviateCommands = true
   instructionFormat = "[%an @ %ar] %s"
-  updateRefs = true
 
 [user]
   name  = Antonin Godard
@@ -96,7 +103,6 @@
 
 [format]
   signOff = true
-    ; coverLetter = auto
   forceInBodyFrom = true
 
 [maintenance]
@@ -107,6 +113,10 @@
 
 [am]
   threeWay = true
+
+[b4]
+  prep-cover-template = ~/.config/git/b4/prep-cover-template
+  thanks-am-template = ~/.config/git/b4/thanks-am-template
 
 [include]
   path = ~/.config/git/work.gitconfig
