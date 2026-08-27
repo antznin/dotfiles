@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+#
+# rsync-dir - mirror selected paths from a source dir into a destination.
+#
+# Usage:
+#   rsync-dir <src> <dst> [path...] [flags]
+#
+# rsyncs the given paths from <src> to <dst> (archive, delete, recursive,
+# relative, update, verbose). With no paths, the whole <src> is copied.
+# Runs with <src> as the working directory, so paths are relative to <src>.
+# The destination may be a remote, e.g. "server:/path".
+#
+# Options (arguments are parsed in order):
+#   path...   paths to include/sync (default: ./)
+#   !path     exclude a path from the sync
+#   %pattern  add a grep pattern to hide matching output lines
+#
+# Default exclusions: __pycache__ dirs and .git/fsmonitor--daemon.
+#
+# Examples:
+#   rsync-dir ~/project /backup                  # back up whole project
+#   rsync-dir src dst src/app !src/app/tmp       # sync src/app, skip src/app/tmp
+#   rsync-dir ~/project server:/backup %\.log$   # push to a remote, hide .log lines
+
+set -eu -o pipefail
+
+src="$1"
+dst="$2"
+shift
+shift
+
+declare -a include_paths=()
+declare -a exclude_paths=(
+  --exclude '**/__pycache__/'
+  --exclude ".git/fsmonitor--daemon/"
+)
+declare -a quiet_paths=(
+  "^\./$"
+  "^\.git/"
+  "__pycache__"
+)
+
+for p in "$@"; do
+  if [[ $p =~ ^!.* ]]; then
+    exclude_paths+=( --exclude "${p:1}" )
+  elif [[ $p =~ ^%.* ]]; then
+    quiet_paths+=( "${p:1}" )
+  else
+    include_paths+=( "$p" )
+  fi
+done
+
+if [ -z "${include_paths[*]}" ]; then
+  include_paths=( ./ )
+fi
+
+declare -a grep_filters=()
+for p in "${quiet_paths[@]}"; do
+  grep_filters+=(
+    --regexp "${p:1}"
+  )
+done
+grep_filters+=(
+  --regexp "sending incremental file list"
+  --regexp "sent.*received.*bytes/sec"
+  --regexp "total size is.*speedup"
+  --regexp "^$"
+)
+
+env -C "$src" \
+  rsync \
+  --archive \
+  --delete \
+  --recursive \
+  --relative \
+  --update \
+  --verbose \
+  "${exclude_paths[@]}" \
+  "${include_paths[@]}" \
+  "$dst" \
+  | grep --invert-match "${grep_filters[@]}" \
+  || true
